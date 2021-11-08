@@ -1,0 +1,57 @@
+Matthew Greene
+File: Run2.txt
+
+Summary: This is a run of my dungeon model which demonstrates a player moving through a 10 row by 10 column 
+non-wrapping dungeon with level 0 interconnectivity and 20% of the caves have treasure. The player goes 
+along the shortest path from their start point to their end point. 
+
+Edits to this output: The only edits that I made to this output was to reduce the lengeth of the line of the 
+final edges and just dropped them down to the next line. 
+
+--------------------------------------------------------------------------------------------------------------------------
+Welcome to the Dungeon. 
+Please enter true or false if you would like the dungeon to wrap. 
+the number of rows you would like as an integer. 
+The number of columns as an integer.
+The level of interconnectedness you would like as an integer, 
+and the percentage of caves that you would like to have treasure between 0 and 100. 
+Here is an example: true 10 10 0 10
+false 10 10 0 20
+status of final edge list: [44<========>54, 40<========>50, 27<========>37, 8<========>9, 80<========>90,
+ 84<========>94, 14<========>24, 64<========>65, 73<========>74, 51<========>61, 82<========>83, 18<========>19,
+ 59<========>69, 22<========>23, 47<========>48, 27<========>28, 26<========>36, 26<========>27, 78<========>79,
+ 65<========>66, 64<========>74, 53<========>54, 18<========>28, 50<========>51, 82<========>92, 31<========>41,
+ 29<========>39, 35<========>36, 67<========>68, 24<========>34, 85<========>86, 57<========>58, 96<========>97
+, 21<========>22, 54<========>55, 33<========>34, 45<========>55, 2<========>12, 3<========>13, 11<========>21,
+ 16<========>26, 63<========>64, 85<========>95, 7<========>8, 61<========>71, 6<========>16, 30<========>40,
+ 74<========>75, 97<========>98, 58<========>59, 30<========>31, 2<========>3, 52<========>53, 83<========>93,
+ 95<========>96, 11<========>12, 15<========>16, 79<========>89, 88<========>89, 1<========>11, 61<========>62,
+ 23<========>24, 46<========>56, 66<========>67, 75<========>76, 20<========>30, 73<========>83, 14<========>15,
+ 28<========>38, 56<========>57, 72<========>82, 62<========>72, 33<========>43, 42<========>43, 10<========>20,
+ 5<========>6, 25<========>35, 88<========>98, 38<========>48, 36<========>46, 38<========>39, 52<========>62,
+ 20<========>21, 0<========>10, 77<========>87, 69<========>79, 98<========>99, 32<========>42, 17<========>18,
+ 9<========>19, 74<========>84, 4<========>5, 70<========>80, 76<========>77, 49<========>59, 71<========>81,
+ 50<========>60, 81<========>91, 60<========>70]
+
+The Player enters the dungeon at Cave 30. They currently have no treasure.
+Final path: [30, 40, 50, 51, 61, 71, 81, 91]
+The player is currently in Cave 30 and has  Sapphire, in their treasure bag. 
+They can go SOUTH EAST NORTH and there is  Sapphire, Sapphire, in this cave.
+The player is currently in Cave 40 and has  Sapphire, Sapphire, Sapphire, in their treasure bag. 
+They can go SOUTH NORTH and there is  Sapphire, Sapphire, in this cave.
+The player is currently in Cave 50 and has  Sapphire, Sapphire, Sapphire, Sapphire, Sapphire, in their treasure bag. 
+They can go NORTH EAST SOUTH and there is  Sapphire, Sapphire, in this cave.
+The player is currently in Cave 51 and has  Sapphire, Sapphire, Sapphire, Sapphire, Sapphire, Sapphire, Sapphire, in their treasure bag. 
+They can go SOUTH WEST and there is  Sapphire, Sapphire, in this cave.
+The player is currently in Cave 61 and has  Sapphire, Sapphire, Sapphire, Sapphire, Sapphire, Sapphire, Sapphire, Sapphire, Sapphire, in their treasure bag. 
+They can go NORTH SOUTH EAST and there is  Sapphire, Sapphire, Diamond, Sapphire, in this cave.
+The player is currently in Cave 71 and has  Sapphire, Sapphire, Sapphire, Sapphire, Sapphire, Sapphire, Sapphire, Sapphire, Sapphire, Sapphire, Sapphire, Diamond, Sapphire, in their treasure bag. 
+They can go NORTH SOUTH and there is  Sapphire, Sapphire, Diamond, Sapphire, in this cave.
+The player is currently in Cave 81 and has  Sapphire, Sapphire, Sapphire, Sapphire, Sapphire, Sapphire, Sapphire, Sapphire, Sapphire, Sapphire, Sapphire, Diamond, Sapphire, Sapphire, Sapphire, Diamond, Sapphire, in their treasure bag. 
+They can go NORTH SOUTH and there is  Sapphire, Sapphire, Diamond, Sapphire, in this cave.
+
+The has reached their end point! Their quest is over. Lets check on our player.
+The player is currently in Cave 91 and has  Sapphire, Sapphire, Sapphire, Sapphire, Sapphire, Sapphire, Sapphire, Sapphire, Sapphire, Sapphire, Sapphire, Diamond, Sapphire, Sapphire, Sapphire, Diamond, Sapphire, Sapphire, Sapphire, Diamond, Sapphire, in their treasure bag. 
+They can go [NORTH] and there is  Sapphire, Sapphire, Diamond, Sapphire, Sapphire, Ruby, in this cave.
+
+Process finished with exit code 0

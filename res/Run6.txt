@@ -1,0 +1,64 @@
+Matthew Greene
+File: Run6.txt
+
+Summary: This is a run of my dungeon model which demonstrates a player moving through a 8 row by 6 column
+wrapping dungeon with level 10 interconnectivity and 0% of the caves have treasure. The player goes
+along the shortest path from the first node to the end point.
+
+Edits to this output: The only edits that I made to this output was to reduce the length of the line of the
+final edges and just dropped them down to the next line.
+
+--------------------------------------------------------------------------------------------------------------------------
+Welcome to the Dungeon.
+Please enter true or false if you would like the dungeon to wrap.
+the number of rows you would like as an integer.
+The number of columns as an integer.
+The level of interconnectedness you would like as an integer,
+and the percentage of caves that you would like to have treasure between 0 and 100.
+Here is an example: true 10 10 0 10
+false 8 6 10 0
+status of final edge list: [36<========>37, 10<========>11, 31<========>37, 12<========>18,
+8<========>9, 7<========>13, 37<========>43, 28<========>34, 5<========>11, 4<========>5,
+25<========>31, 36<========>42, 7<========>8, 3<========>4, 16<========>22, 17<========>23,
+13<========>19, 33<========>39, 0<========>6, 40<========>41, 30<========>31, 22<========>23,
+43<========>44, 39<========>45, 31<========>32, 41<========>47, 27<========>33, 34<========>40,
+28<========>29, 39<========>40, 46<========>47, 15<========>16, 14<========>15, 0<========>1,
+20<========>21, 12<========>13, 2<========>3, 8<========>14, 15<========>21, 24<========>30,
+20<========>26, 1<========>7, 37<========>38, 11<========>17, 23<========>29, 29<========>35,
+38<========>39, 21<========>22, 35<========>41, 3<========>9, 42<========>43, 44<========>45,
+9<========>10, 33<========>34, 19<========>20, 40<========>46, 14<========>20]
+
+The Player enters the dungeon at Cave 25. They currently have no treasure.
+Final path: [25, 31, 37, 38, 39, 33, 34, 28, 29, 23, 22, 21, 20, 26]
+The player is currently in Cave 25 and has nothing in their treasure bag.
+They can go [SOUTH] and there is no treasure in this cave in this cave.
+The player is currently in Cave 31 and has nothing in their treasure bag.
+They can go SOUTH NORTH WEST EAST and there is no treasure in this cave in this cave.
+The player is currently in Cave 37 and has nothing in their treasure bag.
+They can go WEST NORTH SOUTH EAST and there is no treasure in this cave in this cave.
+The player is currently in Cave 38 and has nothing in their treasure bag.
+They can go WEST EAST and there is no treasure in this cave in this cave.
+The player is currently in Cave 39 and has nothing in their treasure bag.
+They can go NORTH SOUTH EAST WEST and there is no treasure in this cave in this cave.
+The player is currently in Cave 33 and has nothing in their treasure bag.
+They can go SOUTH NORTH EAST and there is no treasure in this cave in this cave.
+The player is currently in Cave 34 and has nothing in their treasure bag.
+They can go NORTH SOUTH WEST and there is no treasure in this cave in this cave.
+The player is currently in Cave 28 and has nothing in their treasure bag.
+They can go SOUTH EAST and there is no treasure in this cave in this cave.
+The player is currently in Cave 29 and has nothing in their treasure bag.
+They can go WEST NORTH SOUTH and there is no treasure in this cave in this cave.
+The player is currently in Cave 23 and has nothing in their treasure bag.
+They can go NORTH WEST SOUTH and there is no treasure in this cave in this cave.
+The player is currently in Cave 22 and has nothing in their treasure bag.
+They can go NORTH EAST WEST and there is no treasure in this cave in this cave.
+The player is currently in Cave 21 and has nothing in their treasure bag.
+They can go WEST NORTH EAST and there is no treasure in this cave in this cave.
+The player is currently in Cave 20 and has nothing in their treasure bag.
+They can go EAST SOUTH WEST NORTH and there is no treasure in this cave in this cave.
+
+The has reached their end point! Their quest is over. Lets check on our player.
+The player is currently in Cave 26 and has nothing in their treasure bag.
+They can go [NORTH] and there is no treasure in this cave in this cave.
+
+Process finished with exit code 0
