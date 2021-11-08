@@ -1,6 +1,6 @@
 package model;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents a player and all of the associated actions.
@@ -10,8 +10,8 @@ public interface Player {
   /**
    * The player moves.
    */
-  void move(int index, ArrayList<Direction> directions,
-                ArrayList<Treasure> curTreasure);
+  void move(int index, List<Direction> directions,
+                List<Treasure> curTreasure);
 
   /**This builds and returns the player's status which includes, the index of the cave they are
    * currently in, the treasure the player has collected so far, the moves the player can make based
@@ -27,12 +27,12 @@ public interface Player {
    * @param treasureInCave the treasure in the cave where the player enters the dungeon.
    * @param possibleDirection the directions the player can go from the start point.
    */
-  void enterDungeon(int caveIndex, ArrayList<Treasure> treasureInCave,
-                    ArrayList<Direction> possibleDirection);
+  void enterDungeon(int caveIndex, List<Treasure> treasureInCave,
+                    List<Direction> possibleDirection);
 
   /**A helper to get the current treasure list.
    *
    * @return the current contents of the player's treasure list.
    */
-  ArrayList<Treasure> getTreasureList();
+  List<Treasure> getTreasureList();
 }

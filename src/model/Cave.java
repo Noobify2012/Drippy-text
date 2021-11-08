@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This represents a cave object which has a unique index, what set it is in for completing
@@ -9,11 +10,11 @@ import java.util.ArrayList;
 public class Cave extends AbstractLocation {
   private int index;
   private int set;
-  private ArrayList<Integer> neighborList;
-  private ArrayList<Treasure> caveTreasureList;
+  private List<Integer> neighborList;
+  private List<Treasure> caveTreasureList;
 
-  protected Cave(int row, int column, ArrayList<Integer> neighborList,
-                 ArrayList<Treasure> treasureList, int index, int set) {
+  protected Cave(int row, int column, List<Integer> neighborList,
+                 List<Treasure> treasureList, int index, int set) {
     super(new Point2D(row, column), neighborList, treasureList);
     this.index = index;
     this.set = set;
@@ -76,7 +77,7 @@ public class Cave extends AbstractLocation {
    *
    * @return an ArrayList of the neighbors of the current cave.
    */
-  public ArrayList<Integer> getNeighbors() {
+  public List<Integer> getNeighbors() {
     return this.neighborList;
   }
 
@@ -92,12 +93,12 @@ public class Cave extends AbstractLocation {
    *
    * @return an array list of all the treasure that has been added to the player.
    */
-  public ArrayList<Treasure> getTreasureList() {
+  public List<Treasure> getTreasureList() {
     return this.caveTreasureList;
   }
 
-  ArrayList<Treasure> getTreasureFromCave() {
-    ArrayList<Treasure> treasureForPlayer = new ArrayList<>();
+  List<Treasure> getTreasureFromCave() {
+    List<Treasure> treasureForPlayer = new ArrayList<>();
     if (!this.caveTreasureList.isEmpty()) {
       for (int i = 0; i < caveTreasureList.size(); i++) {
         treasureForPlayer.add(i, this.caveTreasureList.get(i));

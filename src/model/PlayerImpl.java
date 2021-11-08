@@ -2,6 +2,7 @@ package model;
 
 import driver.Driver;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The implementation of the player. This player when created has a location and treasure list that
@@ -9,9 +10,9 @@ import java.util.ArrayList;
  */
 public class PlayerImpl implements Player {
   private int playerLocation;
-  private ArrayList<Treasure> treasureList;
-  private ArrayList<Direction> directions;
-  private ArrayList<Treasure> currentTreasure;
+  private List<Treasure> treasureList;
+  private List<Direction> directions;
+  private List<Treasure> currentTreasure;
 
   /**
    * The constructor of a player.
@@ -19,8 +20,8 @@ public class PlayerImpl implements Player {
   public PlayerImpl() {
     this.playerLocation = playerLocation;
     this.treasureList = new ArrayList<>();
-    ArrayList<Treasure> treasureList = new ArrayList<>();
-    ArrayList<Direction> directions = new ArrayList<>();
+    List<Treasure> treasureList = new ArrayList<>();
+    List<Direction> directions = new ArrayList<>();
     this.currentTreasure = new ArrayList<>();
   }
 
@@ -31,8 +32,8 @@ public class PlayerImpl implements Player {
    *                  to.
    * @param curTreasure the treasure in the cave of associated index.
    */
-  private void updatePlayerLocation(int index, ArrayList<Direction> directions,
-                                    ArrayList<Treasure> curTreasure) {
+  private void updatePlayerLocation(int index, List<Direction> directions,
+                                    List<Treasure> curTreasure) {
     this.playerLocation = index;
     this.directions = directions;
     updateTreasure();
@@ -59,8 +60,8 @@ public class PlayerImpl implements Player {
    * The player moves east.
    */
   @Override
-  public void move(int index, ArrayList<Direction> directions,
-                   ArrayList<Treasure> curTreasure) {
+  public void move(int index, List<Direction> directions,
+                   List<Treasure> curTreasure) {
 
     updatePlayerLocation(index, directions, curTreasure);
 
@@ -70,8 +71,8 @@ public class PlayerImpl implements Player {
    *
    * @return the current contents of the player's treasure list.
    */
-  public ArrayList<Treasure> getTreasureList() {
-    ArrayList<Treasure> treasureCopy = new ArrayList<>();
+  public List<Treasure> getTreasureList() {
+    List<Treasure> treasureCopy = new ArrayList<>();
     for (int i = 0; i < this.treasureList.size(); i++) {
       treasureCopy.add(this.treasureList.get(i));
     }
@@ -130,8 +131,8 @@ public class PlayerImpl implements Player {
    * @param directions the directions the player can go from the start point.
    */
   @Override
-  public void enterDungeon(int caveIndex, ArrayList<Treasure> treasureInCave,
-                           ArrayList<Direction> directions) {
+  public void enterDungeon(int caveIndex, List<Treasure> treasureInCave,
+                           List<Direction> directions) {
     updatePlayerLocation(caveIndex, directions, treasureInCave);
   }
 }

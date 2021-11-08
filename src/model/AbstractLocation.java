@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * An abstract location object which is the basis for our tunnels and caves. It has a
@@ -9,11 +10,11 @@ import java.util.ArrayList;
  */
 public abstract class AbstractLocation implements Location {
   protected Point2D location;
-  private ArrayList<Integer> neighborList;
-  private ArrayList<Treasure> treasureList;
+  private List<Integer> neighborList;
+  private List<Treasure> treasureList;
 
-  protected AbstractLocation(Point2D location, ArrayList neighborList,
-                             ArrayList treasureList) {
+  protected AbstractLocation(Point2D location, List<Integer> neighborList,
+                             List<Treasure> treasureList) {
     this.location = location;
     this.neighborList = neighborList;
     this.treasureList = treasureList;

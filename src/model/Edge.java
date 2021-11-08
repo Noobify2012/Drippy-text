@@ -3,7 +3,6 @@ package model;
 class Edge {
   private Cave cave1;
   private Cave cave2;
-
   private Direction directionToCave1;
   private Direction directionToCave2;
 

@@ -2,6 +2,7 @@ package model;
 
 import driver.Driver;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.LinkedList;
 import java.util.Random;
 import random.RandomNumberGenerator;
@@ -16,13 +17,13 @@ public class DungeonImpl implements Dungeon {
   private int interconnect;
   private int treasure;
   private Cave[][] gameboard;
-  private ArrayList<Edge> potEdgeList;
-  private ArrayList<Edge> leftOverEdge;
-  private ArrayList<Edge> finalEdgeList;
+  private List<Edge> potEdgeList;
+  private List<Edge> leftOverEdge;
+  private List<Edge> finalEdgeList;
   private int startPoint;
   private int endPoint;
   private Player player;
-  private ArrayList<Integer> shortestPath;
+  private List<Integer> shortestPath;
   private Graph graph;
 
   /**This creates a dungeon that requires the specification of whether the dungeon should wrap or
@@ -43,10 +44,10 @@ public class DungeonImpl implements Dungeon {
   public DungeonImpl(boolean wraps, int rows, int columns, int interconnect, int treasure,
                      Player player) {
 
-    ArrayList<Edge> potEdgeList = new ArrayList<>();
-    ArrayList<Edge> leftOverEdge = new ArrayList<>();
-    ArrayList<Edge> finalEdgeList = new ArrayList<>();
-    ArrayList<Integer> shortestPath = new ArrayList<>();
+    List<Edge> potEdgeList = new ArrayList<>();
+    List<Edge> leftOverEdge = new ArrayList<>();
+    List<Edge> finalEdgeList = new ArrayList<>();
+    List<Integer> shortestPath = new ArrayList<>();
     Cave[][] gameboard = new Cave[rows][columns];
 
     this.wraps = wraps;
@@ -108,8 +109,8 @@ public class DungeonImpl implements Dungeon {
     int index = 0;
     for (int r = 0; r < rows; r++) {
       for (int c = 0; c < columns; c++) {
-        ArrayList<Integer> neighborList = new ArrayList<>();
-        ArrayList<Treasure> treasureList = new ArrayList<>();
+        List<Integer> neighborList = new ArrayList<>();
+        List<Treasure> treasureList = new ArrayList<>();
         Cave cave = new Cave(r, c, neighborList, treasureList, index, index);
         gameboard[r][c] = cave;
         index++;
@@ -221,7 +222,7 @@ public class DungeonImpl implements Dungeon {
   private void runDungeon() {
     for (int i = 0; i < this.shortestPath.size(); i++) {
       //check for treasure, if it exists add it to the treasure bag, remove it from cave
-      ArrayList<Treasure> caveTreasure = new ArrayList<>();
+      List<Treasure> caveTreasure = new ArrayList<>();
       if (findCaveByIndex(shortestPath.get(i)).getTreasureList() != null
               || findCaveByIndex(shortestPath.get(i)).getTreasureList().size() != 0) {
         caveTreasure = findCaveByIndex(shortestPath.get(i)).getTreasureFromCave();
@@ -278,8 +279,8 @@ public class DungeonImpl implements Dungeon {
    * @param index takes in the index of the next cave
    * @return a list of the possible directions for the player to travel.
    */
-  private ArrayList<Direction> getPossibleDirection(int index) {
-    ArrayList<Direction> tempArray = new ArrayList<>();
+  private List<Direction> getPossibleDirection(int index) {
+    List<Direction> tempArray = new ArrayList<>();
     for (int i = 0; i < finalEdgeList.size(); i++) {
       if (finalEdgeList.get(i).getLeftIndex() == index) {
         if (!tempArray.contains(finalEdgeList.get(i).getDirectionToCave2())) {
@@ -300,7 +301,7 @@ public class DungeonImpl implements Dungeon {
    * @param caves takes an array list of caves to select from
    * @return the index of the starting cave as an integer.
    */
-  private int getStartPoint(ArrayList<Integer> caves) {
+  private int getStartPoint(List<Integer> caves) {
 
     RandomNumberGenerator rand = new RandomNumberGenerator(0, caves.size() - 1, 0,
             1);
@@ -316,10 +317,10 @@ public class DungeonImpl implements Dungeon {
    * @return the end point index as an integer.
    */
   private int findEndPoint(int startIndex) {
-    ArrayList<Integer> nonViable = new ArrayList<>();
-    ArrayList<Integer> viable = new ArrayList<>();
-    ArrayList<Integer> allCaves = getCavesByIndex();
-    ArrayList<Integer> listToCheck = new ArrayList<>();
+    List<Integer> nonViable = new ArrayList<>();
+    List<Integer> viable = new ArrayList<>();
+    List<Integer> allCaves = getCavesByIndex();
+    List<Integer> listToCheck = new ArrayList<>();
     int endPoint = 0;
 
     //add start index to list of things to check and those that can't be an end point
@@ -345,7 +346,8 @@ public class DungeonImpl implements Dungeon {
         for (int c = 0; c < temp; c++) {
           //grab next value in list to check
           int tempInt = listToCheck.get(c);
-          ArrayList<Integer> tempList = findCaveByIndex(tempInt).getNeighbors();
+          //TODO - check if this is legal
+          List<Integer> tempList = findCaveByIndex(tempInt).getNeighbors();
           //checks to see if next element down has children
           if (tempList.size() > 1) {
             //if it does have children add them to the lists
@@ -391,7 +393,7 @@ public class DungeonImpl implements Dungeon {
    *
    * @param caves takes the complete list of nodes as an array list of their integer indexes.
    */
-  private void findCaves(ArrayList<Integer> caves) {
+  private void findCaves(List<Integer> caves) {
     int treasureInt = 0;
     //make list of caves, exclude tunnels
     for (int r = 0; r < rows; r++) {
@@ -457,7 +459,7 @@ public class DungeonImpl implements Dungeon {
    *
    * @return the array list of edges.
    */
-  private ArrayList<Edge> getPotEdgeList() {
+  private List<Edge> getPotEdgeList() {
     return this.potEdgeList;
   }
 
@@ -465,8 +467,8 @@ public class DungeonImpl implements Dungeon {
    *
    * @return an array list of the indexes of all caves and tunnels in the dungeon.
    */
-  private ArrayList<Integer> getCavesByIndex() {
-    ArrayList<Integer> caves = new ArrayList<>();
+  private List<Integer> getCavesByIndex() {
+    List<Integer> caves = new ArrayList<>();
     //make list of caves, exclude tunnels
     for (int r = 0; r < rows; r++) {
       for (int c = 0; c < columns; c++) {
@@ -487,7 +489,7 @@ public class DungeonImpl implements Dungeon {
     RandomNumberGenerator rand = new RandomNumberGenerator(0, this.getPotEdgeList().size(), 0, 1);
     Random randGen = new Random(rand.getRandomNumber());
     boolean exitCond = false;
-    ArrayList<Integer> setList = new ArrayList<>();
+    List<Integer> setList = new ArrayList<>();
     for (int s = 0; s < rows * columns; s++) {
       setList.add(s);
     }
@@ -567,6 +569,8 @@ public class DungeonImpl implements Dungeon {
     int v = rows * columns;
 
     // Adjacency list for storing which vertices are connected
+
+    //TODO - figure out if this is legal
     ArrayList<ArrayList<Integer>> adj = new ArrayList<ArrayList<Integer>>(v);
     for (int i = 0; i < v; i++) {
       adj.add(new ArrayList<Integer>());
@@ -612,8 +616,8 @@ public class DungeonImpl implements Dungeon {
    * @param v the number of vertices or nodes in the graph.
    * @return the array list of integers with the shortest path for the player to navigate.
    */
-  private static ArrayList<Integer> printShortestDistance(ArrayList<ArrayList<Integer>> adj, int s,
-                                                          int dest, int v) {
+  private static List<Integer> printShortestDistance(ArrayList<ArrayList<Integer>> adj, int s,
+                                                     int dest, int v) {
     // predecessor[i] array stores predecessor of
     // i and distance array stores distance of i
     // from s
@@ -635,7 +639,7 @@ public class DungeonImpl implements Dungeon {
 
     // Print distance
 
-    ArrayList<Integer> pathList = new ArrayList<>();
+    List<Integer> pathList = new ArrayList<>();
     for (int i = path.size() - 1; i >= 0; i--) {
       pathList.add(path.get(i));
     }
@@ -733,8 +737,8 @@ public class DungeonImpl implements Dungeon {
   }
 
   @Override
-  public ArrayList<Edge> getFinalEdgeList() {
-    ArrayList<Edge> copy = new ArrayList<>();
+  public List<Edge> getFinalEdgeList() {
+    List<Edge> copy = new ArrayList<>();
     for (int i = 0; i < finalEdgeList.size(); i++) {
       copy.add(finalEdgeList.get(i));
     }
@@ -742,8 +746,8 @@ public class DungeonImpl implements Dungeon {
   }
 
   @Override
-  public ArrayList<Integer> getFinalPath() {
-    ArrayList<Integer> copyList = new ArrayList<>();
+  public List<Integer> getFinalPath() {
+    List<Integer> copyList = new ArrayList<>();
     for (int i = 0; i < shortestPath.size(); i++) {
       copyList.add(shortestPath.get(i));
     }
