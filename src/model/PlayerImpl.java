@@ -13,6 +13,7 @@ public class PlayerImpl implements Player {
   private List<Treasure> treasureList;
   private List<Direction> directions;
   private List<Treasure> currentTreasure;
+  private int quiver;
 
   /**
    * The constructor of a player.
@@ -23,6 +24,7 @@ public class PlayerImpl implements Player {
     List<Treasure> treasureList = new ArrayList<>();
     List<Direction> directions = new ArrayList<>();
     this.currentTreasure = new ArrayList<>();
+    this.quiver = 3;
   }
 
   /**This helps to update the players location based on the index of the cave the player is now in.
@@ -77,6 +79,15 @@ public class PlayerImpl implements Player {
       treasureCopy.add(this.treasureList.get(i));
     }
     return treasureCopy;
+  }
+
+  @Override
+  public void shoot(int distance, Direction direction) {
+    this.quiver--;
+
+    //check if direction is legal
+
+    //create arrow and send distance and direction
   }
 
   /**This builds and returns the player's status which includes, the index of the cave they are

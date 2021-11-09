@@ -35,4 +35,6 @@ public interface Player {
    * @return the current contents of the player's treasure list.
    */
   List<Treasure> getTreasureList();
+
+  void shoot(int distance, Direction direction);
 }

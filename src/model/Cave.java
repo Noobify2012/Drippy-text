@@ -12,14 +12,16 @@ public class Cave extends AbstractLocation {
   private int set;
   private List<Integer> neighborList;
   private List<Treasure> caveTreasureList;
+  private List<CrookedArrow> arrowList;
 
   protected Cave(int row, int column, List<Integer> neighborList,
-                 List<Treasure> treasureList, int index, int set) {
-    super(new Point2D(row, column), neighborList, treasureList);
+                 List<Treasure> treasureList, int index, int set, List<CrookedArrow> arrowList) {
+    super(new Point2D(row, column), neighborList, treasureList, arrowList);
     this.index = index;
     this.set = set;
     this.neighborList = neighborList;
     this.caveTreasureList = treasureList;
+    this.
     if (neighborList.size() == 2 && !treasureList.isEmpty()) {
       throw new IllegalStateException("Tunnels can not have treasure");
     }

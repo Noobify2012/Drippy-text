@@ -111,7 +111,8 @@ public class DungeonImpl implements Dungeon {
       for (int c = 0; c < columns; c++) {
         List<Integer> neighborList = new ArrayList<>();
         List<Treasure> treasureList = new ArrayList<>();
-        Cave cave = new Cave(r, c, neighborList, treasureList, index, index);
+        List<CrookedArrow> arrowList = new ArrayList<>();
+        Cave cave = new Cave(r, c, neighborList, treasureList, index, index, arrowList);
         gameboard[r][c] = cave;
         index++;
       }
