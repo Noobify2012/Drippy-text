@@ -13,6 +13,7 @@ public class PlayerImpl implements Player {
   private List<Treasure> treasureList;
   private List<Direction> directions;
   private List<Treasure> currentTreasure;
+  private boolean isAlive;
 
   /**
    * The constructor of a player.
@@ -23,6 +24,7 @@ public class PlayerImpl implements Player {
     List<Treasure> treasureList = new ArrayList<>();
     List<Direction> directions = new ArrayList<>();
     this.currentTreasure = new ArrayList<>();
+    this.isAlive = true;
   }
 
   /**This helps to update the players location based on the index of the cave the player is now in.
@@ -42,8 +44,6 @@ public class PlayerImpl implements Player {
         this.currentTreasure.add(curTreasure.get(i));
       }
     }
-    //update the location after a move
-    //this.playerLocation =
   }
 
   private void updateTreasure() {
@@ -62,6 +62,9 @@ public class PlayerImpl implements Player {
   @Override
   public void move(int index, List<Direction> directions,
                    List<Treasure> curTreasure) {
+
+    //check direction throw illegal arguement if not an option
+    //if (!this.directions.contains(passed in direction))
 
     updatePlayerLocation(index, directions, curTreasure);
 
@@ -134,5 +137,20 @@ public class PlayerImpl implements Player {
   public void enterDungeon(int caveIndex, List<Treasure> treasureInCave,
                            List<Direction> directions) {
     updatePlayerLocation(caveIndex, directions, treasureInCave);
+  }
+
+  @Override
+  public boolean isPlayerAlive() {
+    if (this.isAlive) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  @Override
+  public int getPlayerLocation() {
+    int temp = playerLocation;
+    return temp;
   }
 }

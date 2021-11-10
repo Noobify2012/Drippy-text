@@ -25,6 +25,7 @@ public class DungeonImpl implements Dungeon {
   private Player player;
   private List<Integer> shortestPath;
   private Graph graph;
+  private int difficulty;
 
   /**This creates a dungeon that requires the specification of whether the dungeon should wrap or
    * not. How many rows and columns there should be specified as integers. The degree of
@@ -42,7 +43,7 @@ public class DungeonImpl implements Dungeon {
    Returns:
    The dungeon built to specification represented as a 2 dimensional array.**/
   public DungeonImpl(boolean wraps, int rows, int columns, int interconnect, int treasure,
-                     Player player) {
+                     Player player, int difficulty) {
 
     List<Edge> potEdgeList = new ArrayList<>();
     List<Edge> leftOverEdge = new ArrayList<>();
@@ -64,10 +65,13 @@ public class DungeonImpl implements Dungeon {
     this.player = player;
     this.shortestPath = shortestPath;
     this.graph = graph;
+    this.difficulty = difficulty;
 
 
 
-
+    if (difficulty < 1) {
+      throw new IllegalArgumentException("There must be at least one monster in the dungeon");
+    }
 
     if (rows < 1 || columns < 1) {
       throw new IllegalArgumentException("Rows or Columns cannot be less than 1.");
@@ -191,13 +195,13 @@ public class DungeonImpl implements Dungeon {
 
     setUpPlayer();
 
-    runBfs();
+    //runBfs();
 
     //runDfs();
 
     //setUpPlayerDfs();
 
-    runDungeon();
+    //runDungeon();
 
   }
 
@@ -250,9 +254,26 @@ public class DungeonImpl implements Dungeon {
     //place the player in the dungeon at the cave index
     player.enterDungeon(this.startPoint, findCaveByIndex(this.startPoint).getTreasureList(),
             getPossibleDirection(this.startPoint));
+    String enterString = "";
+    if (getPossibleDirection(this.startPoint).size() > 1) {
+      enterString = "\nThe Player enters the dungeon at Cave " + this.startPoint + ". They can"
+              + " go " + getPossibleDirection(this.startPoint).toString() + ". They currently have"
+              + " no treasure.";
+    } else {
+      //TODO - figure out why it is not hitting this
+      String dirString = "";
+      for (int s = 0; s < getPossibleDirection(this.startPoint).size(); s++) {
+        if (s != getPossibleDirection(this.startPoint).size() - 1) {
+          dirString = dirString + getPossibleDirection(this.startPoint).get(s).toString() + " or ";
+        } else {
+          dirString = dirString + getPossibleDirection(this.startPoint).get(s).toString();
+        }
+      }
+      enterString = "\nThe Player enters the dungeon at Cave " + this.startPoint + ". They can"
+              + " go " + dirString + ". They currently have no treasure.";
+    }
 
-    String enterString = "\nThe Player enters the dungeon at Cave " + this.startPoint
-            + ". They currently have no treasure.";
+
     Driver.printHelper(enterString);
 
   }
@@ -734,6 +755,21 @@ public class DungeonImpl implements Dungeon {
     }
     //make deep copy and return
     return copy;
+  }
+
+  @Override
+  public boolean isGameOver() {
+    if (!player.isPlayerAlive() || player.getPlayerLocation() == this.endPoint) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  @Override
+  public void getGameState() {
+    //TODO - find a way to pass the game state to appendable.
+
   }
 
   @Override

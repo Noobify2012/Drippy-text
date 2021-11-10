@@ -15,14 +15,14 @@ public class PlayerImplTest {
   @Test
   public void getTreasureList() {
     Player player = new PlayerImpl();
-    Dungeon test = new DungeonImpl(false, 5,5,0,20, player);
+    Dungeon test = new DungeonImpl(false, 5,5,0,20, player, 1);
     assertEquals(0, player.getTreasureList().size());
   }
 
   @Test
   public void getTreasureListAfterRun() {
     Player player = new PlayerImpl();
-    Dungeon test = new DungeonImpl(false, 5,5,0,100, player);
+    Dungeon test = new DungeonImpl(false, 5,5,0,100, player, 1);
     test.getDungeon();
     assertTrue(player.getTreasureList().size() > 1);
   }

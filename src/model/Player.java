@@ -35,4 +35,8 @@ public interface Player {
    * @return the current contents of the player's treasure list.
    */
   List<Treasure> getTreasureList();
+
+  boolean isPlayerAlive();
+
+  int getPlayerLocation();
 }

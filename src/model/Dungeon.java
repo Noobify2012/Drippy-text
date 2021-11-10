@@ -43,4 +43,8 @@ public interface Dungeon {
    */
   Cave[][] getGameBoard();
 
+  boolean isGameOver();
+
+  void getGameState();
+
 }

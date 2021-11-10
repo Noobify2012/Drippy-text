@@ -1,5 +1,6 @@
 package driver;
 
+import java.io.InputStreamReader;
 import java.util.Scanner;
 import model.DungeonImpl;
 import model.Player;
@@ -15,20 +16,24 @@ public class Driver {
    * @param args this takes in string arguments.
    */
   public static void main(String[] args) {
+    Readable inputs = new InputStreamReader(System.in);
+    Appendable output = System.out;
     boolean startCond = false;
     boolean wraps = false;
     int rows = 0;
     int columns = 0;
     int interconnect = 0;
     int treasPer = 0;
+    int diff = 0;
     while (!startCond) {
 
       String welcomeString = "Welcome to the Dungeon. "
               + "\nPlease enter true or false if you would like the dungeon to wrap."
               + " \nthe number of rows you would like as an integer. \nThe "
               + "number of columns as an integer.\nThe level of interconnectedness you would like"
-              + " as an integer, \nand the percentage of caves that you would like to have"
-              + " treasure between 0 and 100. \nHere is an example: true 10 10 0 10";
+              + " as an integer, \nthe percentage of caves that you would like to have"
+              + " treasure between 0 and 100, and \nthe difficulty level you would like(IE how many"
+              + " Otyugh you would like. \nHere is an example: true 10 10 0 10 2";
 
       Driver.printHelper(welcomeString);
 
@@ -78,14 +83,22 @@ public class Driver {
         String trePrint = "Value of Rows: " + treasPer;
       }
 
-      if (wrapsBool && rowBool && colBool && intBool && treasBool) {
+      boolean diffBool = false;
+      if (Integer.parseInt(inputChunks[5]) >= 1 && Integer.parseInt(inputChunks[5]) <= rows *
+              columns) {
+        diffBool = true;
+        diff = Integer.parseInt(inputChunks[5]);
+        String trePrint = "Level of Difficulty: " + diff;
+      }
+
+      if (wrapsBool && rowBool && colBool && intBool && treasBool && diffBool) {
         startCond = true;
       }
 
     }
 
     Player player = new PlayerImpl();
-    DungeonImpl test = new DungeonImpl(wraps, rows, columns, interconnect, treasPer, player);
+    DungeonImpl test = new DungeonImpl(wraps, rows, columns, interconnect, treasPer, player, diff);
     test.getDungeon();
   }
 
