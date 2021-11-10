@@ -153,4 +153,14 @@ public class PlayerImpl implements Player {
     int temp = playerLocation;
     return temp;
   }
+
+  @Override
+  public void moveDirection(Direction direction) {
+    if (!directions.contains(direction)) {
+      throw new IllegalArgumentException("direction not an option");
+    } else {
+
+    }
+
+  }
 }

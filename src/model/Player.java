@@ -39,4 +39,6 @@ public interface Player {
   boolean isPlayerAlive();
 
   int getPlayerLocation();
+
+  void moveDirection(Direction direction);
 }

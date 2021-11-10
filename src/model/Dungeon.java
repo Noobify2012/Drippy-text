@@ -47,4 +47,6 @@ public interface Dungeon {
 
   void getGameState();
 
+  void movePlayer(Direction direction);
+
 }

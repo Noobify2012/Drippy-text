@@ -774,6 +774,25 @@ public class DungeonImpl implements Dungeon {
   }
 
   @Override
+  public void movePlayer(Direction direction) {
+    if (!getPossibleDirection(player.getPlayerLocation()).contains(direction)) {
+      throw new IllegalArgumentException("Can't move that way");
+    } else {
+
+      //TODO - update location
+      //move is valid move the player to the new cave
+
+      //check if the cave is the end point
+
+      //check if it has a monster
+
+      //update player location and check around them for stuff.
+
+      //update player status
+    }
+  }
+
+  @Override
   public List<Edge> getFinalEdgeList() {
     List<Edge> copy = new ArrayList<>();
     for (int i = 0; i < finalEdgeList.size(); i++) {
@@ -790,6 +809,8 @@ public class DungeonImpl implements Dungeon {
     }
     return copyList;
   }
+
+
 
 
 }

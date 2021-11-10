@@ -34,7 +34,7 @@ class Edge {
    * @param cave2 The second cave associated with an edge.
    * @return the direction from one cave to another along an edge.
    */
-  public Direction getDirection(Cave cave1, Cave cave2) {
+  Direction getDirection(Cave cave1, Cave cave2) {
     if (cave1 == this.cave1 && cave2 == this.cave2) {
       return directionToCave2;
     } else if (cave1 == this.cave2 && cave1 == this.cave1) {
@@ -55,6 +55,11 @@ class Edge {
     } else {
       return false;
     }
+  }
+
+  int findCavebyDirection(int index, Direction direction) {
+
+    return 0;
   }
 
   /**Returns the set of the first cave in an edge.
