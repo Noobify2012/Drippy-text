@@ -21,7 +21,7 @@ public class Cave extends AbstractLocation {
     this.set = set;
     this.neighborList = neighborList;
     this.caveTreasureList = treasureList;
-    this.
+    this.arrowList = arrowList;
     if (neighborList.size() == 2 && !treasureList.isEmpty()) {
       throw new IllegalStateException("Tunnels can not have treasure");
     }
