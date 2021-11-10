@@ -12,14 +12,13 @@ public abstract class AbstractLocation implements Location {
   protected Point2D location;
   private List<Integer> neighborList;
   private List<Treasure> treasureList;
+  private List<CrookedArrow> arrowList;
 
   protected AbstractLocation(Point2D location, List<Integer> neighborList,
-                             List<Treasure> treasureList) {
+                             List<Treasure> treasureList, List<CrookedArrow> arrowList) {
     this.location = location;
     this.neighborList = neighborList;
     this.treasureList = treasureList;
-  }
-
-  private void setLocation() {
+    this.arrowList = arrowList;
   }
 }
