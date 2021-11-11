@@ -108,6 +108,10 @@ public class DungeonImpl implements Dungeon {
       }
     }
 
+    if (difficulty <= 0) {
+      throw new IllegalArgumentException("Must have at least 1 monster");
+    }
+
 
     //construct caves
     int index = 0;
@@ -426,6 +430,8 @@ public class DungeonImpl implements Dungeon {
         }
       }
     }
+    // add monster to end cave
+    findCaveByIndex(caves.get(endPoint));
     //calculate how many caves require treasure
     if (this.treasure != 0) {
       int treasCaveNum = (int) Math.ceil((caves.size() * treasure) / 100);
