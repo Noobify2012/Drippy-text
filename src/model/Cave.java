@@ -13,17 +13,23 @@ public class Cave extends AbstractLocation {
   private List<Integer> neighborList;
   private List<Treasure> caveTreasureList;
   private List<CrookedArrow> arrowList;
+  private List<Monster> monsterList;
 
   protected Cave(int row, int column, List<Integer> neighborList,
-                 List<Treasure> treasureList, int index, int set, List<CrookedArrow> arrowList) {
+                 List<Treasure> treasureList, int index, int set, List<CrookedArrow> arrowList,
+                 List<Monster> monsterList) {
     super(new Point2D(row, column), neighborList, treasureList, arrowList);
     this.index = index;
     this.set = set;
     this.neighborList = neighborList;
     this.caveTreasureList = treasureList;
     this.arrowList = arrowList;
+    this.monsterList = monsterList;
     if (neighborList.size() == 2 && !treasureList.isEmpty()) {
       throw new IllegalStateException("Tunnels can not have treasure");
+    }
+    if (neighborList.size() == 2 && !monsterList.isEmpty()) {
+      throw new IllegalStateException("Tunnels can not have monsters");
     }
   }
 
@@ -108,4 +114,22 @@ public class Cave extends AbstractLocation {
     }
     return treasureForPlayer;
   }
+
+  void addMonster(Monster monster) {
+    if (this.monsterList.size() == 0) {
+      this.monsterList.add(monster);
+    } else {
+      throw new IllegalArgumentException("Can't add more than one monster to a cave.");
+    }
+  }
+
+  int getMonsterListSize() {
+    return this.monsterList.size();
+  }
+
+  int getMonsterHealth() {
+    //TODO - figure out why i can't do this
+    return 1;
+  }
+
 }

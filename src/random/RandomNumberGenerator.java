@@ -1,5 +1,7 @@
 package random;
 
+import java.util.Random;
+
 /**
  * A class for generating random numbers and list of random numbers.
  */
@@ -22,6 +24,22 @@ public class RandomNumberGenerator {
    * @param listSize A list of integers which may be required for certain operations.
    */
   public RandomNumberGenerator(int min, int max, int seed, int listSize) {
+    this.min = min;
+    this.max = max;
+    this.seed = seed;
+    this.listSize = listSize;
+
+    if (listSize <= 0) {
+      throw new IllegalArgumentException("Cannot have a list of less than 1.");
+    } else if (min >= max) {
+      throw new IllegalArgumentException("The minimum value cannot be equal to or greater than the"
+              + " maximum value");
+    } else if (listSize == 1) {
+      getRandomNumber();
+    }
+  }
+
+  public RandomNumberGenerator(int min, int max, int seed) {
     this.min = min;
     this.max = max;
     this.seed = seed;

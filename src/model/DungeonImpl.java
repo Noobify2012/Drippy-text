@@ -26,6 +26,7 @@ public class DungeonImpl implements Dungeon {
   private List<Integer> shortestPath;
   private Graph graph;
   private int difficulty;
+  private RandomNumberGenerator randomNumberGenerator;
 
   /**This creates a dungeon that requires the specification of whether the dungeon should wrap or
    * not. How many rows and columns there should be specified as integers. The degree of
@@ -120,7 +121,9 @@ public class DungeonImpl implements Dungeon {
         List<Integer> neighborList = new ArrayList<>();
         List<Treasure> treasureList = new ArrayList<>();
         List<CrookedArrow> arrowList = new ArrayList<>();
-        Cave cave = new Cave(r, c, neighborList, treasureList, index, index, arrowList);
+        List<Monster> monsterList = new ArrayList<>();
+        Cave cave = new Cave(r, c, neighborList, treasureList, index, index, arrowList,
+                monsterList);
         gameboard[r][c] = cave;
         index++;
       }
@@ -372,7 +375,6 @@ public class DungeonImpl implements Dungeon {
         for (int c = 0; c < temp; c++) {
           //grab next value in list to check
           int tempInt = listToCheck.get(c);
-          //TODO - check if this is legal
           List<Integer> tempList = findCaveByIndex(tempInt).getNeighbors();
           //checks to see if next element down has children
           if (tempList.size() > 1) {
@@ -430,8 +432,7 @@ public class DungeonImpl implements Dungeon {
         }
       }
     }
-    // add monster to end cave
-    findCaveByIndex(caves.get(endPoint));
+
     //calculate how many caves require treasure
     if (this.treasure != 0) {
       int treasCaveNum = (int) Math.ceil((caves.size() * treasure) / 100);
@@ -464,6 +465,35 @@ public class DungeonImpl implements Dungeon {
       }
     }
 
+  }
+
+  private void addMonstersToDungeon(List<Integer> caves) {
+    // add monster to end cave
+    Monster endPointMonster = new Otyugh(2);
+    findCaveByIndex(caves.get(endPoint)).addMonster(endPointMonster);
+
+    if (difficulty > 1 && difficulty < caves.size()) {
+      int monsterCount = difficulty - 1;
+      while(monsterCount > 0) {
+
+        int rand = randomNumberGenerator.getRandomNumber();
+        if (findCaveByIndex(caves.get(rand)).getMonsterListSize() == 0) {
+          Monster caveMonster = new Otyugh(2);
+          findCaveByIndex(caves.get(rand)).addMonster(caveMonster);
+          monsterCount --;
+        }
+      }
+      //get new random cave from list
+
+      //check if it has a monster
+
+      //if it does get new random cave
+
+      //if not add monster and change count.
+
+    } else {
+      throw new IllegalArgumentException("Not enough caves for monsters reduce difficulty");
+    }
   }
 
   /**This does a lookup specific caves and returns the cave of the associated index that is passed
@@ -784,13 +814,38 @@ public class DungeonImpl implements Dungeon {
     if (!getPossibleDirection(player.getPlayerLocation()).contains(direction)) {
       throw new IllegalArgumentException("Can't move that way");
     } else {
-
       //TODO - update location
       //move is valid move the player to the new cave
+      for (int i = 0; i < finalEdgeList.size(); i++) {
+        if (finalEdgeList.get(i).getLeftIndex() == player.getPlayerLocation()
+                && direction == finalEdgeList.get(i).getDirectionToCave2()) {
+          //set the new player location to the right index
+          player.move(finalEdgeList.get(i).getRightIndex(),
+                  getPossibleDirection(finalEdgeList.get(i).getRightIndex()),
+                  findCaveByIndex(finalEdgeList.get(i).getRightIndex()).getTreasureFromCave());
+        } else if (finalEdgeList.get(i).getRightIndex() == player.getPlayerLocation()
+                && direction == finalEdgeList.get(i).getDirectionToCave1()) {
+          player.move(finalEdgeList.get(i).getLeftIndex(),
+                  getPossibleDirection(finalEdgeList.get(i).getLeftIndex()),
+                  findCaveByIndex(finalEdgeList.get(i).getLeftIndex()).getTreasureFromCave());
+        }
+      }
 
       //check if the cave is the end point
+      if (player.getPlayerLocation() == this.endPoint) {
+        String endCave = "Player has reached final cave";
+      }
 
       //check if it has a monster
+      if (findCaveByIndex(player.getPlayerLocation()).getMonsterListSize() == 1
+              && findCaveByIndex(player.getPlayerLocation()).getMonsterHealth() == 2) {
+        //the player dies
+      } else if (findCaveByIndex(player.getPlayerLocation()).getMonsterListSize() == 1
+              && findCaveByIndex(player.getPlayerLocation()).getMonsterHealth() == 1) {
+        //player has 50/50 shot of escaping
+      } else {
+        //monster is dead do nothing
+      }
 
       //update player location and check around them for stuff.
 

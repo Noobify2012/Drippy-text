@@ -1,20 +1,29 @@
 package model;
 
-public class Otyugh {
+public class Otyugh implements Monster {
   private Location location;
   private int health;
 
 
-  public Otyugh(Location location, int health) {
-    this.location = location;
+  public Otyugh(int health) {
+
     this.health = health;
   }
 
-  void setLocation(Location location) {
-    this.location = location;
-  }
+
 
   int takeDamage() {
-    return 0;
+    if (this.health == 0) {
+      return 0;
+    } else {
+      this.health --;
+      int tempHealth = this.health;
+      return tempHealth;
+    }
+  }
+
+  protected int getHealth() {
+    int temp = this.health;
+    return temp;
   }
 }
