@@ -159,8 +159,11 @@ public class PlayerImpl implements Player {
     if (!directions.contains(direction)) {
       throw new IllegalArgumentException("direction not an option");
     } else {
-
+      //not useful at the moment
     }
+  }
 
+  void playerGetsEaten() {
+    isAlive = false;
   }
 }

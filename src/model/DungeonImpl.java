@@ -796,7 +796,7 @@ public class DungeonImpl implements Dungeon {
 
   @Override
   public boolean isGameOver() {
-    if (!player.isPlayerAlive() || player.getPlayerLocation() == this.endPoint) {
+    if (player.isPlayerAlive() || player.getPlayerLocation() != this.endPoint) {
       return false;
     } else {
       return true;
@@ -814,7 +814,6 @@ public class DungeonImpl implements Dungeon {
     if (!getPossibleDirection(player.getPlayerLocation()).contains(direction)) {
       throw new IllegalArgumentException("Can't move that way");
     } else {
-      //TODO - update location
       //move is valid move the player to the new cave
       for (int i = 0; i < finalEdgeList.size(); i++) {
         if (finalEdgeList.get(i).getLeftIndex() == player.getPlayerLocation()
@@ -830,6 +829,9 @@ public class DungeonImpl implements Dungeon {
                   findCaveByIndex(finalEdgeList.get(i).getLeftIndex()).getTreasureFromCave());
         }
       }
+
+      //TODO - finish the move stuff, check for monsters,
+
 
       //check if the cave is the end point
       if (player.getPlayerLocation() == this.endPoint) {

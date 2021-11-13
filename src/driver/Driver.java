@@ -2,6 +2,8 @@ package driver;
 
 import java.io.InputStreamReader;
 import java.util.Scanner;
+
+import model.Direction;
 import model.DungeonImpl;
 import model.Player;
 import model.PlayerImpl;
@@ -41,7 +43,7 @@ public class Driver {
       String input = in.nextLine();
 
 
-      String inputChunks[] = new String[5];
+      String inputChunks[] = new String[6];
       inputChunks = input.split(" ");
 
       boolean wrapsBool = false;
@@ -100,6 +102,33 @@ public class Driver {
     Player player = new PlayerImpl();
     DungeonImpl test = new DungeonImpl(wraps, rows, columns, interconnect, treasPer, player, diff);
     test.getDungeon();
+
+    while (!test.isGameOver()) {
+      String testMove = "Please enter which direction you would like to move.";
+      Driver.printHelper(testMove);
+      Scanner in2 = new Scanner(System.in);
+      String input2 = in2.nextLine();
+
+      String inputChunks2[] = new String[1];
+      inputChunks2 = input2.split(" ");
+      Driver.printHelper(inputChunks2[0]);
+      Direction playerDirection = null;
+      if (inputChunks2[0].equalsIgnoreCase("North")) {
+        playerDirection = Direction.NORTH;
+      } else if (inputChunks2[0].equalsIgnoreCase("South")) {
+        playerDirection = Direction.SOUTH;
+      } else if (inputChunks2[0].equalsIgnoreCase("East")) {
+        playerDirection = Direction.EAST;
+      } else if (inputChunks2[0].equalsIgnoreCase("West")) {
+        playerDirection = Direction.WEST;
+      }
+      printHelper("the direction the player is going to move: " + playerDirection);
+      test.movePlayer(playerDirection);
+      String hope = "Hopefully the player moved";
+      printHelper(hope);
+      player.getPlayerStatus();
+    }
+
   }
 
   /**This is a helper which takes in a string and prints it.
