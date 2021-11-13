@@ -183,7 +183,7 @@ public class DungeonImpl implements Dungeon {
         }
       }
     }
-
+    getDungeon();
   }
 
 

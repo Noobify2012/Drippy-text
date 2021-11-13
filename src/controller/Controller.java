@@ -4,6 +4,8 @@ import model.Dungeon;
 
 public interface Controller {
 
+  void buildDungeon();
+
 
   void playGame(Dungeon d);
 
