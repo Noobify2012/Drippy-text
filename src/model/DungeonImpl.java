@@ -424,14 +424,14 @@ public class DungeonImpl implements Dungeon {
   private void findCaves(List<Integer> caves) {
     int treasureInt = 0;
     //make list of caves, exclude tunnels
-    for (int r = 0; r < rows; r++) {
-      for (int c = 0; c < columns; c++) {
-        if (gameboard[r][c].getNeighbors().size() != 2
-                && !caves.contains(gameboard[r][c].getIndex())) {
-          caves.add(gameboard[r][c].getIndex());
-        }
-      }
-    }
+//    for (int r = 0; r < rows; r++) {
+//      for (int c = 0; c < columns; c++) {
+//        if (gameboard[r][c].getNeighbors().size() != 2
+//                && !caves.contains(gameboard[r][c].getIndex())) {
+//          caves.add(gameboard[r][c].getIndex());
+//        }
+//      }
+//    }
 
     //calculate how many caves require treasure
     if (this.treasure != 0) {
@@ -476,6 +476,7 @@ public class DungeonImpl implements Dungeon {
       int monsterCount = difficulty - 1;
       while(monsterCount > 0) {
 
+        //TODO - after random number gen fixed, verify monsters build properly
         int rand = randomNumberGenerator.getRandomNumber();
         if (findCaveByIndex(caves.get(rand)).getMonsterListSize() == 0) {
           Monster caveMonster = new Otyugh(2);
@@ -841,12 +842,27 @@ public class DungeonImpl implements Dungeon {
       //check if it has a monster
       if (findCaveByIndex(player.getPlayerLocation()).getMonsterListSize() == 1
               && findCaveByIndex(player.getPlayerLocation()).getMonsterHealth() == 2) {
+        //TODO - find out why player gets eaten doesn't work
+        //this.player.playerGetsEaten();
+
         //the player dies
       } else if (findCaveByIndex(player.getPlayerLocation()).getMonsterListSize() == 1
               && findCaveByIndex(player.getPlayerLocation()).getMonsterHealth() == 1) {
         //player has 50/50 shot of escaping
+        int min = 0;
+        int max = 1;
+        int returnInt = ((int) (Math.random() * ((max - min) + 1)) + min);
+        if (returnInt == 0) {
+          //player escapes
+          //TODO print message about player escaping monster
+        } else {
+          //TODO player gets eaten
+          //this.player.playerGetsEaten();
+        }
       } else {
         //monster is dead do nothing
+        //TODO message about dead monster
+
       }
 
       //update player location and check around them for stuff.
@@ -873,7 +889,17 @@ public class DungeonImpl implements Dungeon {
     return copyList;
   }
 
+  private void addArrows() {
+    int arrowNum = (int) Math.ceil((treasure / 100) * (rows * columns));
+    while (arrowNum > 0) {
+      //generate random number for index
+      RandomNumberGenerator rand = new RandomNumberGenerator(0,(rows * columns) - 1, 0);
+      if (findCaveByIndex(rand.getRandomNumber()).getArrowListSize() == 0) {
+        findCaveByIndex(rand.getRandomNumber()).addArrow();
+//      add build an arrow
+        arrowNum--;
+      }
+    }
 
-
-
+  }
 }

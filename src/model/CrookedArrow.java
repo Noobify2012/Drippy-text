@@ -4,7 +4,7 @@ public class CrookedArrow {
   private int distance;
   private Direction direction;
 
-  public CrookedArrow(int distance, Direction direction) {
+  public CrookedArrow() {
     this.distance = distance;
     this.direction = direction;
 
@@ -12,4 +12,5 @@ public class CrookedArrow {
       throw new IllegalArgumentException("Cannot shoot an arrow less than 1.");
     }
   }
+
 }

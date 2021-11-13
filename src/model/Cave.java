@@ -132,4 +132,13 @@ public class Cave extends AbstractLocation {
     return 1;
   }
 
+  int getArrowListSize() {
+    return this.arrowList.size();
+  }
+
+  void addArrow() {
+    CrookedArrow arrow = new CrookedArrow();
+    this.arrowList.add(arrow);
+  }
+
 }

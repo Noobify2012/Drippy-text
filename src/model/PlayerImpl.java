@@ -183,7 +183,7 @@ public class PlayerImpl implements Player {
     }
   }
 
-  void playerGetsEaten() {
+  protected void playerGetsEaten() {
     isAlive = false;
   }
 }
