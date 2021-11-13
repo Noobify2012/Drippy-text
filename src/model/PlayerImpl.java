@@ -96,7 +96,8 @@ public class PlayerImpl implements Player {
       treasureString = "nothing";
     } else {
       for (int i = 0; i < this.treasureList.size(); i++) {
-        treasureString = treasureString + " " + this.treasureList.get(i).getName() + ",";
+        treasureString = getTreasureString(this.treasureList);
+      //treasureString + " " + this.treasureList.get(i).getName() + ",";
       }
     }
 
@@ -114,7 +115,8 @@ public class PlayerImpl implements Player {
       curTreasureString = "a " + currentTreasure.get(0).getName();
     } else {
       for (int i = 0; i < currentTreasure.size(); i++) {
-        curTreasureString = curTreasureString + " " + this.currentTreasure.get(i).getName() + ",";
+        curTreasureString = getTreasureString(currentTreasure);
+      //curTreasureString + " " + this.currentTreasure.get(i).getName() + ",";
       }
     }
 
@@ -123,6 +125,24 @@ public class PlayerImpl implements Player {
             + treasureString + " in their treasure bag. \nThey can go " + directionString
             + "and there is " + curTreasureString + " in this cave.";
     Driver.printHelper(playerString);
+  }
+
+  private String getTreasureString(List<Treasure> treasureList) {
+    int rubyInt = 0;
+    int diamondInt = 0;
+    int sapphireInt = 0;
+    for (int t = 0; t < treasureList.size(); t++) {
+      if (treasureList.get(t).getName().equalsIgnoreCase("Ruby")) {
+        rubyInt++;
+      } else if (treasureList.get(t).getName().equalsIgnoreCase("Diamond")) {
+        diamondInt++;
+      } else if (treasureList.get(t).getName().equalsIgnoreCase("Sapphire")) {
+        sapphireInt++;
+      }
+    }
+     String treasureString2 = " " + rubyInt + " rubies, " + diamondInt + " diamonds, "
+             + sapphireInt + " sapphires.";
+    return treasureString2;
   }
 
 

@@ -480,7 +480,7 @@ public class DungeonImpl implements Dungeon {
         if (findCaveByIndex(caves.get(rand)).getMonsterListSize() == 0) {
           Monster caveMonster = new Otyugh(2);
           findCaveByIndex(caves.get(rand)).addMonster(caveMonster);
-          monsterCount --;
+          monsterCount--;
         }
       }
       //get new random cave from list
