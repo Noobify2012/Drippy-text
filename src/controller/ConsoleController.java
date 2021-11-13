@@ -3,10 +3,12 @@ package controller;
 import java.io.IOException;
 import java.util.Scanner;
 
+import model.Direction;
 import model.Dungeon;
 import model.DungeonImpl;
 import model.Player;
 import model.PlayerImpl;
+import random.RandomNumberGenerator;
 
 public class ConsoleController implements Controller {
 
@@ -61,7 +63,7 @@ public class ConsoleController implements Controller {
 
 //        announceMove(m.getTurn());
 
-        boolean valid = false;
+      boolean valid = false;
 //        while (!validInput) {
       boolean firstBool = false;
 
@@ -232,6 +234,7 @@ public class ConsoleController implements Controller {
         //build dungeon and try to catch errors
         Player player = new PlayerImpl();
         try {
+          RandomNumberGenerator rand
           Dungeon test = new DungeonImpl(wraps, rows, columns, interconnect, treasPer, player, diff);
           playGame(test);
 //          test.getDungeon();
@@ -324,6 +327,7 @@ public class ConsoleController implements Controller {
 
   @Override
   public void playGame(Dungeon d) {
+    boolean quitFlag = false;
     if (d == null) {
       throw new IllegalStateException("the dungeon model cannot be null");
     }
@@ -335,6 +339,40 @@ public class ConsoleController implements Controller {
       } catch (IOException ioe) {
         throw new IllegalStateException("Append failed", ioe);
       }
+      String next = "";
+      String next2 = "";
+      boolean gameAction = false;
+      while (!gameAction && !quitFlag) {
+        //check for next integer or character in the next token
+        next = scan.next();
+        // is first thing either an int or char, request new input
+        if (next.equalsIgnoreCase("q")) {
+          //get game state, append, and quit method.
+          quitGame();
+          quitFlag = true;
+          gameAction = true;
+          //validInput = true;
+          break;
+        } else {
+          gameAction = validateAction(next);
+          if (gameAction == true) {
+            try {
+              //String element = scan.next();
+              out.append("got a valid action\n");
+            } catch (IOException ioe) {
+              throw new IllegalStateException("Append failed", ioe);
+            }
+            if (next.equalsIgnoreCase("m")) {
+              //get move
+            } else if (next.equalsIgnoreCase("s")) {
+              // get distance and direction
+            } else {
+              throw new IllegalStateException("didn't get a valid command");
+            }
+          }
+        }
+
+
 //      String testMove = "Please enter which direction you would like to move.";
 //      Driver.printHelper(testMove);
 //      Scanner in2 = new Scanner(System.in);
@@ -358,8 +396,30 @@ public class ConsoleController implements Controller {
 //      String hope = "Hopefully the player moved";
 //      printHelper(hope);
 //      player.getPlayerStatus();
-    }
+      }
 
+    }
+  }
+
+  private boolean validateAction(String next) {
+    return next.equalsIgnoreCase("m") || next.equalsIgnoreCase("s")
+            || next.equalsIgnoreCase("q");
+  }
+
+  private Direction getDirection() {
+
+    boolean validMove = false;
+    while (!validMove) {
+      try {
+        //String element = scan.next();
+        out.append("Which Direction? \n");
+      } catch (IOException ioe) {
+        throw new IllegalStateException("Append failed", ioe);
+      }
+      String next = scan.next();
+
+    }
+    return Direction.NORTH;
   }
 
 
