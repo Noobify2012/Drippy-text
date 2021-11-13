@@ -31,7 +31,7 @@ public class DungeonImplTest {
   @Test
   public void getGameBoardRows() {
     Player player = new PlayerImpl();
-    Dungeon test = new DungeonImpl(false, 5,5,0,20, player, 1);
+    Dungeon test = new DungeonImpl(false, 5,5,0,20, player, 1, 0);
     test.getDungeon();
     assertEquals(5, test.getGameBoardRows());
   }
@@ -39,7 +39,7 @@ public class DungeonImplTest {
   @Test
   public void getGameBoardCols() {
     Player player = new PlayerImpl();
-    Dungeon test = new DungeonImpl(false, 5,8,0,20, player, 1);
+    Dungeon test = new DungeonImpl(false, 5,8,0,20, player, 1, 0);
     test.getDungeon();
     assertEquals(8, test.getGameBoardCols());
   }
@@ -47,7 +47,7 @@ public class DungeonImplTest {
   @Test
   public void getFinalEdgeList() {
     Player player = new PlayerImpl();
-    Dungeon test = new DungeonImpl(false, 5,5,0,20, player, 1);
+    Dungeon test = new DungeonImpl(false, 5,5,0,20, player, 1, 0);
     test.getDungeon();
     assertTrue(test.getFinalEdgeList().size() >= 24);
   }
@@ -55,7 +55,7 @@ public class DungeonImplTest {
   @Test
   public void getFinalEdgeListMax() {
     Player player = new PlayerImpl();
-    Dungeon test = new DungeonImpl(false, 5,5,16,20, player, 1);
+    Dungeon test = new DungeonImpl(false, 5,5,16,20, player, 1, 0);
     test.getDungeon();
     assertEquals(40,test.getFinalEdgeList().size());
   }
@@ -63,55 +63,55 @@ public class DungeonImplTest {
   @Test (expected = IllegalArgumentException.class)
   public void dungeonConstructorNotNodesTest() {
     Player player = new PlayerImpl();
-    Dungeon test = new DungeonImpl(false, 2,2,16,20, player, 1);
+    Dungeon test = new DungeonImpl(false, 2,2,16,20, player, 1, 0);
   }
 
   @Test (expected = IllegalArgumentException.class)
   public void dungeonConstructorNotEnoughRowsTest() {
     Player player = new PlayerImpl();
-    Dungeon test = new DungeonImpl(false, 0,5,16,20, player, 1);
+    Dungeon test = new DungeonImpl(false, 0,5,16,20, player, 1, 0);
   }
 
   @Test (expected = IllegalArgumentException.class)
   public void dungeonConstructorNotEnoughColsTest() {
     Player player = new PlayerImpl();
-    Dungeon test = new DungeonImpl(false, 5,0,16,20, player, 1);
+    Dungeon test = new DungeonImpl(false, 5,0,16,20, player, 1, 0);
   }
 
   @Test (expected = IllegalArgumentException.class)
   public void dungeonConstructorNegTreasureTest() {
     Player player = new PlayerImpl();
-    Dungeon test = new DungeonImpl(false, 5,5,1,-20, player, 1);
+    Dungeon test = new DungeonImpl(false, 5,5,1,-20, player, 1, 0);
   }
 
   @Test (expected = IllegalArgumentException.class)
   public void dungeonConstructorTooMuchTreasureTest() {
     Player player = new PlayerImpl();
-    Dungeon test = new DungeonImpl(false, 5,5,1,200, player, 1);
+    Dungeon test = new DungeonImpl(false, 5,5,1,200, player, 1, 0);
   }
 
   @Test (expected = IllegalArgumentException.class)
   public void dungeonConstructorNegInterconTest() {
     Player player = new PlayerImpl();
-    Dungeon test = new DungeonImpl(false, 5,5,-1,20, player, 1);
+    Dungeon test = new DungeonImpl(false, 5,5,-1,20, player, 1, 0);
   }
 
   @Test (expected = IllegalArgumentException.class)
   public void dungeonConstructorNonwrapTooMuchIntercon() {
     Player player = new PlayerImpl();
-    Dungeon test = new DungeonImpl(false, 5,5,40,20, player, 1);
+    Dungeon test = new DungeonImpl(false, 5,5,40,20, player, 1, 0);
   }
 
   @Test (expected = IllegalArgumentException.class)
   public void dungeonConstructorWrapTooMuchIntercon() {
     Player player = new PlayerImpl();
-    Dungeon test = new DungeonImpl(false, 5,5,50,20, player, 1);
+    Dungeon test = new DungeonImpl(false, 5,5,50,20, player, 1, 0);
   }
 
   @Test
   public void getFinalPath() {
     Player player = new PlayerImpl();
-    Dungeon test = new DungeonImpl(false, 5,5,0,20, player, 1);
+    Dungeon test = new DungeonImpl(false, 5,5,0,20, player, 1, 0);
     test.getDungeon();
     assertTrue(test.getFinalPath().size() >= 5);
   }
@@ -119,7 +119,7 @@ public class DungeonImplTest {
   @Test
   public void getGameBoard() {
     Player player = new PlayerImpl();
-    Dungeon test = new DungeonImpl(false, 5,5,0,20, player, 1);
+    Dungeon test = new DungeonImpl(false, 5,5,0,20, player, 1, 0);
     test.getDungeon();
     assertEquals(5,test.getGameBoard().length);
   }
@@ -127,7 +127,7 @@ public class DungeonImplTest {
   @Test
   public void getTeasureTest() {
     Player player = new PlayerImpl();
-    Dungeon test = new DungeonImpl(false, 5,5,0,20, player, 1);
+    Dungeon test = new DungeonImpl(false, 5,5,0,20, player, 1, 0);
     test.getDungeon();
     Cave[][] testboard = test.getGameBoard();
     int treasureInt = 0;
@@ -144,7 +144,7 @@ public class DungeonImplTest {
   @Test
   public void getZeroTunnelTreasureTest() {
     Player player = new PlayerImpl();
-    Dungeon test = new DungeonImpl(false, 5,5,0,20, player, 1);
+    Dungeon test = new DungeonImpl(false, 5,5,0,20, player, 1, 0);
     test.getDungeon();
     Cave[][] testboard = test.getGameBoard();
     int treasureInt = 0;

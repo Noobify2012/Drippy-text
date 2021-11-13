@@ -234,8 +234,7 @@ public class ConsoleController implements Controller {
         //build dungeon and try to catch errors
         Player player = new PlayerImpl();
         try {
-          RandomNumberGenerator rand
-          Dungeon test = new DungeonImpl(wraps, rows, columns, interconnect, treasPer, player, diff);
+          Dungeon test = new DungeonImpl(wraps, rows, columns, interconnect, treasPer, player, diff, 0);
           playGame(test);
 //          test.getDungeon();
         } catch (IllegalArgumentException iae) {

@@ -10,6 +10,7 @@ public class RandomNumberGenerator {
   private int max;
   private int seed;
   private int listSize;
+  private Random generator;
 
 
   /**A random number generator constructor that is called to help pick random numbers based on the
@@ -23,35 +24,22 @@ public class RandomNumberGenerator {
    * @param seed A seed value for helping produce consistent and repeatable numbers for testing.
    * @param listSize A list of integers which may be required for certain operations.
    */
-  public RandomNumberGenerator(int min, int max, int seed, int listSize) {
-    this.min = min;
-    this.max = max;
-    this.seed = seed;
-    this.listSize = listSize;
-
-    if (listSize <= 0) {
-      throw new IllegalArgumentException("Cannot have a list of less than 1.");
-    } else if (min >= max) {
-      throw new IllegalArgumentException("The minimum value cannot be equal to or greater than the"
-              + " maximum value");
-    } else if (listSize == 1) {
-      getRandomNumber();
+  public RandomNumberGenerator(int seed) {
+    if (seed == 0) {
+      this.generator = new Random();
+    } else {
+      this.generator = new Random(0);
     }
-  }
-
-  public RandomNumberGenerator(int min, int max, int seed) {
-    this.min = min;
-    this.max = max;
+    if (min == 0) {
+      this.min = min;
+    }
+    this.max = max + 1;
     this.seed = seed;
-    this.listSize = listSize;
 
-    if (listSize <= 0) {
-      throw new IllegalArgumentException("Cannot have a list of less than 1.");
-    } else if (min >= max) {
+
+    if (min >= max) {
       throw new IllegalArgumentException("The minimum value cannot be equal to or greater than the"
               + " maximum value");
-    } else if (listSize == 1) {
-      getRandomNumber();
     }
   }
 
@@ -59,13 +47,9 @@ public class RandomNumberGenerator {
    *
    * @return An integer between the minimum and maximum inclusively.
    */
-  public int getRandomNumber() {
-    if (this.seed == 0) {
-      int returnInt = ((int) (Math.random() * ((this.max - this.min) + 1)) + this.min);
-      return returnInt;
-    } else {
-      int returnInt = 0;
+  public int getRandomNumber(int min, int max) {
+      int returnInt = generator.nextInt(max - min) + min;
       return returnInt;
     }
-  }
+
 }

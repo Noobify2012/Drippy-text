@@ -27,6 +27,7 @@ public class DungeonImpl implements Dungeon {
   private Graph graph;
   private int difficulty;
   private RandomNumberGenerator randomNumberGenerator;
+  private int genSeed;
 
   /**This creates a dungeon that requires the specification of whether the dungeon should wrap or
    * not. How many rows and columns there should be specified as integers. The degree of
@@ -44,7 +45,7 @@ public class DungeonImpl implements Dungeon {
    Returns:
    The dungeon built to specification represented as a 2 dimensional array.**/
   public DungeonImpl(boolean wraps, int rows, int columns, int interconnect, int treasure,
-                     Player player, int difficulty) {
+                     Player player, int difficulty, int genSeed) {
 
     List<Edge> potEdgeList = new ArrayList<>();
     List<Edge> leftOverEdge = new ArrayList<>();
@@ -67,6 +68,7 @@ public class DungeonImpl implements Dungeon {
     this.shortestPath = shortestPath;
     this.graph = graph;
     this.difficulty = difficulty;
+    this.randomNumberGenerator = new RandomNumberGenerator(genSeed);
 
 
 
@@ -332,9 +334,10 @@ public class DungeonImpl implements Dungeon {
    */
   private int getStartPoint(List<Integer> caves) {
 
-    RandomNumberGenerator rand = new RandomNumberGenerator(0, caves.size() - 1, 0,
-            1);
-    int startIndex = caves.get(rand.getRandomNumber());
+//    RandomNumberGenerator rand = new RandomNumberGenerator(0, caves.size() - 1, 0,
+//            1);
+    int startIndex = randomNumberGenerator.getRandomNumber(0, caves.size());
+            //caves.get(rand.getRandomNumber());
     return startIndex;
   }
 
@@ -407,8 +410,8 @@ public class DungeonImpl implements Dungeon {
         }
       }
       if (viable.size() != 1) {
-        RandomNumberGenerator rand = new RandomNumberGenerator(0, viable.size() - 1, 0, 1);
-        int endRand = rand.getRandomNumber();
+        //RandomNumberGenerator rand = new RandomNumberGenerator(0, viable.size() - 1, 0, 1);
+        int endRand = randomNumberGenerator.getRandomNumber(0, viable.size());
         endPoint = viable.get(endRand);
       } else {
         endPoint = viable.get(0);
@@ -440,25 +443,26 @@ public class DungeonImpl implements Dungeon {
         treasCaveNum++;
       }
       //System.out.print("\nNumber of caves that need treasure: " + treasCaveNum);
-      RandomNumberGenerator rand = new RandomNumberGenerator(0, caves.size() - 1,
-              0, 1);
-      RandomNumberGenerator rand2 = new RandomNumberGenerator(1, 3, 0, 1);
+//      RandomNumberGenerator rand = new RandomNumberGenerator(0, caves.size() - 1,
+//              0, 1);
+//      RandomNumberGenerator rand2 = new RandomNumberGenerator(1, 3, 0, 1);
       TreasureImpl treasureFactory = new TreasureImpl();
       for (int t = 0; t < treasCaveNum; t++) {
-        int treasureRand = rand2.getRandomNumber();
+        int treasureRand = randomNumberGenerator.getRandomNumber(1,3);
         if (treasureRand == 0) {
           for (int r = 0; r <= treasureRand + 1; r++) {
-            findCaveByIndex(caves.get(rand.getRandomNumber())).addTreasure(TreasureImpl
+            findCaveByIndex(caves.get(randomNumberGenerator.getRandomNumber(0,caves.size()-1)))
+                    .addTreasure(TreasureImpl
                     .TreasureFactory.getTreasureFromEnum(TreasureImpl.TreasureType.RUBY));
           }
         } else if (treasureRand == 1) {
           for (int r = 0; r <= treasureRand + 1; r++) {
-            findCaveByIndex(caves.get(rand.getRandomNumber())).addTreasure(TreasureImpl
-                    .TreasureFactory.getTreasureFromEnum(TreasureImpl.TreasureType.DIAMOND));
+            findCaveByIndex(caves.get(randomNumberGenerator.getRandomNumber(0,caves.size()-1)))
+                    .addTreasure(TreasureImpl.TreasureFactory.getTreasureFromEnum(TreasureImpl.TreasureType.DIAMOND));
           }
         } else {
           for (int r = 0; r <= treasureRand + 1; r++) {
-            findCaveByIndex(caves.get(rand.getRandomNumber())).addTreasure(TreasureImpl
+            findCaveByIndex(caves.get(randomNumberGenerator.getRandomNumber(0,caves.size()-1))).addTreasure(TreasureImpl
                     .TreasureFactory.getTreasureFromEnum(TreasureImpl.TreasureType.SAPPHIRE));
           }
         }
@@ -477,7 +481,7 @@ public class DungeonImpl implements Dungeon {
       while(monsterCount > 0) {
 
         //TODO - after random number gen fixed, verify monsters build properly
-        int rand = randomNumberGenerator.getRandomNumber();
+        int rand = randomNumberGenerator.getRandomNumber(0, caves.size());
         if (findCaveByIndex(caves.get(rand)).getMonsterListSize() == 0) {
           Monster caveMonster = new Otyugh(2);
           findCaveByIndex(caves.get(rand)).addMonster(caveMonster);
@@ -545,8 +549,8 @@ public class DungeonImpl implements Dungeon {
    */
   private void runKruscals() {
     //start condition - every cave in own set
-    RandomNumberGenerator rand = new RandomNumberGenerator(0, this.getPotEdgeList().size(), 0, 1);
-    Random randGen = new Random(rand.getRandomNumber());
+//    RandomNumberGenerator rand = new RandomNumberGenerator(0, this.getPotEdgeList().size(), 0, 1);
+//    Random randGen = new Random(rand.getRandomNumber());
     boolean exitCond = false;
     List<Integer> setList = new ArrayList<>();
     for (int s = 0; s < rows * columns; s++) {
@@ -557,7 +561,7 @@ public class DungeonImpl implements Dungeon {
     }
     while (!exitCond) {
       // grab random edge
-      int random = randGen.nextInt(this.getPotEdgeList().size());
+      int random = randomNumberGenerator.getRandomNumber(0, this.getPotEdgeList().size());
       //if they are in the same set check to see if this edge has already been called,
       // if not add to left over list
       if (this.potEdgeList.get(random).compareSets()) {
@@ -603,7 +607,7 @@ public class DungeonImpl implements Dungeon {
             if (leftOverEdge.size() <= 0) {
               throw new IllegalStateException("Left over edge list is already empty");
             } else {
-              int randomInt = randGen.nextInt(leftOverEdge.size());
+              int randomInt = randomNumberGenerator.getRandomNumber(0,leftOverEdge.size());
               finalEdgeList.add(leftOverEdge.get(randomInt));
               leftOverEdge.get(randomInt).addNeighbors();
               leftOverEdge.remove(randomInt);
@@ -893,9 +897,9 @@ public class DungeonImpl implements Dungeon {
     int arrowNum = (int) Math.ceil((treasure / 100) * (rows * columns));
     while (arrowNum > 0) {
       //generate random number for index
-      RandomNumberGenerator rand = new RandomNumberGenerator(0,(rows * columns) - 1, 0);
-      if (findCaveByIndex(rand.getRandomNumber()).getArrowListSize() == 0) {
-        findCaveByIndex(rand.getRandomNumber()).addArrow();
+      int rand = randomNumberGenerator.getRandomNumber(0,(rows * columns) - 1);
+      if (findCaveByIndex(rand).getArrowListSize() == 0) {
+        findCaveByIndex(rand).addArrow();
 //      add build an arrow
         arrowNum--;
       }
