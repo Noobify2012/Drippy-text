@@ -203,6 +203,10 @@ public class DungeonImpl implements Dungeon {
     //find caves and adds Treasure
     findCaves(getCavesByIndex());
 
+    addMonstersToDungeon(getCavesByIndex());
+
+    addArrows();
+
     setUpPlayer();
 
     //runBfs();
@@ -472,9 +476,11 @@ public class DungeonImpl implements Dungeon {
   }
 
   private void addMonstersToDungeon(List<Integer> caves) {
+
     // add monster to end cave
     Monster endPointMonster = new Otyugh(2);
-    findCaveByIndex(caves.get(endPoint)).addMonster(endPointMonster);
+    //TODO - figure out why this throws index out of bounds
+    findCaveByIndex(endPoint).addMonster(endPointMonster);
 
     if (difficulty > 1 && difficulty < caves.size()) {
       int monsterCount = difficulty - 1;
@@ -496,7 +502,7 @@ public class DungeonImpl implements Dungeon {
 
       //if not add monster and change count.
 
-    } else {
+    } else if(difficulty > caves.size()) {
       throw new IllegalArgumentException("Not enough caves for monsters reduce difficulty");
     }
   }
@@ -894,12 +900,13 @@ public class DungeonImpl implements Dungeon {
   }
 
   private void addArrows() {
-    int arrowNum = (int) Math.ceil((treasure / 100) * (rows * columns));
+    int arrowNum = (int) Math.ceil((treasure  * rows * columns) / 100);
     while (arrowNum > 0) {
       //generate random number for index
       int rand = randomNumberGenerator.getRandomNumber(0,(rows * columns) - 1);
       if (findCaveByIndex(rand).getArrowListSize() == 0) {
-        findCaveByIndex(rand).addArrow();
+        CrookedArrow arrow = new CrookedArrow();
+        findCaveByIndex(rand).addArrow(arrow);
 //      add build an arrow
         arrowNum--;
       }
