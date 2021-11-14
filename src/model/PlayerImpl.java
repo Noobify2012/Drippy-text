@@ -88,7 +88,7 @@ public class PlayerImpl implements Player {
    *
    */
   @Override
-  public void getPlayerStatus() {
+  public void getPlayerStatus(int smell) {
     String treasureString = "";
     String directionString = "";
     String curTreasureString = "";
@@ -124,6 +124,11 @@ public class PlayerImpl implements Player {
     String playerString = "The player is currently in Cave " + playerLocation + " and has "
             + treasureString + " in their treasure bag. \nThey can go " + directionString
             + "and there is " + curTreasureString + " in this cave.";
+    if (smell >= 2) {
+      playerString.concat("\nThe player smells something awful and strong.\n");
+    } else if (smell == 1) {
+      playerString.concat("\nThe player smells something faint but awful.\n");
+    }
     Driver.printHelper(playerString);
   }
 

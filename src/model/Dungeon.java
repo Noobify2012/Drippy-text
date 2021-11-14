@@ -49,4 +49,6 @@ public interface Dungeon {
 
   void movePlayer(Direction direction);
 
+//  int checkSmell();
+
 }

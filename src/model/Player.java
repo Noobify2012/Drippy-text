@@ -18,7 +18,7 @@ public interface Player {
    * on their current location, and the treasure in the cave they are currently in.
    *
    */
-  void getPlayerStatus();
+  void getPlayerStatus(int smell);
 
   /**This updates the players location based on the index of the start point, the treasure in the
    * cave that the player enters, and the directions the player can go from that start location.
@@ -41,4 +41,6 @@ public interface Player {
   int getPlayerLocation();
 
   void moveDirection(Direction direction);
+
+
 }
