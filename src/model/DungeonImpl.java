@@ -871,7 +871,7 @@ public class DungeonImpl implements Dungeon {
                   .getMonsterHealth(), returnInt);
           //TODO print message about player escaping monster
         } else {
-          //TODO player gets eaten
+          //TODO player gets eaten - message works need to fix functionality
           encounterString = player.monsterEncounter(findCaveByIndex(player.getPlayerLocation())
                   .getMonsterHealth(), returnInt);
         }
@@ -894,7 +894,9 @@ public class DungeonImpl implements Dungeon {
 
       //check for smell;
 
-      player.getPlayerStatus(checkSmell());
+      if (player.isPlayerAlive()) {
+        player.getPlayerStatus(checkSmell());
+      }
 
 
       //update player location and check around them for stuff.
