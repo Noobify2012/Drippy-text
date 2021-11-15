@@ -1000,4 +1000,49 @@ public class DungeonImpl implements Dungeon {
   public boolean getWrapping() {
     return this.wraps;
   }
+
+  @Override
+  public void shootArrow(int distance, Direction direction) {
+    if (distance < 0) {
+      throw new IllegalArgumentException("Cannot shoot less than 0");
+    }
+
+    if (direction == null) {
+      throw new IllegalArgumentException("Direction cannot be null");
+    }
+
+    if (!getPossibleDirection(player.getPlayerLocation()).contains(direction)) {
+      throw new IllegalArgumentException("Can't shoot that way");
+    } else {
+
+    }
+      //move is valid move the player to the new cave
+//      for (int i = 0; i < finalEdgeList.size(); i++) {
+//        if (finalEdgeList.get(i).getLeftIndex() == player.getPlayerLocation()
+//                && direction == finalEdgeList.get(i).getDirectionToCave2()) {
+//          //set the new player location to the right index
+//          player.move(finalEdgeList.get(i).getRightIndex(),
+//                  getPossibleDirection(finalEdgeList.get(i).getRightIndex()),
+//                  findCaveByIndex(finalEdgeList.get(i).getRightIndex()).getTreasureFromCave());
+//        } else if (finalEdgeList.get(i).getRightIndex() == player.getPlayerLocation()
+//                && direction == finalEdgeList.get(i).getDirectionToCave1()) {
+//          player.move(finalEdgeList.get(i).getLeftIndex(),
+//                  getPossibleDirection(finalEdgeList.get(i).getLeftIndex()),
+//                  findCaveByIndex(finalEdgeList.get(i).getLeftIndex()).getTreasureFromCave());
+//        }
+//      }
+
+    //decriment player arrow count by 1
+
+    while(distance > 0) {
+      //check if going through a cave or tunnel
+      //if cave find out if there is an adjacent exit,
+          //if so decriment and move on
+          //if not arrow hits the wall break out and message
+
+      //if tunnel check directions and adjust if its a bender, do not decriment
+    }
+    //check final location for monster, if monster present take damage and send message
+              //if not tell user they missed
+  }
 }

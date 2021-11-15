@@ -53,4 +53,6 @@ public interface Dungeon {
 
   boolean getWrapping();
 
+  void shootArrow(int distance, Direction direction);
+
 }

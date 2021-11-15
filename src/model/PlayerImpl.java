@@ -62,11 +62,7 @@ public class PlayerImpl implements Player {
   public void move(int index, List<Direction> directions,
                    List<Treasure> curTreasure) {
 
-    //check direction throw illegal arguement if not an option
-    //if (!this.directions.contains(passed in direction))
-
     updatePlayerLocation(index, directions, curTreasure);
-
   }
 
   /**A helper to get the current treasure list.
@@ -196,5 +192,22 @@ public class PlayerImpl implements Player {
       encounterString = "Our player finds the body of a slain Monster.";
     }
     return encounterString;
+  }
+
+  @Override
+  public void shoot(int distance, Direction direction) {
+    if (distance < 0 ) {
+      throw new IllegalArgumentException("Cannot shoot less than 0");
+    }
+
+    if (direction == null) {
+      throw new IllegalArgumentException("Must have a direction to shoot");
+    }
+
+
+  }
+
+  private void updateArrowCount() {
+
   }
 }
