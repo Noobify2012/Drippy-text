@@ -2,7 +2,6 @@ package controller;
 
 import java.io.IOException;
 import java.util.Scanner;
-
 import model.Direction;
 import model.Dungeon;
 import model.DungeonImpl;
@@ -234,7 +233,8 @@ public class ConsoleController implements Controller {
         //build dungeon and try to catch errors
         Player player = new PlayerImpl();
         try {
-          Dungeon test = new DungeonImpl(wraps, rows, columns, interconnect, treasPer, player, diff, 1);
+          Dungeon test = new DungeonImpl(wraps, rows, columns, interconnect, treasPer, player,
+                  diff, 1);
           playGame(test);
 //          test.getDungeon();
         } catch (IllegalArgumentException iae) {
@@ -285,16 +285,16 @@ public class ConsoleController implements Controller {
 
     //while(!d.isGameOver())
 
-    {
+
       //implement how to get the game
-    }
+
   }
 
   private boolean validBool(String next) {
     return next.equalsIgnoreCase("false") || next.equalsIgnoreCase("true");
   }
 
-  private boolean validateInput(String next){
+  private boolean validateInput(String next) {
     try {
       //String element = scan.next();
       Integer.parseInt(next);

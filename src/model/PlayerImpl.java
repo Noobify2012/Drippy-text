@@ -1,8 +1,6 @@
 package model;
 
 import driver.Driver;
-
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,7 +98,7 @@ public class PlayerImpl implements Player {
     } else {
       for (int i = 0; i < this.treasureList.size(); i++) {
         treasureString = getTreasureString(this.treasureList);
-      //treasureString + " " + this.treasureList.get(i).getName() + ",";
+        //treasureString + " " + this.treasureList.get(i).getName() + ",";
       }
     }
 
@@ -119,7 +117,7 @@ public class PlayerImpl implements Player {
     } else {
       for (int i = 0; i < currentTreasure.size(); i++) {
         curTreasureString = getTreasureString(currentTreasure);
-      //curTreasureString + " " + this.currentTreasure.get(i).getName() + ",";
+        //curTreasureString + " " + this.currentTreasure.get(i).getName() + ",";
       }
     }
 
@@ -150,8 +148,8 @@ public class PlayerImpl implements Player {
         sapphireInt++;
       }
     }
-     String treasureString2 = " " + rubyInt + " rubies, " + diamondInt + " diamonds, "
-             + sapphireInt + " sapphires.";
+    String treasureString2 = " " + rubyInt + " rubies, " + diamondInt + " diamonds, "
+            + sapphireInt + " sapphires.";
     return treasureString2;
   }
 
@@ -194,8 +192,8 @@ public class PlayerImpl implements Player {
     if (monsterHealth == 2 || (monsterHealth == 1 && rand == 1)) {
       isAlive = false;
       encounterString = "Chomp! Our player was eaten by a Monster.";
-    } else if (monsterHealth == 1 && rand == 0 ) {
-        //player survives
+    } else if (monsterHealth == 1 && rand == 0) {
+      //player survives
       encounterString = "Whew! Our player barely escapes being eaten by a Monster.";
     } else if (monsterHealth == 0) {
       encounterString = "Our player finds the body of a slain Monster.";
@@ -205,7 +203,7 @@ public class PlayerImpl implements Player {
 
   @Override
   public void shoot(int distance, Direction direction) {
-    if (distance < 0 ) {
+    if (distance < 0) {
       throw new IllegalArgumentException("Cannot shoot less than 0");
     }
 

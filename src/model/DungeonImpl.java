@@ -2,9 +2,8 @@ package model;
 
 import driver.Driver;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.LinkedList;
-import java.util.Random;
+import java.util.List;
 import random.RandomNumberGenerator;
 
 /**
@@ -341,7 +340,7 @@ public class DungeonImpl implements Dungeon {
 //    RandomNumberGenerator rand = new RandomNumberGenerator(0, caves.size() - 1, 0,
 //            1);
     int startIndex = randomNumberGenerator.getRandomNumber(0, caves.size());
-            //caves.get(rand.getRandomNumber());
+    //caves.get(rand.getRandomNumber());
     return startIndex;
   }
 
@@ -454,22 +453,24 @@ public class DungeonImpl implements Dungeon {
 //      RandomNumberGenerator rand2 = new RandomNumberGenerator(1, 3, 0, 1);
       TreasureImpl treasureFactory = new TreasureImpl();
       for (int t = 0; t < treasCaveNum; t++) {
-        int treasureRand = randomNumberGenerator.getRandomNumber(1,3);
+        int treasureRand = randomNumberGenerator.getRandomNumber(1, 3);
         if (treasureRand == 0) {
           for (int r = 0; r <= treasureRand + 1; r++) {
-            findCaveByIndex(caves.get(randomNumberGenerator.getRandomNumber(0,caves.size()-1)))
+            findCaveByIndex(caves.get(randomNumberGenerator.getRandomNumber(0, caves.size() - 1)))
                     .addTreasure(TreasureImpl
-                    .TreasureFactory.getTreasureFromEnum(TreasureImpl.TreasureType.RUBY));
+                            .TreasureFactory.getTreasureFromEnum(TreasureImpl.TreasureType.RUBY));
           }
         } else if (treasureRand == 1) {
           for (int r = 0; r <= treasureRand + 1; r++) {
-            findCaveByIndex(caves.get(randomNumberGenerator.getRandomNumber(0,caves.size()-1)))
-                    .addTreasure(TreasureImpl.TreasureFactory.getTreasureFromEnum(TreasureImpl.TreasureType.DIAMOND));
+            findCaveByIndex(caves.get(randomNumberGenerator.getRandomNumber(0, caves.size() - 1)))
+                    .addTreasure(TreasureImpl.TreasureFactory.getTreasureFromEnum(TreasureImpl
+                            .TreasureType.DIAMOND));
           }
         } else {
           for (int r = 0; r <= treasureRand + 1; r++) {
-            findCaveByIndex(caves.get(randomNumberGenerator.getRandomNumber(0,caves.size()-1))).addTreasure(TreasureImpl
-                    .TreasureFactory.getTreasureFromEnum(TreasureImpl.TreasureType.SAPPHIRE));
+            findCaveByIndex(caves.get(randomNumberGenerator.getRandomNumber(0, caves.size() - 1)))
+                    .addTreasure(TreasureImpl.TreasureFactory
+                            .getTreasureFromEnum(TreasureImpl.TreasureType.SAPPHIRE));
           }
         }
       }
@@ -485,7 +486,7 @@ public class DungeonImpl implements Dungeon {
 
     if (difficulty > 1 && difficulty < caves.size()) {
       int monsterCount = difficulty - 1;
-      while(monsterCount > 0) {
+      while (monsterCount > 0) {
 
         //TODO - after random number gen fixed, verify monsters build properly
         int rand = randomNumberGenerator.getRandomNumber(0, caves.size());
@@ -503,7 +504,7 @@ public class DungeonImpl implements Dungeon {
 
       //if not add monster and change count.
 
-    } else if(difficulty > caves.size()) {
+    } else if (difficulty > caves.size()) {
       throw new IllegalArgumentException("Not enough caves for monsters reduce difficulty");
     }
   }
@@ -614,7 +615,7 @@ public class DungeonImpl implements Dungeon {
             if (leftOverEdge.size() <= 0) {
               throw new IllegalStateException("Left over edge list is already empty");
             } else {
-              int randomInt = randomNumberGenerator.getRandomNumber(0,leftOverEdge.size());
+              int randomInt = randomNumberGenerator.getRandomNumber(0, leftOverEdge.size());
               finalEdgeList.add(leftOverEdge.get(randomInt));
               leftOverEdge.get(randomInt).addNeighbors();
               leftOverEdge.remove(randomInt);
@@ -864,7 +865,7 @@ public class DungeonImpl implements Dungeon {
               && findCaveByIndex(player.getPlayerLocation()).getMonsterHealth() == 1) {
         //player has 50/50 shot of escaping
 
-        int returnInt = randomNumberGenerator.getRandomNumber(0,1);
+        int returnInt = randomNumberGenerator.getRandomNumber(0, 1);
         if (returnInt == 0) {
           //player escapes
           encounterString = player.monsterEncounter(findCaveByIndex(player.getPlayerLocation())
@@ -927,7 +928,7 @@ public class DungeonImpl implements Dungeon {
     int arrowNum = (int) Math.ceil((treasure  * rows * columns) / 100);
     while (arrowNum > 0) {
       //generate random number for index
-      int rand = randomNumberGenerator.getRandomNumber(0,(rows * columns) - 1);
+      int rand = randomNumberGenerator.getRandomNumber(0, (rows * columns) - 1);
       if (findCaveByIndex(rand).getArrowListSize() == 0) {
         CrookedArrow arrow = new CrookedArrow();
         findCaveByIndex(rand).addArrow(arrow);
@@ -955,7 +956,8 @@ public class DungeonImpl implements Dungeon {
 
     //check neighbors for monsters
     for (int n = 0; n < listToCheck.size(); n++) {
-      if (findCaveByIndex(listToCheck.get(n)).getMonsterListSize() == 1 && findCaveByIndex(listToCheck.get(n)).getMonsterHealth() > 0) {
+      if (findCaveByIndex(listToCheck.get(n)).getMonsterListSize() == 1
+              && findCaveByIndex(listToCheck.get(n)).getMonsterHealth() > 0) {
         smell++;
         smell++;
       }
@@ -1014,9 +1016,10 @@ public class DungeonImpl implements Dungeon {
     if (!getPossibleDirection(player.getPlayerLocation()).contains(direction)) {
       throw new IllegalArgumentException("Can't shoot that way");
     } else {
+      //TODO write shooting logic here
 
     }
-      //move is valid move the player to the new cave
+    //move is valid move the player to the new cave
 //      for (int i = 0; i < finalEdgeList.size(); i++) {
 //        if (finalEdgeList.get(i).getLeftIndex() == player.getPlayerLocation()
 //                && direction == finalEdgeList.get(i).getDirectionToCave2()) {
@@ -1034,15 +1037,15 @@ public class DungeonImpl implements Dungeon {
 
     //decriment player arrow count by 1
 
-    while(distance > 0) {
+    while (distance > 0) {
       //check if going through a cave or tunnel
       //if cave find out if there is an adjacent exit,
-          //if so decriment and move on
-          //if not arrow hits the wall break out and message
+      //if so decriment and move on
+      //if not arrow hits the wall break out and message
 
       //if tunnel check directions and adjust if its a bender, do not decriment
     }
     //check final location for monster, if monster present take damage and send message
-              //if not tell user they missed
+    //if not tell user they missed
   }
 }

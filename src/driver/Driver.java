@@ -1,14 +1,7 @@
 package driver;
 
-import java.io.InputStreamReader;
-import java.util.Scanner;
-
 import controller.ConsoleController;
-import controller.Controller;
-import model.Direction;
-import model.DungeonImpl;
-import model.Player;
-import model.PlayerImpl;
+import java.io.InputStreamReader;
 
 /**
  * Driver that acts as the controller for the Dungeon project. This just needs to be run.
@@ -35,9 +28,11 @@ public class Driver {
 //      String welcomeString = "Welcome to the Dungeon. "
 //              + "\nPlease enter true or false if you would like the dungeon to wrap."
 //              + " \nthe number of rows you would like as an integer. \nThe "
-//              + "number of columns as an integer.\nThe level of interconnectedness you would like"
+//              + "number of columns as an integer.\nThe level of interconnectedness you
+//              would like"
 //              + " as an integer, \nthe percentage of caves that you would like to have"
-//              + " treasure between 0 and 100, and \nthe difficulty level you would like(IE how many"
+//              + " treasure between 0 and 100, and \nthe difficulty level you would like
+//              (IE how many"
 //              + " Otyugh you would like. \nHere is an example: true 10 10 0 10 2";
 //
 //      Driver.printHelper(welcomeString);
@@ -104,7 +99,8 @@ public class Driver {
 //
 //
 //    Player player = new PlayerImpl();
-//    DungeonImpl test = new DungeonImpl(wraps, rows, columns, interconnect, treasPer, player, diff);
+//    DungeonImpl test = new DungeonImpl(wraps, rows, columns, interconnect, treasPer, player,
+//    diff);
 //    test.getDungeon();
 //
 //    while (!test.isGameOver()) {

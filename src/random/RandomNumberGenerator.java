@@ -48,8 +48,8 @@ public class RandomNumberGenerator {
    * @return An integer between the minimum and maximum inclusively.
    */
   public int getRandomNumber(int min, int max) {
-      int returnInt = generator.nextInt(max - min) + min;
-      return returnInt;
-    }
+    int returnInt = generator.nextInt(max - min) + min;
+    return returnInt;
+  }
 
 }

@@ -16,7 +16,7 @@ public class Otyugh implements Monster {
     if (this.health == 0) {
       return 0;
     } else {
-      this.health --;
+      this.health--;
       int tempHealth = this.health;
       return tempHealth;
     }

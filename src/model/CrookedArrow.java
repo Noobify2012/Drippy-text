@@ -15,7 +15,7 @@ public class CrookedArrow {
       throw new IllegalArgumentException("Cannot shoot less than 0 distance");
     }
 
-    if(direction == null) {
+    if (direction == null) {
       throw new IllegalArgumentException("must provide a direction to shoot.");
     }
     this.distance = distance;
