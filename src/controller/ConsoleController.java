@@ -234,7 +234,7 @@ public class ConsoleController implements Controller {
         //build dungeon and try to catch errors
         Player player = new PlayerImpl();
         try {
-          Dungeon test = new DungeonImpl(wraps, rows, columns, interconnect, treasPer, player, diff, 0);
+          Dungeon test = new DungeonImpl(wraps, rows, columns, interconnect, treasPer, player, diff, 1);
           playGame(test);
 //          test.getDungeon();
         } catch (IllegalArgumentException iae) {
@@ -361,10 +361,77 @@ public class ConsoleController implements Controller {
             } catch (IOException ioe) {
               throw new IllegalStateException("Append failed", ioe);
             }
-            if (next.equalsIgnoreCase("m")) {
+
+            Direction playerDirection = null;
+            if (next.equalsIgnoreCase("move") || next.equalsIgnoreCase("m")
+                    || next.equalsIgnoreCase("s")
+                    || next.equalsIgnoreCase("shoot")) {
+              try {
+                //String element = scan.next();
+                out.append("which direction?\n");
+              } catch (IOException ioe) {
+                throw new IllegalStateException("Append failed", ioe);
+              }
+            }
+            next2 = scan.next();
+
+            if (next.equalsIgnoreCase("move") || next.equalsIgnoreCase("m")) {
               //get move
-            } else if (next.equalsIgnoreCase("s")) {
+
+              if (next2.equalsIgnoreCase("North")
+                      || next2.equalsIgnoreCase("n")) {
+                playerDirection = Direction.NORTH;
+              } else if (next2.equalsIgnoreCase("South")
+                      || next2.equalsIgnoreCase("s")) {
+                playerDirection = Direction.SOUTH;
+              } else if (next2.equalsIgnoreCase("East")
+                      || next2.equalsIgnoreCase("e")) {
+                playerDirection = Direction.EAST;
+              } else if (next2.equalsIgnoreCase("West")
+                      || next2.equalsIgnoreCase("w")) {
+                playerDirection = Direction.WEST;
+              }
+              if (playerDirection == Direction.NORTH || playerDirection == Direction.SOUTH
+                      || playerDirection == Direction.EAST || playerDirection == Direction.WEST) {
+                try {
+                  //String element = scan.next();
+                  d.movePlayer(playerDirection);
+//                  gameAction = false;
+                } catch (IllegalArgumentException iae) {
+                  try {
+                    out.append(iae.getMessage() + "\n");
+                  } catch (IOException ioe) {
+                    throw new IllegalStateException("Append failed", ioe);
+                  }
+                }
+              }
+
+              //player.getPlayerStatus();
+            } else if (next.equalsIgnoreCase("s")
+                    || next.equalsIgnoreCase("shoot")) {
               // get distance and direction
+              Direction arrowDirection;
+              try {
+                //String element = scan.next();
+                out.append("which direction?\n");
+              } catch (IOException ioe) {
+                throw new IllegalStateException("Append failed", ioe);
+              }
+
+              if (next2.equalsIgnoreCase("North")
+                      || next2.equalsIgnoreCase("n")) {
+                arrowDirection = Direction.NORTH;
+              } else if (next2.equalsIgnoreCase("South")
+                      || next2.equalsIgnoreCase("s")) {
+                arrowDirection = Direction.SOUTH;
+              } else if (next2.equalsIgnoreCase("East")
+                      || next2.equalsIgnoreCase("e")) {
+                arrowDirection = Direction.EAST;
+              } else if (next2.equalsIgnoreCase("West")
+                      || next2.equalsIgnoreCase("w")) {
+                arrowDirection = Direction.WEST;
+              }
+
             } else {
               throw new IllegalStateException("didn't get a valid command");
             }

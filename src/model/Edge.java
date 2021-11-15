@@ -12,10 +12,11 @@ class Edge {
     this.directionToCave1 = directionToCave1;
     this.directionToCave2 = directionToCave2;
 
-    if (cave1.getRow() - cave2.getRow() == 0 && cave1.getColumn() - cave2.getColumn() == -1) {
+
+    if (cave1.getRow() - cave2.getRow() == 0 && cave1.getColumn() - cave2.getColumn() <= -1) {
       directionToCave2 = Direction.EAST;
       directionToCave1 = Direction.WEST;
-    } else if (cave1.getRow() - cave2.getRow() == 0 && cave1.getColumn() - cave2.getColumn() == 1) {
+    } else if (cave1.getRow() - cave2.getRow() == 0 && cave1.getColumn() - cave2.getColumn() >= 1) {
       directionToCave2 = Direction.WEST;
       directionToCave1 = Direction.EAST;
     } else if (cave1.getRow() - cave2.getRow() == -1 && cave1.getColumn()

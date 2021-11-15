@@ -57,9 +57,8 @@ public class PlayerImpl implements Player {
 
 
   /**
-   * The player moves east.
+   * The player moves.
    */
-  @Override
   public void move(int index, List<Direction> directions,
                    List<Treasure> curTreasure) {
 
@@ -87,7 +86,6 @@ public class PlayerImpl implements Player {
    * on their current location, and the treasure in the cave they are currently in.
    *
    */
-  @Override
   public void getPlayerStatus(int smell) {
     String treasureString = "";
     String directionString = "";
@@ -158,13 +156,11 @@ public class PlayerImpl implements Player {
    * @param treasureInCave the treasure in the cave where the player enters the dungeon.
    * @param directions the directions the player can go from the start point.
    */
-  @Override
   public void enterDungeon(int caveIndex, List<Treasure> treasureInCave,
                            List<Direction> directions) {
     updatePlayerLocation(caveIndex, directions, treasureInCave);
   }
 
-  @Override
   public boolean isPlayerAlive() {
     if (this.isAlive) {
       return true;
@@ -173,22 +169,30 @@ public class PlayerImpl implements Player {
     }
   }
 
-  @Override
   public int getPlayerLocation() {
     int temp = playerLocation;
     return temp;
   }
 
-  @Override
-  public void moveDirection(Direction direction) {
-    if (!directions.contains(direction)) {
-      throw new IllegalArgumentException("direction not an option");
-    } else {
-      //not useful at the moment
+  //  @Override
+//  public void moveDirection(Direction direction) {
+//    if (!directions.contains(direction)) {
+//      throw new IllegalArgumentException("direction not an option");
+//    } else {
+//      //not useful at the moment
+//    }
+//  }
+  public String monsterEncounter(int monsterHealth, int rand) {
+    String encounterString = "";
+    if (monsterHealth == 2 || (monsterHealth == 1 && rand == 1)) {
+      isAlive = false;
+      encounterString = "Chomp! Our player was eaten by a Monster.";
+    } else if (monsterHealth == 1 && rand == 0 ) {
+        //player survives
+      encounterString = "Whew! Our player barely escapes being eaten by a Monster.";
+    } else if (monsterHealth == 0) {
+      encounterString = "Our player finds the body of a slain Monster.";
     }
-  }
-
-  protected void playerGetsEaten() {
-    isAlive = false;
+    return encounterString;
   }
 }

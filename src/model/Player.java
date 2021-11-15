@@ -40,7 +40,9 @@ public interface Player {
 
   int getPlayerLocation();
 
-  void moveDirection(Direction direction);
+//  void moveDirection(Direction direction);
+
+  String monsterEncounter(int monsterHealth, int rand);
 
 
 }

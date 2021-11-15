@@ -51,4 +51,6 @@ public interface Dungeon {
 
 //  int checkSmell();
 
+  boolean getWrapping();
+
 }

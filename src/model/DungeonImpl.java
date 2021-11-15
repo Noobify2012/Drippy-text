@@ -364,7 +364,7 @@ public class DungeonImpl implements Dungeon {
     listToCheck.add(startIndex);
     //check for incomplete graph
     if (findCaveByIndex(startIndex).getNeighbors().size() != 0) {
-      //loop throught the list of neighbors of the start index
+      //loop through the list of neighbors of the start index
       for (int i = 0; i < findCaveByIndex(startIndex).getNeighbors().size(); i++) {
         //check that we already haven't seen the current node
         if (!(nonViable.contains(findCaveByIndex(startIndex).getNeighbors().get(i)))) {
@@ -421,6 +421,8 @@ public class DungeonImpl implements Dungeon {
         endPoint = viable.get(0);
       }
     }
+    String endPointString = "The end point is cave : " + endPoint;
+    Driver.printHelper(endPointString);
     return endPoint;
   }
 
@@ -472,7 +474,6 @@ public class DungeonImpl implements Dungeon {
         }
       }
     }
-
   }
 
   private void addMonstersToDungeon(List<Integer> caves) {
@@ -848,11 +849,14 @@ public class DungeonImpl implements Dungeon {
         String endCave = "Player has reached final cave";
       }
 
+      String encounterString = "";
       //check if it has a monster
       if (findCaveByIndex(player.getPlayerLocation()).getMonsterListSize() == 1
               && findCaveByIndex(player.getPlayerLocation()).getMonsterHealth() == 2) {
+        encounterString = player.monsterEncounter(findCaveByIndex(player.getPlayerLocation())
+                .getMonsterHealth(), 0);
         //TODO - find out why player gets eaten doesn't work
-        //this.player.playerGetsEaten();
+
 
         //the player dies
       } else if (findCaveByIndex(player.getPlayerLocation()).getMonsterListSize() == 1
@@ -862,25 +866,27 @@ public class DungeonImpl implements Dungeon {
         int returnInt = randomNumberGenerator.getRandomNumber(0,1);
         if (returnInt == 0) {
           //player escapes
+          encounterString = player.monsterEncounter(findCaveByIndex(player.getPlayerLocation())
+                  .getMonsterHealth(), returnInt);
           //TODO print message about player escaping monster
         } else {
           //TODO player gets eaten
-          //this.player.playerGetsEaten();
+          encounterString = player.monsterEncounter(findCaveByIndex(player.getPlayerLocation())
+                  .getMonsterHealth(), returnInt);
         }
       } else {
         //monster is dead do nothing
         //TODO message about dead monster
+        encounterString = player.monsterEncounter(findCaveByIndex(player.getPlayerLocation())
+                .getMonsterHealth(), 0);
 
       }
+
+
 
       //check for smell;
-      int smell = checkSmell();
 
-      if (smell >= 2) {
-        //strong smell
-      } else if (smell == 1) {
-        //weak smell
-      }
+      player.getPlayerStatus(checkSmell());
 
 
       //update player location and check around them for stuff.
@@ -922,21 +928,46 @@ public class DungeonImpl implements Dungeon {
   }
 
 
-  int checkSmell() {
+  private int checkSmell() {
+    List<Integer> checked = new ArrayList<>();
     List<Integer> listToCheck = new ArrayList<>();
     List<Integer> listToLoop = new ArrayList<>();
     int smellFactor = 0;
+    //find the neighbors of the current location
+    checked.add(player.getPlayerLocation());
     for (int i = 0; i < findCaveByIndex(player.getPlayerLocation()).getNeighbors().size(); i++) {
-      listToCheck.add(findCaveByIndex(player.getPlayerLocation()).getNeighbors().get(i));
-      listToLoop.add(findCaveByIndex(player.getPlayerLocation()).getNeighbors().get(i));
-      smellFactor++;
-    }
-    for (int j = 0; j < listToLoop.size(); j++) {
-      int check = (findCaveByIndex(listToLoop.get(j)).getNeighbors().size());
-      for (int k = 0; k < check; j++) {
-        listToCheck.add(findCaveByIndex(listToLoop.get(j)).getNeighbors().get(k));
+      if (!(checked.contains(findCaveByIndex(player.getPlayerLocation()).getNeighbors().get(i)))) {
+        listToCheck.add(findCaveByIndex(player.getPlayerLocation()).getNeighbors().get(i));
+        listToLoop.add(findCaveByIndex(player.getPlayerLocation()).getNeighbors().get(i));
+        smellFactor++;
       }
+
     }
+
+    for (int y = 0; y < 1; y++) {
+      //list size at time of iteration, not to keep looping through more stuff
+      int temp = listToCheck.size();
+      for (int c = 0; c < temp; c++) {
+        //grab next value in list to check
+        int tempInt = listToCheck.get(c);
+        List<Integer> tempList = findCaveByIndex(tempInt).getNeighbors();
+        //checks to see if next element down has children
+        if (tempList.size() > 1) {
+          //if it does have children add them to the lists
+          for (int a = 0; a < tempList.size(); a++) {
+            if (!(checked.contains((int) findCaveByIndex(tempInt).getNeighbors().get(a)))) {
+              checked.add((int) findCaveByIndex(tempInt).getNeighbors().get(a));
+              listToCheck.add((int) findCaveByIndex(tempInt).getNeighbors().get(a));
+            }
+          }
+        }
+        //add current neighbor node to list of indexes to check and nonviable
+      }
+//      for (int r = 0; r < temp; r++) {
+//        listToCheck.remove(0);
+//      }
+    }
+//
     int smell = 0;
     for (int l = 0; l < listToCheck.size(); l++) {
       if (findCaveByIndex(listToCheck.get(l)).getMonsterListSize() == 1) {
@@ -947,5 +978,9 @@ public class DungeonImpl implements Dungeon {
       }
     }
     return smell;
+  }
+
+  public boolean getWrapping() {
+    return this.wraps;
   }
 }
