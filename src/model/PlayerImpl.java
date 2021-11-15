@@ -1,6 +1,8 @@
 package model;
 
 import driver.Driver;
+
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +15,7 @@ public class PlayerImpl implements Player {
   private List<Treasure> treasureList;
   private List<Direction> directions;
   private List<Treasure> currentTreasure;
+  private List<CrookedArrow> quiver;
   private boolean isAlive;
 
   /**
@@ -25,6 +28,12 @@ public class PlayerImpl implements Player {
     List<Direction> directions = new ArrayList<>();
     this.currentTreasure = new ArrayList<>();
     this.isAlive = true;
+    this.quiver = new ArrayList<>();
+
+    for (int a = 0; a < 3; a++) {
+      CrookedArrow arrow = new CrookedArrow();
+      this.quiver.add(arrow);
+    }
   }
 
   /**This helps to update the players location based on the index of the cave the player is now in.
@@ -203,11 +212,18 @@ public class PlayerImpl implements Player {
     if (direction == null) {
       throw new IllegalArgumentException("Must have a direction to shoot");
     }
-
+    //make sure player has arrows and if so deduct 1, else throw error.
+    updateArrowCount();
 
   }
 
   private void updateArrowCount() {
+    if (quiver.size() == 0) {
+      throw new IllegalArgumentException("Player doesn't have any arrows to shoot.");
+    } else {
+      quiver.remove(0);
+      String quiverString = "The player has " + quiver.size() + " arrows remaining.";
+    }
 
   }
 }
