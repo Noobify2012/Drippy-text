@@ -1,13 +1,13 @@
 package controller;
 
 import java.io.IOException;
+import java.nio.CharBuffer;
 import java.util.Scanner;
 import model.Direction;
 import model.Dungeon;
 import model.DungeonImpl;
 import model.Player;
 import model.PlayerImpl;
-import random.RandomNumberGenerator;
 
 public class ConsoleController implements Controller {
 
@@ -410,7 +410,7 @@ public class ConsoleController implements Controller {
             } else if (next.equalsIgnoreCase("s")
                     || next.equalsIgnoreCase("shoot")) {
               // get distance and direction
-              Direction arrowDirection;
+              Direction arrowDirection = null;
               try {
                 //String element = scan.next();
                 out.append("which direction?\n");
@@ -432,6 +432,39 @@ public class ConsoleController implements Controller {
                 arrowDirection = Direction.WEST;
               }
 
+              int distance = 0;
+              try {
+                //String element = scan.next();
+                out.append("how far?\n");
+              } catch (IOException ioe) {
+                throw new IllegalStateException("Append failed", ioe);
+              }
+              String next3 = scan.next();
+              //check for integer
+              try {
+                //String element = scan.next();
+                distance = Integer.parseInt(next3);
+              } catch (NumberFormatException nfe) {
+                try {
+                  out.append("Not a valid distance, please enter a distance as an integer\n");
+                } catch (IOException ioe) {
+                  throw new IllegalStateException("Append failed", ioe);
+                }
+              }
+              if ((arrowDirection == Direction.NORTH || arrowDirection == Direction.SOUTH
+                      || arrowDirection == Direction.EAST || arrowDirection == Direction.WEST)
+                      && distance >= 0) {
+                try {
+                  d.shootArrow(distance, arrowDirection);
+//                  gameAction = false;
+                } catch (IllegalArgumentException iae) {
+                  try {
+                    out.append(iae.getMessage() + "\n");
+                  } catch (IOException ioe) {
+                    throw new IllegalStateException("Append failed", ioe);
+                  }
+                }
+              }
             } else {
               throw new IllegalStateException("didn't get a valid command");
             }
@@ -469,7 +502,9 @@ public class ConsoleController implements Controller {
 
   private boolean validateAction(String next) {
     return next.equalsIgnoreCase("m") || next.equalsIgnoreCase("s")
-            || next.equalsIgnoreCase("q");
+            || next.equalsIgnoreCase("q") || next.equalsIgnoreCase("move")
+            || next.equalsIgnoreCase("shoot")
+            || next.equalsIgnoreCase("quit");
   }
 
   private Direction getDirection() {
@@ -488,6 +523,16 @@ public class ConsoleController implements Controller {
     return Direction.NORTH;
   }
 
+
+  public void outHelper(String printString) {
+
+    try {
+      out.append(printString + "\n");
+    } catch (IOException ioe) {
+      throw new IllegalStateException("Append failed", ioe);
+    }
+
+  }
 
 
 }

@@ -9,6 +9,8 @@ public interface Controller {
 
   void playGame(Dungeon d);
 
+  void outHelper(String printString);
+
   //give the model to the controller with playGame method
 
   //run the game

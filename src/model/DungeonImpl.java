@@ -1,5 +1,7 @@
 package model;
 
+import controller.ConsoleController;
+import controller.Controller;
 import driver.Driver;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -1018,6 +1020,12 @@ public class DungeonImpl implements Dungeon {
     } else {
       //TODO write shooting logic here
 
+      String shootString = "Fired an arrow " + distance + " spaces " + direction;
+      Driver.printHelper(shootString);
+      player.shoot(distance, direction);
+
+
+
     }
     //move is valid move the player to the new cave
 //      for (int i = 0; i < finalEdgeList.size(); i++) {
@@ -1038,6 +1046,7 @@ public class DungeonImpl implements Dungeon {
     //decriment player arrow count by 1
 
     while (distance > 0) {
+      break;
       //check if going through a cave or tunnel
       //if cave find out if there is an adjacent exit,
       //if so decriment and move on

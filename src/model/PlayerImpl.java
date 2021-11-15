@@ -1,5 +1,6 @@
 package model;
 
+import controller.Controller;
 import driver.Driver;
 import java.util.ArrayList;
 import java.util.List;
@@ -124,7 +125,8 @@ public class PlayerImpl implements Player {
     String monsterString = "";
     String playerString = "The player is currently in Cave " + playerLocation + " and has "
             + treasureString + " in their treasure bag. \nThey can go " + directionString
-            + "and there is " + curTreasureString + " in this cave.";
+            + ", there are " + quiver.size() + " arrows remaining in their quiver, and there is "
+            + curTreasureString + " in this cave.\n";
     if (smell >= 2) {
       monsterString = ("\nThe player smells something awful and strong.\n");
       playerString = playerString + monsterString;
@@ -221,6 +223,7 @@ public class PlayerImpl implements Player {
     } else {
       quiver.remove(0);
       String quiverString = "The player has " + quiver.size() + " arrows remaining.";
+      Driver.printHelper(quiverString);
     }
 
   }
