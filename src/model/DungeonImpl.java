@@ -847,6 +847,7 @@ public class DungeonImpl implements Dungeon {
       //check if the cave is the end point
       if (player.getPlayerLocation() == this.endPoint) {
         String endCave = "Player has reached final cave";
+        Driver.printHelper(endCave);
       }
 
       String encounterString = "";
@@ -881,6 +882,8 @@ public class DungeonImpl implements Dungeon {
                 .getMonsterHealth(), 0);
 
       }
+
+      Driver.printHelper(encounterString);
 
 
 
@@ -939,9 +942,16 @@ public class DungeonImpl implements Dungeon {
       if (!(checked.contains(findCaveByIndex(player.getPlayerLocation()).getNeighbors().get(i)))) {
         listToCheck.add(findCaveByIndex(player.getPlayerLocation()).getNeighbors().get(i));
         listToLoop.add(findCaveByIndex(player.getPlayerLocation()).getNeighbors().get(i));
-        smellFactor++;
       }
+    }
+    int smell = 0;
 
+    //check neighbors for monsters
+    for (int n = 0; n < listToCheck.size(); n++) {
+      if (findCaveByIndex(listToCheck.get(n)).getMonsterListSize() == 1 && findCaveByIndex(listToCheck.get(n)).getMonsterHealth() > 0) {
+        smell++;
+        smell++;
+      }
     }
 
     for (int y = 0; y < 1; y++) {
@@ -968,12 +978,12 @@ public class DungeonImpl implements Dungeon {
 //      }
     }
 //
-    int smell = 0;
     for (int l = 0; l < listToCheck.size(); l++) {
-      if (findCaveByIndex(listToCheck.get(l)).getMonsterListSize() == 1) {
-        if (l <= smellFactor) {
-          smell++;
-        }
+      if (findCaveByIndex(listToCheck.get(l)).getMonsterListSize() == 1
+              && findCaveByIndex(listToCheck.get(l)).getMonsterHealth() > 0) {
+//        if (l <= smellFactor) {
+//          smell++;
+//        }
         smell++;
       }
     }

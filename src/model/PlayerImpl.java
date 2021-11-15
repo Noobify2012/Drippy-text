@@ -118,14 +118,16 @@ public class PlayerImpl implements Player {
       }
     }
 
-    String moveString = "";
+    String monsterString = "";
     String playerString = "The player is currently in Cave " + playerLocation + " and has "
             + treasureString + " in their treasure bag. \nThey can go " + directionString
             + "and there is " + curTreasureString + " in this cave.";
     if (smell >= 2) {
-      playerString.concat("\nThe player smells something awful and strong.\n");
+      monsterString = ("\nThe player smells something awful and strong.\n");
+      playerString = playerString + monsterString;
     } else if (smell == 1) {
-      playerString.concat("\nThe player smells something faint but awful.\n");
+      monsterString = ("\nThe player smells something faint but awful.\n");
+      playerString = playerString + monsterString;
     }
     Driver.printHelper(playerString);
   }
