@@ -22,7 +22,7 @@ public class Otyugh implements Monster {
     }
   }
 
-  protected int getHealth() {
+  public int getHealth() {
     int temp = this.health;
     return temp;
   }

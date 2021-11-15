@@ -129,7 +129,11 @@ public class Cave extends AbstractLocation {
 
   int getMonsterHealth() {
     //TODO - figure out why i can't do this
-    return 1;
+    if (this.monsterList.isEmpty()) {
+      return 0;
+    } else {
+      return this.monsterList.get(0).getHealth();
+    }
   }
 
   int getArrowListSize() {

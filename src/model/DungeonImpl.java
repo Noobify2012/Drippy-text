@@ -876,10 +876,15 @@ public class DungeonImpl implements Dungeon {
                   .getMonsterHealth(), returnInt);
         }
       } else {
+        if (findCaveByIndex(player.getPlayerLocation()).getMonsterListSize() == 0) {
+          encounterString = "";
+        } else {
+          encounterString = player.monsterEncounter(findCaveByIndex(player.getPlayerLocation())
+                  .getMonsterHealth(), 0);
+        }
         //monster is dead do nothing
         //TODO message about dead monster
-        encounterString = player.monsterEncounter(findCaveByIndex(player.getPlayerLocation())
-                .getMonsterHealth(), 0);
+
 
       }
 
