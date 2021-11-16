@@ -316,7 +316,7 @@ public class ConsoleController implements Controller {
   private void quitGame() {
     try {
       //String element = scan.next();
-      out.append("Game quit! Ending game state:" + "\n");
+      out.append("Game quit! Thank You for Playing Dungeon Adventure" + "\n");
       //+ element);
     } catch (IOException ioe) {
       throw new IllegalStateException("Append failed", ioe);

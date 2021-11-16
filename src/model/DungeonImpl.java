@@ -810,11 +810,15 @@ public class DungeonImpl implements Dungeon {
 
   @Override
   public boolean isGameOver() {
-    if (player.isPlayerAlive() || player.getPlayerLocation() != this.endPoint) {
+    if (player.isPlayerAlive() && !checkForEnd()) {
       return false;
     } else {
       return true;
     }
+  }
+
+  private boolean checkForEnd() {
+      return player.getPlayerLocation() == this.endPoint;
   }
 
   @Override
