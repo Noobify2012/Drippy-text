@@ -455,7 +455,12 @@ public class ConsoleController implements Controller {
                       || arrowDirection == Direction.EAST || arrowDirection == Direction.WEST)
                       && distance >= 0) {
                 try {
-                  d.shootArrow(distance, arrowDirection);
+                  String shotString = d.shootArrow(distance, arrowDirection);
+                  try {
+                    out.append(shotString + "\n");
+                  } catch (IOException ioe) {
+                    throw new IllegalStateException("Append failed", ioe);
+                  }
 //                  gameAction = false;
                 } catch (IllegalArgumentException iae) {
                   try {

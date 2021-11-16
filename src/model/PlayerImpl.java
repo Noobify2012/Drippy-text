@@ -204,7 +204,7 @@ public class PlayerImpl implements Player {
   }
 
   @Override
-  public void shoot(int distance, Direction direction) {
+  public String shoot(int distance, Direction direction) {
     if (distance < 0) {
       throw new IllegalArgumentException("Cannot shoot less than 0");
     }
@@ -213,17 +213,17 @@ public class PlayerImpl implements Player {
       throw new IllegalArgumentException("Must have a direction to shoot");
     }
     //make sure player has arrows and if so deduct 1, else throw error.
-    updateArrowCount();
-
+    String quiverString = updateArrowCount();
+    return quiverString;
   }
 
-  private void updateArrowCount() {
+  private String updateArrowCount() {
     if (quiver.size() == 0) {
       throw new IllegalArgumentException("Player doesn't have any arrows to shoot.");
     } else {
       quiver.remove(0);
       String quiverString = "The player has " + quiver.size() + " arrows remaining.";
-      Driver.printHelper(quiverString);
+      return quiverString;
     }
 
   }

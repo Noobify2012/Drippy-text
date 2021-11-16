@@ -144,4 +144,8 @@ public class Cave extends AbstractLocation {
     this.arrowList.add(arrow);
   }
 
+  Monster getMonster() {
+    return this.monsterList.get(0);
+  }
+
 }

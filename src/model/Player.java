@@ -42,6 +42,6 @@ public interface Player {
 
   String monsterEncounter(int monsterHealth, int rand);
 
-  void shoot(int distance, Direction direction);
+  String shoot(int distance, Direction direction);
 
 }

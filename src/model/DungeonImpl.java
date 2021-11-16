@@ -1006,7 +1006,8 @@ public class DungeonImpl implements Dungeon {
   }
 
   @Override
-  public void shootArrow(int distance, Direction direction) {
+  public String shootArrow(int distance, Direction direction) {
+    String finalShotString = "";
     if (distance < 0) {
       throw new IllegalArgumentException("Cannot shoot less than 0");
     }
@@ -1022,16 +1023,16 @@ public class DungeonImpl implements Dungeon {
 
       String shootString = "Fired an arrow " + distance + " spaces " + direction;
       //ConsoleController.outHelper(shootString);
-      Driver.printHelper(shootString);
-      player.shoot(distance, direction);
+      //Driver.printHelper(shootString);
+      String updateString = player.shoot(distance, direction);
+
+      finalShotString = finalShotString + "\n" + shootString + "\n" + updateString + "\n";
 
 
 
     }
     //move is valid move the player to the new cave
-//      for (int i = 0; i < finalEdgeList.size(); i++) {
-//        if (finalEdgeList.get(i).getLeftIndex() == player.getPlayerLocation()
-//                && direction == finalEdgeList.get(i).getDirectionToCave2()) {
+//
 //          //set the new player location to the right index
 //          player.move(finalEdgeList.get(i).getRightIndex(),
 //                  getPossibleDirection(finalEdgeList.get(i).getRightIndex()),
@@ -1045,21 +1046,107 @@ public class DungeonImpl implements Dungeon {
 //      }
 
     //decriment player arrow count by 1
-    int startingCaveIndex = this.player.getPlayerLocation();
     int nextCaveIndex = 0;
+    int monsterHealth = -1;
+    int currentIndex = this.player.getPlayerLocation();
+    Direction currentDirection = direction;
+    Direction nextDirection = null;
+    String shotString = "";
+    if (distance == 0
+            && findCaveByIndex(this.player.getPlayerLocation()).getMonsterListSize() == 1
+            && findCaveByIndex(this.player.getPlayerLocation()).getMonster().getHealth() != 0) {
+      monsterHealth = findCaveByIndex(this.player.getPlayerLocation()).getMonster().takeDamage();
+    } else if (distance == 0
+            && (findCaveByIndex(this.player.getPlayerLocation()).getMonsterListSize() != 1
+            || findCaveByIndex(this.player.getPlayerLocation()).getMonster().getHealth() == 0)) {
+      shotString = "The shot missed!";
+      Driver.printHelper(shotString);
 
-    while (distance > 0) {
-      //find next cave/tunnel that the arrow is entering
+    } else {
+      while (distance > 0) {
+        if (findCaveByIndex(currentIndex).getNeighbors().size() == 1) {
+//                && getPossibleDirection(currentIndex).get(0) != currentDirection) {
+          break;
+        }
+        for (int i = 0; i < finalEdgeList.size(); i++) {
+          //find the next cave based on current direction and current index;
+          if (finalEdgeList.get(i).getLeftIndex() == currentIndex
+                  && currentDirection == finalEdgeList.get(i).getDirectionToCave2()) {
+            nextCaveIndex = finalEdgeList.get(i).getRightIndex();
+          } else if (finalEdgeList.get(i).getRightIndex() == currentIndex
+                  && currentDirection == finalEdgeList.get(i).getDirectionToCave1()) {
+            nextCaveIndex = finalEdgeList.get(i).getLeftIndex();
+          }
+        }
 
-      break;
-      //check if going through a cave or tunnel
-      //if cave find out if there is an adjacent exit,
+        List<Direction> tempList = getPossibleDirection(nextCaveIndex);
+        if (tempList.contains(currentDirection) && tempList.size() != 2) {
+          nextDirection = currentDirection;
+          distance--;
+        } else if (tempList.size() == 2) {
+          for (int i = 0; i < 2; i++) {
+            if (tempList.get(i) != getOppositeDirection(currentDirection)) {
+              nextDirection = tempList.get(i);
+            }
+          }
+        } else if (distance != 1) {
+          shotString = "Zing! The arrow bounced off a wall.";
+          break;
+        } else {
+          currentIndex = nextCaveIndex;
+          break;
+        }
+        //next index becomes current
+//        currentIndex = nextCaveIndex;
+        //if the distance is zero quit, else set up for next round;
+
+        //handle tunnels
+        //if direction equals current direction then don't change it,
+        //if not direction !the opposite direction
+        //find next cave/tunnel that the arrow is entering
+
+        //check if going through a cave or tunnel
+        //if cave find out if there is an adjacent exit,
         //if so decriment and move on
-      //if not arrow hits the wall break out and message
+        //if not arrow hits the wall break out and message
 
-      //if tunnel check directions and adjust if its a bender, do not decriment
+        //if tunnel check directions and adjust if its a bender, do not decriment
+        currentIndex = nextCaveIndex;
+        currentDirection = nextDirection;
+      }
+      if (findCaveByIndex(currentIndex).getMonsterListSize() == 1
+              && findCaveByIndex(currentIndex).getMonster().getHealth() != 0) {
+        monsterHealth = findCaveByIndex(currentIndex).getMonster().takeDamage();
+      } else {
+
+      }
+
     }
+    if (monsterHealth == -1) {
+      finalShotString = finalShotString + shotString + "\n";
+    } else if (monsterHealth == 0) {
+      finalShotString = finalShotString + "A great howl echos through the dungeon and a loud "
+              + "crash as the monster falls over dead.\n";
+    } else {
+      finalShotString = finalShotString + "A great howl echos through the dungeon.\n";
+    }
+
+    return finalShotString;
     //check final location for monster, if monster present take damage and send message
     //if not tell user they missed
+  }
+
+  private Direction getOppositeDirection(Direction direction) {
+    Direction returnDirection = null;
+    if (direction == Direction.NORTH) {
+      returnDirection = Direction.SOUTH;
+    } else if (direction == Direction.SOUTH) {
+      returnDirection = Direction.NORTH;
+    } else if (direction == Direction.EAST) {
+      returnDirection = Direction.WEST;
+    } else if (direction == Direction.WEST) {
+      returnDirection = Direction.EAST;
+    }
+    return returnDirection;
   }
 }
