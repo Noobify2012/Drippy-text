@@ -1021,6 +1021,7 @@ public class DungeonImpl implements Dungeon {
       //TODO write shooting logic here
 
       String shootString = "Fired an arrow " + distance + " spaces " + direction;
+      //ConsoleController.outHelper(shootString);
       Driver.printHelper(shootString);
       player.shoot(distance, direction);
 
@@ -1044,12 +1045,16 @@ public class DungeonImpl implements Dungeon {
 //      }
 
     //decriment player arrow count by 1
+    int startingCaveIndex = this.player.getPlayerLocation();
+    int nextCaveIndex = 0;
 
     while (distance > 0) {
+      //find next cave/tunnel that the arrow is entering
+
       break;
       //check if going through a cave or tunnel
       //if cave find out if there is an adjacent exit,
-      //if so decriment and move on
+        //if so decriment and move on
       //if not arrow hits the wall break out and message
 
       //if tunnel check directions and adjust if its a bender, do not decriment
