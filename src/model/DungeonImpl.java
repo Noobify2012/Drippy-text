@@ -1,10 +1,6 @@
 package model;
 
-import controller.ConsoleController;
-import controller.Controller;
-import driver.Driver;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import random.RandomNumberGenerator;
 
@@ -25,7 +21,6 @@ public class DungeonImpl implements Dungeon {
   private int endPoint;
   private Player player;
   private List<Integer> shortestPath;
-  private Graph graph;
   private int difficulty;
   private RandomNumberGenerator randomNumberGenerator;
   private int genSeed;
@@ -68,7 +63,6 @@ public class DungeonImpl implements Dungeon {
     this.endPoint = 0;
     this.player = player;
     this.shortestPath = shortestPath;
-    this.graph = graph;
     this.difficulty = difficulty;
     this.randomNumberGenerator = new RandomNumberGenerator(genSeed);
     this.quitFlag = false;
@@ -106,7 +100,7 @@ public class DungeonImpl implements Dungeon {
                 + " graph.");
       }
     } else if (interconnect > 0 && wraps) {
-      //forumla derived by Madhira Datta
+      //formula derived by Madhira Datta
       int maxEdges = 2 * rows * columns;
       if (interconnect > maxEdges) {
         throw new IllegalArgumentException("Interconnectivity too high, beyond number of edges in"
@@ -214,59 +208,11 @@ public class DungeonImpl implements Dungeon {
     String initPlayerStat = player.getPlayerStatus(checkSmell(),
             findCaveByIndex(player.getPlayerLocation()));
 
-    //runBfs();
-
-    //runDfs();
-
-    //setUpPlayerDfs();
-
-    //runDungeon();
     String dungeonString = kruskalsString + "\n" + startString + "\n" + endPointString + "\n"
             + setUpString + "\n" + initPlayerStat;
     return dungeonString;
 
   }
-
-
-
-  //This is the code for running a depth first search of the edges which will run a player through
-  // all possible nodes
-  void runDfs() {
-    int nodes = rows * columns;
-    Graph g = new Graph(nodes);
-
-    for (int t = 0; t < finalEdgeList.size(); t++) {
-      g.addEdge(finalEdgeList.get(t).getLeftIndex(), finalEdgeList.get(t).getRightIndex());
-    }
-
-    this.shortestPath = g.dfs();
-    String dfsString = "\nThis is the DFS Path: " + this.shortestPath;
-    //Driver.printHelper(dfsString);
-  }
-
-//  //This executes the player's path through the dungeon
-//  private void runDungeon() {
-//    for (int i = 0; i < this.shortestPath.size(); i++) {
-//      //check for treasure, if it exists add it to the treasure bag, remove it from cave
-//      List<Treasure> caveTreasure = new ArrayList<>();
-//      if (findCaveByIndex(shortestPath.get(i)).getTreasureList() != null
-//              || findCaveByIndex(shortestPath.get(i)).getTreasureList().size() != 0) {
-//        caveTreasure = findCaveByIndex(shortestPath.get(i)).getTreasureList();
-//      }
-//
-//      if (i == this.shortestPath.size() - 1) {
-//        String endString = "\nThe has reached their end point! Their quest is over. "
-//                + "Lets check on our player.";
-//        Driver.printHelper(endString);
-//      }
-//      //player.move(shortestPath.get(i), getPossibleDirection(shortestPath.get(i)), caveTreasure);
-//
-//      //change player location
-//      //move to new index announcing direction traveled(get from edge)
-//      //run get player status
-//      player.getPlayerStatus(checkSmell());
-//    }
-//  }
 
   /**
    * This puts the player in their starting cave for navigating through dungeon for moving from the
@@ -294,26 +240,7 @@ public class DungeonImpl implements Dungeon {
       enterString = "\nThe Player enters the dungeon at Cave " + this.startPoint + ". They can"
               + " go " + dirString + ". They currently have no treasure.";
     }
-
     return enterString;
-    //Driver.printHelper(enterString);
-
-  }
-
-  /**
-   * This puts the player in their starting cave for navigating through dungeon for moving through
-   * all caves in the dungeon.
-   */
-  private void setUpPlayerDfs() {
-    //place the player in the dungeon at the cave index
-    player.enterDungeon(this.shortestPath.get(0),
-            findCaveByIndex(this.shortestPath.get(0)).getTreasureList(),
-            getPossibleDirection(this.shortestPath.get(0)));
-
-    String enterString = "\nThe Player enters the dungeon at Cave " + this.shortestPath.get(0)
-            + ". They currently have no treasure.";
-    Driver.printHelper(enterString);
-
   }
 
   /**A helper to get the directions from the next cave to give the player all the options for the
@@ -345,11 +272,7 @@ public class DungeonImpl implements Dungeon {
    * @return the index of the starting cave as an integer.
    */
   private String getStartPoint(List<Integer> caves) {
-
-//    RandomNumberGenerator rand = new RandomNumberGenerator(0, caves.size() - 1, 0,
-//            1);
     int startIndex = randomNumberGenerator.getRandomNumber(0, caves.size());
-    //caves.get(rand.getRandomNumber());
     this.startPoint = startIndex;
     return "The Player StartPoint is " + this.startPoint + ".";
   }
@@ -419,11 +342,9 @@ public class DungeonImpl implements Dungeon {
       for (int t = 0; t < allCaves.size(); t++) {
         if (!nonViable.contains(allCaves.get(t))) {
           viable.add(allCaves.get(t));
-          //System.out.print("\nViable end points: " + viable.toString());
         }
       }
       if (viable.size() != 1) {
-        //RandomNumberGenerator rand = new RandomNumberGenerator(0, viable.size() - 1, 0, 1);
         int endRand = randomNumberGenerator.getRandomNumber(0, viable.size());
         endPoint = viable.get(endRand);
       } else {
@@ -432,7 +353,6 @@ public class DungeonImpl implements Dungeon {
     }
     String endPointString = "The end point is cave : " + endPoint;
     this.endPoint = endPoint;
-    //Driver.printHelper(endPointString);
     return endPointString;
   }
 
@@ -442,15 +362,6 @@ public class DungeonImpl implements Dungeon {
    */
   private void findCaves(List<Integer> caves) {
     int treasureInt = 0;
-    //make list of caves, exclude tunnels
-//    for (int r = 0; r < rows; r++) {
-//      for (int c = 0; c < columns; c++) {
-//        if (gameboard[r][c].getNeighbors().size() != 2
-//                && !caves.contains(gameboard[r][c].getIndex())) {
-//          caves.add(gameboard[r][c].getIndex());
-//        }
-//      }
-//    }
 
     //calculate how many caves require treasure
     if (this.treasure != 0) {
@@ -458,10 +369,6 @@ public class DungeonImpl implements Dungeon {
       if (treasCaveNum == 0) {
         treasCaveNum++;
       }
-      //System.out.print("\nNumber of caves that need treasure: " + treasCaveNum);
-//      RandomNumberGenerator rand = new RandomNumberGenerator(0, caves.size() - 1,
-//              0, 1);
-//      RandomNumberGenerator rand2 = new RandomNumberGenerator(1, 3, 0, 1);
       TreasureImpl treasureFactory = new TreasureImpl();
       for (int t = 0; t < treasCaveNum; t++) {
         int treasureRand = randomNumberGenerator.getRandomNumber(1, 3);
@@ -492,14 +399,12 @@ public class DungeonImpl implements Dungeon {
 
     // add monster to end cave
     Monster endPointMonster = new Otyugh(2);
-    //TODO - figure out why this throws index out of bounds
     findCaveByIndex(endPoint).addMonster(endPointMonster);
 
     if (difficulty > 1 && difficulty < caves.size()) {
       int monsterCount = difficulty - 1;
       while (monsterCount > 0) {
 
-        //TODO - after random number gen fixed, verify monsters build properly
         int rand = randomNumberGenerator.getRandomNumber(0, caves.size());
         if (findCaveByIndex(caves.get(rand)).getMonsterListSize() == 0) {
           Monster caveMonster = new Otyugh(2);
@@ -639,160 +544,8 @@ public class DungeonImpl implements Dungeon {
     }
     String finalEdgeListString = "status of final edge list: " + finalEdgeList.toString();
     return finalEdgeListString;
-    //Driver.printHelper(finalEdgeListString);
   }
 
-  /**
-   * Runs a breadth first search to generate the shortest path for the player to navigate the
-   * dungeon.
-   */
-  //code adapted from https://www.geeksforgeeks.org/shortest-path-unweighted-graph/?ref=lbp
-  private void runBfs() {
-    // No of vertices
-    int v = rows * columns;
-
-    // Adjacency list for storing which vertices are connected
-
-    ArrayList<ArrayList<Integer>> adj = new ArrayList<ArrayList<Integer>>(v);
-    for (int i = 0; i < v; i++) {
-      adj.add(new ArrayList<Integer>());
-    }
-
-    // Creating graph given in the above diagram.
-    // add_edge function takes adjacency list, source
-    // and destination vertex as argument and forms
-    // an edge between them.
-    for (int i = 0; i < finalEdgeList.size(); i++) {
-      addEdge(adj, finalEdgeList.get(i).getLeftIndex(), finalEdgeList.get(i).getRightIndex());
-    }
-    int source = this.startPoint;
-    int dest = this.endPoint;
-    this.shortestPath = printShortestDistance(adj, source, dest, v);
-
-  }
-
-  // function to form edge between two vertices
-  // source and dest
-
-  /**Adds an edge to the adjaceny list with the index of two nodes for determining the shortest
-   * path. Helper for the breadth first search.
-   *
-   * @param adj the adjacency list for doing the breadth first search.
-   * @param i the index of one of the two nodes that were selected as edges in the graph.
-   * @param j the index of the second of the two nodes that were selected as edges in the graph.
-   */
-  private static void addEdge(ArrayList<ArrayList<Integer>> adj, int i, int j) {
-    adj.get(i).add(j);
-    adj.get(j).add(i);
-  }
-
-  // function to print the shortest distance and path
-  // between source vertex and destination vertex
-
-  /**Builds the shortest path for the player to navigate the dungeon.
-   *
-   * @param adj the adjacency list with the nodes added to it for determine the shortest path. It
-   *            must have already had all the final nodes added to it.
-   * @param s the index of the starting node.
-   * @param dest the destination index.
-   * @param v the number of vertices or nodes in the graph.
-   * @return the array list of integers with the shortest path for the player to navigate.
-   */
-  private static List<Integer> printShortestDistance(ArrayList<ArrayList<Integer>> adj, int s,
-                                                     int dest, int v) {
-    // predecessor[i] array stores predecessor of
-    // i and distance array stores distance of i
-    // from s
-    int pred[] = new int[v];
-    int dist[] = new int[v];
-
-    if (bfs(adj, s, dest, v, pred, dist) == false) {
-      throw new IllegalStateException("Given source and destination are not connected");
-    }
-
-    // LinkedList to store path
-    LinkedList<Integer> path = new LinkedList<Integer>();
-    int crawl = dest;
-    path.add(crawl);
-    while (pred[crawl] != -1) {
-      path.add(pred[crawl]);
-      crawl = pred[crawl];
-    }
-
-    // Print distance
-
-    List<Integer> pathList = new ArrayList<>();
-    for (int i = path.size() - 1; i >= 0; i--) {
-      pathList.add(path.get(i));
-    }
-    String pathString = "Final path: " + pathList;
-    Driver.printHelper(pathString);
-    return pathList;
-  }
-
-  // a modified version of BFS that stores predecessor
-  // of each vertex in array pred
-  // and its distance from source in array dist
-
-  /**Performs the breadth first search for finding the shortest path to from the start point to the
-   * end point.
-   *
-   * @param adj the adjacency list of integers with all of the edges added to
-   * @param src the start point index
-   * @param dest the end point index
-   * @param v the total number of nodes in the dungeon
-   * @param pred an array that stores the predecessor of the node being processed.
-   * @param dist an array that stores the distance of a node from the end.
-   * @return a boolean which indicates if the search has reached its end point.
-   */
-  private static boolean bfs(ArrayList<ArrayList<Integer>> adj, int src,
-                             int dest, int v, int pred[], int dist[]) {
-    // a queue to maintain queue of vertices whose
-    // adjacency list is to be scanned as per normal
-    // BFS algorithm using LinkedList of Integer type
-
-    // boolean array visited[] which stores the
-    // information whether ith vertex is reached
-    // at least once in the Breadth first search
-    boolean visited[] = new boolean[v];
-
-    // initially all vertices are unvisited
-    // so v[i] for all i is false
-    // and as no path is yet constructed
-    // dist[i] for all i set to infinity
-    for (int i = 0; i < v; i++) {
-      visited[i] = false;
-      dist[i] = Integer.MAX_VALUE;
-      pred[i] = -1;
-    }
-    LinkedList<Integer> queue = new LinkedList<Integer>();
-
-    // now source is first to be visited and
-    // distance from source to itself should be 0
-    visited[src] = true;
-    dist[src] = 0;
-    queue.add(src);
-
-    // bfs Algorithm
-    while (!queue.isEmpty()) {
-      int u = queue.remove();
-      for (int i = 0; i < adj.get(u).size(); i++) {
-        if (visited[adj.get(u).get(i)] == false) {
-          visited[adj.get(u).get(i)] = true;
-          dist[adj.get(u).get(i)] = dist[u] + 1;
-          pred[adj.get(u).get(i)] = u;
-          queue.add(adj.get(u).get(i));
-
-          // stopping condition (when we find
-          // our destination)
-          if (adj.get(u).get(i) == dest) {
-            return true;
-          }
-        }
-      }
-    }
-    return false;
-  }
 
   @Override
   public int getGameBoardRows() {
@@ -856,10 +609,6 @@ public class DungeonImpl implements Dungeon {
                   getPossibleDirection(finalEdgeList.get(i).getLeftIndex()));
         }
       }
-
-      //TODO - finish the move stuff, check for monsters,
-
-
       //check if the cave is the end point
       if (player.getPlayerLocation() == this.endPoint) {
         moveString = "\nPlayer has reached final cave\n";
@@ -871,22 +620,16 @@ public class DungeonImpl implements Dungeon {
               && findCaveByIndex(player.getPlayerLocation()).getMonsterHealth() == 2) {
         encounterString = player.monsterEncounter(findCaveByIndex(player.getPlayerLocation())
                 .getMonsterHealth(), 0);
-        //TODO - find out why player gets eaten doesn't work
-
-
         //the player dies
       } else if (findCaveByIndex(player.getPlayerLocation()).getMonsterListSize() == 1
               && findCaveByIndex(player.getPlayerLocation()).getMonsterHealth() == 1) {
         //player has 50/50 shot of escaping
-
         int returnInt = randomNumberGenerator.getRandomNumber(0, 2);
         if (returnInt == 0) {
           //player escapes
           encounterString = player.monsterEncounter(findCaveByIndex(player.getPlayerLocation())
                   .getMonsterHealth(), returnInt);
-          //TODO print message about player escaping monster
         } else {
-          //TODO player gets eaten - message works need to fix functionality
           encounterString = player.monsterEncounter(findCaveByIndex(player.getPlayerLocation())
                   .getMonsterHealth(), returnInt);
         }
@@ -898,21 +641,13 @@ public class DungeonImpl implements Dungeon {
                   .getMonsterHealth(), 0);
         }
         //monster is dead do nothing
-        //TODO message about dead monster
-
-
       }
-
-
-
 
       //check for smell;
       String statusString = "";
       if (player.isPlayerAlive()) {
         statusString = player.getPlayerStatus(checkSmell(), findCaveByIndex(player.getPlayerLocation()));
       }
-
-
       //update player location and check around them for stuff.
 
       //update player status
@@ -958,7 +693,6 @@ public class DungeonImpl implements Dungeon {
     List<Integer> checked = new ArrayList<>();
     List<Integer> listToCheck = new ArrayList<>();
     List<Integer> listToLoop = new ArrayList<>();
-    int smellFactor = 0;
     //find the neighbors of the current location
     checked.add(player.getPlayerLocation());
     for (int i = 0; i < findCaveByIndex(player.getPlayerLocation()).getNeighbors().size(); i++) {
@@ -995,19 +729,12 @@ public class DungeonImpl implements Dungeon {
             }
           }
         }
-        //add current neighbor node to list of indexes to check and nonviable
       }
-//      for (int r = 0; r < temp; r++) {
-//        listToCheck.remove(0);
-//      }
     }
 //
     for (int l = 0; l < listToCheck.size(); l++) {
       if (findCaveByIndex(listToCheck.get(l)).getMonsterListSize() == 1
               && findCaveByIndex(listToCheck.get(l)).getMonsterHealth() > 0) {
-//        if (l <= smellFactor) {
-//          smell++;
-//        }
         smell++;
       }
     }
@@ -1032,29 +759,11 @@ public class DungeonImpl implements Dungeon {
     if (!getPossibleDirection(player.getPlayerLocation()).contains(direction)) {
       throw new IllegalArgumentException("Can't shoot that way");
     } else {
-      //TODO write shooting logic here
-
       String shootString = "Fired an arrow " + distance + " spaces " + direction;
-      //ConsoleController.outHelper(shootString);
-      //Driver.printHelper(shootString);
       String updateString = player.shoot(distance, direction);
-
       finalShotString = finalShotString + "\n" + shootString + "\n" + updateString + "\n";
 
     }
-    //move is valid move the player to the new cave
-//
-//          //set the new player location to the right index
-//          player.move(finalEdgeList.get(i).getRightIndex(),
-//                  getPossibleDirection(finalEdgeList.get(i).getRightIndex()),
-//                  findCaveByIndex(finalEdgeList.get(i).getRightIndex()).getTreasureFromCave());
-//        } else if (finalEdgeList.get(i).getRightIndex() == player.getPlayerLocation()
-//                && direction == finalEdgeList.get(i).getDirectionToCave1()) {
-//          player.move(finalEdgeList.get(i).getLeftIndex(),
-//                  getPossibleDirection(finalEdgeList.get(i).getLeftIndex()),
-//                  findCaveByIndex(finalEdgeList.get(i).getLeftIndex()).getTreasureFromCave());
-//        }
-//      }
 
     //decriment player arrow count by 1
     int nextCaveIndex = 0;
@@ -1071,12 +780,10 @@ public class DungeonImpl implements Dungeon {
             && (findCaveByIndex(this.player.getPlayerLocation()).getMonsterListSize() != 1
             || findCaveByIndex(this.player.getPlayerLocation()).getMonster().getHealth() == 0)) {
       shotString = "The shot missed!";
-      //Driver.printHelper(shotString);
 
     } else {
       while (distance > 0) {
         if (findCaveByIndex(currentIndex).getNeighbors().size() == 1) {
-//                && getPossibleDirection(currentIndex).get(0) != currentDirection) {
           break;
         }
         for (int i = 0; i < finalEdgeList.size(); i++) {
@@ -1108,7 +815,6 @@ public class DungeonImpl implements Dungeon {
           break;
         }
         //next index becomes current
-//        currentIndex = nextCaveIndex;
         //if the distance is zero quit, else set up for next round;
 
         //handle tunnels
@@ -1128,8 +834,6 @@ public class DungeonImpl implements Dungeon {
       if (findCaveByIndex(currentIndex).getMonsterListSize() == 1
               && findCaveByIndex(currentIndex).getMonster().getHealth() != 0) {
         monsterHealth = findCaveByIndex(currentIndex).getMonster().takeDamage();
-      } else {
-
       }
 
     }
@@ -1149,7 +853,7 @@ public class DungeonImpl implements Dungeon {
 
   @Override
   public String pickUpItem(int option) {
-    String pickupString = "";
+    String pickupString;
     if (option < 0 || option >= 3) {
       throw new IllegalArgumentException("that is not an option for pickup");
     } else {

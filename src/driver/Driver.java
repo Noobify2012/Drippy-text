@@ -135,7 +135,7 @@ public class Driver {
    *
    * @param printString The string being passed that is supposed to be printed.
    */
-  public static void printHelper(String printString) {
-    System.out.println(printString);
-  }
+//  public static void printHelper(String printString) {
+//    System.out.println(printString);
+//  }
 }
