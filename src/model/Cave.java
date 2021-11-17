@@ -146,7 +146,6 @@ public class Cave extends AbstractLocation {
   }
 
   int getMonsterHealth() {
-    //TODO - figure out why i can't do this
     if (this.monsterList.isEmpty()) {
       return 0;
     } else {

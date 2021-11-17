@@ -188,7 +188,6 @@ public class DungeonImpl implements Dungeon {
         }
       }
     }
-    getDungeon();
   }
 
 
@@ -196,13 +195,13 @@ public class DungeonImpl implements Dungeon {
    * This builds all aspects of the dungeon including finding the start and end point. Adding
    * treasure and placing the player in the dungeon and running them through the path.
    */
-  public void getDungeon() {
+  public String getDungeon() {
     //runs Kruscals, adds interconnectivity
-    runKruscals();
+    String kruskalsString = runKruscals();
     //generates a start point by index
-    this.startPoint = getStartPoint(getCavesByIndex());
+    String startString = getStartPoint(getCavesByIndex());
     //finds a viable end point
-    this.endPoint = findEndPoint(this.startPoint);
+    String endPointString = findEndPoint(this.startPoint);
     //find caves and adds Treasure
     findCaves(getCavesByIndex());
 
@@ -210,7 +209,10 @@ public class DungeonImpl implements Dungeon {
 
     addArrows();
 
-    setUpPlayer();
+    String setUpString = setUpPlayer();
+
+    String initPlayerStat = player.getPlayerStatus(checkSmell(),
+            findCaveByIndex(player.getPlayerLocation()));
 
     //runBfs();
 
@@ -219,6 +221,9 @@ public class DungeonImpl implements Dungeon {
     //setUpPlayerDfs();
 
     //runDungeon();
+    String dungeonString = kruskalsString + "\n" + startString + "\n" + endPointString + "\n"
+            + setUpString + "\n" + initPlayerStat;
+    return dungeonString;
 
   }
 
@@ -236,7 +241,7 @@ public class DungeonImpl implements Dungeon {
 
     this.shortestPath = g.dfs();
     String dfsString = "\nThis is the DFS Path: " + this.shortestPath;
-    Driver.printHelper(dfsString);
+    //Driver.printHelper(dfsString);
   }
 
 //  //This executes the player's path through the dungeon
@@ -267,7 +272,7 @@ public class DungeonImpl implements Dungeon {
    * This puts the player in their starting cave for navigating through dungeon for moving from the
    * start point to the end point.
    */
-  private void setUpPlayer() {
+  private String setUpPlayer() {
     //place the player in the dungeon at the cave index
     player.enterDungeon(this.startPoint, findCaveByIndex(this.startPoint).getTreasureList(),
             getPossibleDirection(this.startPoint));
@@ -290,8 +295,8 @@ public class DungeonImpl implements Dungeon {
               + " go " + dirString + ". They currently have no treasure.";
     }
 
-
-    Driver.printHelper(enterString);
+    return enterString;
+    //Driver.printHelper(enterString);
 
   }
 
@@ -339,13 +344,14 @@ public class DungeonImpl implements Dungeon {
    * @param caves takes an array list of caves to select from
    * @return the index of the starting cave as an integer.
    */
-  private int getStartPoint(List<Integer> caves) {
+  private String getStartPoint(List<Integer> caves) {
 
 //    RandomNumberGenerator rand = new RandomNumberGenerator(0, caves.size() - 1, 0,
 //            1);
     int startIndex = randomNumberGenerator.getRandomNumber(0, caves.size());
     //caves.get(rand.getRandomNumber());
-    return startIndex;
+    this.startPoint = startIndex;
+    return "The Player StartPoint is " + this.startPoint + ".";
   }
 
   /**This finds the end point by searching through all nodes within 5 moves of the start node by
@@ -355,7 +361,7 @@ public class DungeonImpl implements Dungeon {
    * @param startIndex takes in the start index as an integer.
    * @return the end point index as an integer.
    */
-  private int findEndPoint(int startIndex) {
+  private String findEndPoint(int startIndex) {
     List<Integer> nonViable = new ArrayList<>();
     List<Integer> viable = new ArrayList<>();
     List<Integer> allCaves = getCavesByIndex();
@@ -425,8 +431,9 @@ public class DungeonImpl implements Dungeon {
       }
     }
     String endPointString = "The end point is cave : " + endPoint;
-    Driver.printHelper(endPointString);
-    return endPoint;
+    this.endPoint = endPoint;
+    //Driver.printHelper(endPointString);
+    return endPointString;
   }
 
   /**This is used for setting up the caves and adding treasure.
@@ -559,7 +566,7 @@ public class DungeonImpl implements Dungeon {
    * This runs Kruscal's algorithm on the edges which have been generated and produces a complete
    * dungeon.
    */
-  private void runKruscals() {
+  private String runKruscals() {
     //start condition - every cave in own set
 //    RandomNumberGenerator rand = new RandomNumberGenerator(0, this.getPotEdgeList().size(), 0, 1);
 //    Random randGen = new Random(rand.getRandomNumber());
@@ -631,7 +638,8 @@ public class DungeonImpl implements Dungeon {
       }
     }
     String finalEdgeListString = "status of final edge list: " + finalEdgeList.toString();
-    Driver.printHelper(finalEdgeListString);
+    return finalEdgeListString;
+    //Driver.printHelper(finalEdgeListString);
   }
 
   /**
@@ -1063,7 +1071,7 @@ public class DungeonImpl implements Dungeon {
             && (findCaveByIndex(this.player.getPlayerLocation()).getMonsterListSize() != 1
             || findCaveByIndex(this.player.getPlayerLocation()).getMonster().getHealth() == 0)) {
       shotString = "The shot missed!";
-      Driver.printHelper(shotString);
+      //Driver.printHelper(shotString);
 
     } else {
       while (distance > 0) {

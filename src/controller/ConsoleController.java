@@ -236,6 +236,14 @@ public class ConsoleController implements Controller {
         try {
           Dungeon test = new DungeonImpl(wraps, rows, columns, interconnect, treasPer, player,
                   diff, 1);
+          String dungeonBuilder = test.getDungeon();
+          try {
+            //String element = scan.next();
+            out.append(dungeonBuilder + "\n");
+            //+ element);
+          } catch (IOException ioe) {
+            throw new IllegalStateException("Append failed", ioe);
+          }
           playGame(test);
 //          test.getDungeon();
         } catch (IllegalArgumentException iae) {

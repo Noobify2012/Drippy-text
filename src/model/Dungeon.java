@@ -23,7 +23,7 @@ public interface Dungeon {
   /** A helper to set up the dungeon and run the player through their predesignated path.
    *
    */
-  void getDungeon();
+  String getDungeon();
 
   /**A getter method that returns the list of final edges after Kruskal's has been run.
    *
