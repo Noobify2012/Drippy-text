@@ -62,7 +62,6 @@ public class ConsoleController implements Controller {
         // is first thing either an int or char, request new input
         if (next.equalsIgnoreCase("q")) {
           //get game state, append, and quit method.
-          //TODO Build quit game method
           quitGame(q);
           quitFlag = true;
           firstBool = true;
@@ -248,20 +247,6 @@ public class ConsoleController implements Controller {
         getBuildArgs = true;
       }
     }
-
-    // if int look for second int
-    // if char check for q,
-    // if q append game over message, and return game state with new line character appended
-    // if char not q or token not int then throw illegal arg error
-
-    //if valid int pass to model, check valid integer model method
-
-    //prepare for model throwing error if invalid input
-
-    //check model for turn
-
-
-
   }
 
   private boolean validBool(String next) {
@@ -328,12 +313,12 @@ public class ConsoleController implements Controller {
         } else {
           gameAction = validateAction(next);
           if (gameAction == true) {
-            try {
-              //String element = scan.next();
-              out.append("got a valid action\n");
-            } catch (IOException ioe) {
-              throw new IllegalStateException("Append failed", ioe);
-            }
+//            try {
+//              //String element = scan.next();
+//              out.append("got a valid action\n");
+//            } catch (IOException ioe) {
+//              throw new IllegalStateException("Append failed", ioe);
+//            }
 
             Direction playerDirection = null;
             if (next.equalsIgnoreCase("move") || next.equalsIgnoreCase("m")
@@ -397,12 +382,12 @@ public class ConsoleController implements Controller {
                     || next.equalsIgnoreCase("shoot")) {
               // get distance and direction
               Direction arrowDirection = null;
-              try {
-                //String element = scan.next();
-                out.append("which direction?\n");
-              } catch (IOException ioe) {
-                throw new IllegalStateException("Append failed", ioe);
-              }
+//              try {
+//                //String element = scan.next();
+//                out.append("which direction?\n");
+//              } catch (IOException ioe) {
+//                throw new IllegalStateException("Append failed", ioe);
+//              }
 
               if (next2.equalsIgnoreCase("North")
                       || next2.equalsIgnoreCase("n")) {

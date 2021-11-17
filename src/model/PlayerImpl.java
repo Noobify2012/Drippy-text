@@ -71,15 +71,12 @@ public class PlayerImpl implements Player {
    *
    */
   public String getPlayerStatus(int smell, Cave cave) {
-
-    //TODO need to change to take a cave so arrow pick up easier
     String treasureString = "";
     if (this.treasureList == null || this.treasureList.size() == 0) {
       treasureString = "nothing";
     } else {
       for (int i = 0; i < this.treasureList.size(); i++) {
         treasureString = getTreasureString(this.treasureList);
-        //treasureString + " " + this.treasureList.get(i).getName() + ",";
       }
     }
 
@@ -100,7 +97,6 @@ public class PlayerImpl implements Player {
     } else {
       for (int i = 0; i < cave.getTreasureList().size(); i++) {
         curTreasureString = getTreasureString(cave.getTreasureList());
-        //curTreasureString + " " + this.currentTreasure.get(i).getName() + ",";
       }
     }
 
@@ -112,8 +108,6 @@ public class PlayerImpl implements Player {
       //arrowstring says it has something.
       arrowString = "an arrow";
     }
-
-    //TODO Pass in cave and refactor
 
     String monsterString = "";
     String playerString = "The player is currently in Cave " + playerLocation + " and has "
@@ -240,7 +234,7 @@ public class PlayerImpl implements Player {
     if (cave.getTreasureList().size() == 0) {
       treasureString = "\nThere is no treasure for the player to pick up.";
     } else {
-      treasureString = getTreasureString(cave.getTreasureList());
+      treasureString = "The player picked up " + getTreasureString(cave.getTreasureList());
       treasList = cave.getTreasureFromCave();
     }
     for (int i = 0; i < treasList.size(); i++) {

@@ -855,7 +855,7 @@ public class DungeonImpl implements Dungeon {
     if (option < 0 || option >= 3) {
       throw new IllegalArgumentException("that is not an option for pickup");
     } else {
-      pickupString = player.pickUp(findCaveByIndex(player.getPlayerLocation()), option)
+      pickupString = player.pickUp(findCaveByIndex(player.getPlayerLocation()), option) + "\n"
               + player.getPlayerStatus(checkSmell(), findCaveByIndex(player.getPlayerLocation()));
     }
     return pickupString;
