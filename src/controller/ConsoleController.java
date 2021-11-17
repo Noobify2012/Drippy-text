@@ -65,6 +65,7 @@ public class ConsoleController implements Controller {
       boolean valid = false;
 //        while (!validInput) {
       boolean firstBool = false;
+      Dungeon q = null;
 
       while (!firstBool && !quitFlag) {
         //check for next integer or character in the next token
@@ -73,7 +74,7 @@ public class ConsoleController implements Controller {
         if (next.equalsIgnoreCase("q")) {
           //get game state, append, and quit method.
           //TODO Build quit game method
-          quitGame();
+          quitGame(q);
           quitFlag = true;
           firstBool = true;
           //getBuildArgs = true;
@@ -105,7 +106,7 @@ public class ConsoleController implements Controller {
         // is first thing either an int or char, request new input
         if (next2.equalsIgnoreCase("q")) {
           //get game state, append, and quit method.
-          quitGame();
+          quitGame(q);
           quitFlag = true;
           firstInt = true;
           //validInput = true;
@@ -130,7 +131,7 @@ public class ConsoleController implements Controller {
         // is first thing either an int or char, request new input
         if (next3.equalsIgnoreCase("q")) {
           //get game state, append, and quit method.
-          quitGame();
+          quitGame(q);
           quitFlag = true;
           secondInt = true;
           //validInput = true;
@@ -155,7 +156,7 @@ public class ConsoleController implements Controller {
         // is first thing either an int or char, request new input
         if (next4.equalsIgnoreCase("q")) {
           //get game state, append, and quit method.
-          quitGame();
+          quitGame(q);
           quitFlag = true;
           thirdInt = true;
           //validInput = true;
@@ -180,7 +181,7 @@ public class ConsoleController implements Controller {
         // is first thing either an int or char, request new input
         if (next5.equalsIgnoreCase("q")) {
           //get game state, append, and quit method.
-          quitGame();
+          quitGame(q);
           quitFlag = true;
           forthInt = true;
           //validInput = true;
@@ -205,7 +206,7 @@ public class ConsoleController implements Controller {
         // is first thing either an int or char, request new input
         if (next6.equalsIgnoreCase("q")) {
           //get game state, append, and quit method.
-          quitGame();
+          quitGame(q);
           quitFlag = true;
           fifthInt = true;
           //validInput = true;
@@ -313,11 +314,10 @@ public class ConsoleController implements Controller {
   }
 
 
-  private void quitGame() {
+  private void quitGame(Dungeon d) {
     try {
-      //String element = scan.next();
-      out.append("Game quit! Thank You for Playing Dungeon Adventure" + "\n");
-      //+ element);
+      String quitString = d.quitGame();
+      out.append(quitString + "\n");
     } catch (IOException ioe) {
       throw new IllegalStateException("Append failed", ioe);
     }
@@ -347,7 +347,7 @@ public class ConsoleController implements Controller {
         // is first thing either an int or char, request new input
         if (next.equalsIgnoreCase("q")) {
           //get game state, append, and quit method.
-          quitGame();
+          quitGame(d);
           quitFlag = true;
           gameAction = true;
           //validInput = true;
@@ -489,21 +489,21 @@ public class ConsoleController implements Controller {
               if (next2.equalsIgnoreCase("t")
                       || next2.equalsIgnoreCase("treasure")) {
                 try {
-                  out.append(d.pickUpItem(1) + "\n");
+                  out.append(d.pickUpItem(0) + "\n");
                 } catch (IOException ioe) {
                   throw new IllegalStateException("Append failed", ioe);
                 }
               } else if (next2.equalsIgnoreCase("a")
                       || next2.equalsIgnoreCase("arrows")) {
                 try {
-                  out.append(d.pickUpItem(2) + "\n");
+                  out.append(d.pickUpItem(1) + "\n");
                 } catch (IOException ioe) {
                   throw new IllegalStateException("Append failed", ioe);
                 }
               } else if (next2.equalsIgnoreCase("b")
                       || next2.equalsIgnoreCase("both")) {
                 try {
-                  out.append(d.pickUpItem(3) + "\n");
+                  out.append(d.pickUpItem(2) + "\n");
                 } catch (IOException ioe) {
                   throw new IllegalStateException("Append failed", ioe);
                 }

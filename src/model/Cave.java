@@ -118,7 +118,7 @@ public class Cave extends AbstractLocation {
         treasureForPlayer.add(i, this.caveTreasureList.get(i));
       }
     }
-    this.caveTreasureList = null;
+    this.caveTreasureList.remove(0);
     return treasureForPlayer;
   }
 
@@ -129,7 +129,7 @@ public class Cave extends AbstractLocation {
         arrowsForPlayer.add(i, this.arrowList.get(i));
       }
     }
-    this.arrowList = null;
+    this.arrowList.remove(0);
     return arrowsForPlayer;
   }
 

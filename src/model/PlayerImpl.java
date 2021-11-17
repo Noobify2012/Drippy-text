@@ -231,7 +231,7 @@ public class PlayerImpl implements Player {
         pickupString = pickupString + arrowString;
       }
       //pick up arrows
-    } else if (option == 3) {
+    } else if (option == 2) {
       if (cave.getTreasureList().size() == 0 && cave.getArrowListSize() == 0) {
         pickupString = "\nThere is no treasure or arrows for the player to pick up.";
       } else {

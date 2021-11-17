@@ -29,6 +29,7 @@ public class DungeonImpl implements Dungeon {
   private int difficulty;
   private RandomNumberGenerator randomNumberGenerator;
   private int genSeed;
+  private boolean quitFlag;
 
   /**This creates a dungeon that requires the specification of whether the dungeon should wrap or
    * not. How many rows and columns there should be specified as integers. The degree of
@@ -70,6 +71,7 @@ public class DungeonImpl implements Dungeon {
     this.graph = graph;
     this.difficulty = difficulty;
     this.randomNumberGenerator = new RandomNumberGenerator(genSeed);
+    this.quitFlag = false;
 
 
 
@@ -810,7 +812,7 @@ public class DungeonImpl implements Dungeon {
 
   @Override
   public boolean isGameOver() {
-    if (player.isPlayerAlive() && !checkForEnd()) {
+    if (player.isPlayerAlive() && !checkForEnd() && !quitFlag) {
       return false;
     } else {
       return true;
@@ -1140,13 +1142,22 @@ public class DungeonImpl implements Dungeon {
   @Override
   public String pickUpItem(int option) {
     String pickupString = "";
-    if (option <= 0 || option > 3) {
+    if (option < 0 || option >= 3) {
       throw new IllegalArgumentException("that is not an option for pickup");
     } else {
       pickupString = player.pickUp(findCaveByIndex(player.getPlayerLocation()), option) +
       player.getPlayerStatus(checkSmell(), findCaveByIndex(player.getPlayerLocation()));
     }
     return pickupString;
+  }
+
+  @Override
+  public String quitGame() {
+    String quitString = "Game quit! Thank You for Playing Dungeon Adventure.\n";
+    String finalPlayerStatus = player.getPlayerStatus(checkSmell(),
+            findCaveByIndex(player.getPlayerLocation()));
+    quitFlag = true;
+    return quitString + finalPlayerStatus;
   }
 
   private Direction getOppositeDirection(Direction direction) {

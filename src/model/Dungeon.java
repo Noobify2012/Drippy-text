@@ -57,4 +57,6 @@ public interface Dungeon {
 
   String pickUpItem(int option);
 
+  String quitGame();
+
 }
