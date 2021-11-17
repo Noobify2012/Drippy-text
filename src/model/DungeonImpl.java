@@ -473,8 +473,6 @@ public class DungeonImpl implements Dungeon {
    */
   private String runKruscals() {
     //start condition - every cave in own set
-//    RandomNumberGenerator rand = new RandomNumberGenerator(0, this.getPotEdgeList().size(), 0, 1);
-//    Random randGen = new Random(rand.getRandomNumber());
     boolean exitCond = false;
     List<Integer> setList = new ArrayList<>();
     for (int s = 0; s < rows * columns; s++) {
@@ -581,7 +579,7 @@ public class DungeonImpl implements Dungeon {
   }
 
   private boolean checkForEnd() {
-      return player.getPlayerLocation() == this.endPoint;
+    return player.getPlayerLocation() == this.endPoint;
   }
 
   @Override
@@ -646,12 +644,13 @@ public class DungeonImpl implements Dungeon {
       //check for smell;
       String statusString = "";
       if (player.isPlayerAlive()) {
-        statusString = player.getPlayerStatus(checkSmell(), findCaveByIndex(player.getPlayerLocation()));
+        statusString = player.getPlayerStatus(checkSmell(),
+                findCaveByIndex(player.getPlayerLocation()));
       }
       //update player location and check around them for stuff.
 
       //update player status
-      moveString = moveString + "\n" + encounterString + "\n" + statusString ;
+      moveString = moveString + "\n" + encounterString + "\n" + statusString;
     }
     return moveString;
   }
@@ -682,7 +681,6 @@ public class DungeonImpl implements Dungeon {
       if (findCaveByIndex(rand).getArrowListSize() == 0) {
         CrookedArrow arrow = new CrookedArrow();
         findCaveByIndex(rand).addArrow(arrow);
-//      add build an arrow
         arrowNum--;
       }
     }
@@ -731,7 +729,7 @@ public class DungeonImpl implements Dungeon {
         }
       }
     }
-//
+
     for (int l = 0; l < listToCheck.size(); l++) {
       if (findCaveByIndex(listToCheck.get(l)).getMonsterListSize() == 1
               && findCaveByIndex(listToCheck.get(l)).getMonsterHealth() > 0) {
@@ -857,8 +855,8 @@ public class DungeonImpl implements Dungeon {
     if (option < 0 || option >= 3) {
       throw new IllegalArgumentException("that is not an option for pickup");
     } else {
-      pickupString = player.pickUp(findCaveByIndex(player.getPlayerLocation()), option) +
-      player.getPlayerStatus(checkSmell(), findCaveByIndex(player.getPlayerLocation()));
+      pickupString = player.pickUp(findCaveByIndex(player.getPlayerLocation()), option)
+              + player.getPlayerStatus(checkSmell(), findCaveByIndex(player.getPlayerLocation()));
     }
     return pickupString;
   }

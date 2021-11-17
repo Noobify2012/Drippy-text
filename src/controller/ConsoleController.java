@@ -52,18 +52,7 @@ public class ConsoleController implements Controller {
     boolean getBuildArgs = false;
     while (!getBuildArgs) {
       boolean quitFlag = false;
-//      next = scan.next();
-
-      //while game is not over keep looping
-      //check if game is over, conditions one player wins, stalemate or player quits, is game over
-//      while (!m.isGameOver() && !quitFlag) {
-
-//        getGameState(m);
-
-//        announceMove(m.getTurn());
-
       boolean valid = false;
-//        while (!validInput) {
       boolean firstBool = false;
       Dungeon q = null;
 
@@ -83,14 +72,12 @@ public class ConsoleController implements Controller {
           firstBool = validBool(next);
           if (firstBool == true) {
             try {
-              //String element = scan.next();
               out.append("got a valid wrap\n");
             } catch (IOException ioe) {
               throw new IllegalStateException("Append failed", ioe);
             }
           } else {
             try {
-              //String element = scan.next();
               out.append("invalid wrap value please enter true or false\n");
             } catch (IOException ioe) {
               throw new IllegalStateException("Append failed", ioe);
@@ -109,13 +96,11 @@ public class ConsoleController implements Controller {
           quitGame(q);
           quitFlag = true;
           firstInt = true;
-          //validInput = true;
           break;
         } else {
           firstInt = validateInput(next2);
           if (firstInt == true) {
             try {
-              //String element = scan.next();
               out.append("got a valid row\n");
             } catch (IOException ioe) {
               throw new IllegalStateException("Append failed", ioe);
@@ -238,34 +223,26 @@ public class ConsoleController implements Controller {
                   diff, 1);
           String dungeonBuilder = test.getDungeon();
           try {
-            //String element = scan.next();
             out.append(dungeonBuilder + "\n");
-            //+ element);
           } catch (IOException ioe) {
             throw new IllegalStateException("Append failed", ioe);
           }
           playGame(test);
-//          test.getDungeon();
         } catch (IllegalArgumentException iae) {
           try {
-            //String element = scan.next();
             out.append(iae.getMessage() + "\n");
-            //+ element);
           } catch (IOException ioe) {
             throw new IllegalStateException("Append failed", ioe);
           }
         } catch (IllegalStateException ise) {
           try {
-            //String element = scan.next();
             out.append(ise.getMessage() + "\n");
             firstInt = false;
             secondInt = false;
-            //+ element);
           } catch (IOException ioe) {
             throw new IllegalStateException("Append failed", ioe);
           }
         }
-        //getBuildArgs = processMove(next, next2, m);
       }
       if (firstBool && firstInt && secondInt && thirdInt && forthInt && fifthInt && !quitFlag) {
         getBuildArgs = true;
@@ -283,19 +260,7 @@ public class ConsoleController implements Controller {
 
     //check model for turn
 
-    //scan.close();
-//    if (m.getWinner() != null || m.isGameOver()) {
-//      declareWinner(m.getWinner(), m);
-//    }
 
-
-    //build parameter loops here
-
-
-    //while(!d.isGameOver())
-
-
-      //implement how to get the game
 
   }
 
@@ -418,7 +383,6 @@ public class ConsoleController implements Controller {
                   } catch (IOException ioe) {
                     throw new IllegalStateException("Append failed", ioe);
                   }
-//                  gameAction = false;
                 } catch (IllegalArgumentException iae) {
                   try {
                     out.append(iae.getMessage() + "\n");
@@ -483,7 +447,6 @@ public class ConsoleController implements Controller {
                   } catch (IOException ioe) {
                     throw new IllegalStateException("Append failed", ioe);
                   }
-//                  gameAction = false;
                 } catch (IllegalArgumentException iae) {
                   try {
                     out.append(iae.getMessage() + "\n");
@@ -522,30 +485,6 @@ public class ConsoleController implements Controller {
           }
         }
 
-
-//      String testMove = "Please enter which direction you would like to move.";
-//      Driver.printHelper(testMove);
-//      Scanner in2 = new Scanner(System.in);
-//      String input2 = in2.nextLine();
-//
-//      String inputChunks2[] = new String[1];
-//      inputChunks2 = input2.split(" ");
-//      Driver.printHelper(inputChunks2[0]);
-//      Direction playerDirection = null;
-//      if (inputChunks2[0].equalsIgnoreCase("North")) {
-//        playerDirection = Direction.NORTH;
-//      } else if (inputChunks2[0].equalsIgnoreCase("South")) {
-//        playerDirection = Direction.SOUTH;
-//      } else if (inputChunks2[0].equalsIgnoreCase("East")) {
-//        playerDirection = Direction.EAST;
-//      } else if (inputChunks2[0].equalsIgnoreCase("West")) {
-//        playerDirection = Direction.WEST;
-//      }
-//      printHelper("the direction the player is going to move: " + playerDirection);
-//      test.movePlayer(playerDirection);
-//      String hope = "Hopefully the player moved";
-//      printHelper(hope);
-//      player.getPlayerStatus();
       }
 
     }

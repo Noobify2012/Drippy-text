@@ -9,7 +9,6 @@ public class RandomNumberGenerator {
   private int min;
   private int max;
   private int seed;
-  private int listSize;
   private Random generator;
 
 
@@ -17,12 +16,7 @@ public class RandomNumberGenerator {
    * needs of different methods. A seed can be used to help predict the sequence of numbers but is
    * strictly for testing purposes.
    *
-   * @param min An integer which represents the minimum value required for generating random
-   *            numbers.
-   * @param max An integer which represents the maximum value required for generating random
-   *            numbers.
    * @param seed A seed value for helping produce consistent and repeatable numbers for testing.
-   * @param listSize A list of integers which may be required for certain operations.
    */
   public RandomNumberGenerator(int seed) {
     if (seed == 0) {

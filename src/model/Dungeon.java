@@ -49,8 +49,6 @@ public interface Dungeon {
 
   String movePlayer(Direction direction);
 
-//  int checkSmell();
-
   boolean getWrapping();
 
   String shootArrow(int distance, Direction direction);

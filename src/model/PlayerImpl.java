@@ -44,18 +44,7 @@ public class PlayerImpl implements Player {
   private void updatePlayerLocation(int index, List<Direction> directions) {
     this.playerLocation = index;
     this.directions = directions;
-//    updateTreasure();
   }
-
-//  private void updateTreasure() {
-//    //treasure list is empty and the player picked up treasure in the last cave
-//    if (this.currentTreasure != null) {
-//      for (int i = 0; i < this.currentTreasure.size(); i++) {
-//        this.treasureList.add(this.currentTreasure.get(i));
-//      }
-//    }
-//  }
-
 
   /**
    * The player moves.
