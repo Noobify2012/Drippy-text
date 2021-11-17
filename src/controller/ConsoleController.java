@@ -333,7 +333,7 @@ public class ConsoleController implements Controller {
     while (!d.isGameOver()) {
       try {
         //String element = scan.next();
-        out.append("Would you like to move or shoot?" + "\n");
+        out.append("Would you like to move, shoot, or pickup?" + "\n");
         //+ element);
       } catch (IOException ioe) {
         throw new IllegalStateException("Append failed", ioe);
@@ -372,6 +372,15 @@ public class ConsoleController implements Controller {
               } catch (IOException ioe) {
                 throw new IllegalStateException("Append failed", ioe);
               }
+            } else if (next.equalsIgnoreCase("pickup")
+                    || next.equalsIgnoreCase("p")) {
+              try {
+                //String element = scan.next();
+                out.append("treasure, arrows, or both?\n");
+              } catch (IOException ioe) {
+                throw new IllegalStateException("Append failed", ioe);
+              }
+
             }
             next2 = scan.next();
 
@@ -395,7 +404,12 @@ public class ConsoleController implements Controller {
                       || playerDirection == Direction.EAST || playerDirection == Direction.WEST) {
                 try {
                   //String element = scan.next();
-                  d.movePlayer(playerDirection);
+                  String moveString = d.movePlayer(playerDirection);
+                  try {
+                    out.append(moveString + "\n");
+                  } catch (IOException ioe) {
+                    throw new IllegalStateException("Append failed", ioe);
+                  }
 //                  gameAction = false;
                 } catch (IllegalArgumentException iae) {
                   try {
@@ -470,6 +484,30 @@ public class ConsoleController implements Controller {
                   }
                 }
               }
+            } else if (next.equalsIgnoreCase("pickup")
+                    || next.equalsIgnoreCase("p")) {
+              if (next2.equalsIgnoreCase("t")
+                      || next2.equalsIgnoreCase("treasure")) {
+                try {
+                  out.append(d.pickUpItem(1) + "\n");
+                } catch (IOException ioe) {
+                  throw new IllegalStateException("Append failed", ioe);
+                }
+              } else if (next2.equalsIgnoreCase("a")
+                      || next2.equalsIgnoreCase("arrows")) {
+                try {
+                  out.append(d.pickUpItem(2) + "\n");
+                } catch (IOException ioe) {
+                  throw new IllegalStateException("Append failed", ioe);
+                }
+              } else if (next2.equalsIgnoreCase("b")
+                      || next2.equalsIgnoreCase("both")) {
+                try {
+                  out.append(d.pickUpItem(3) + "\n");
+                } catch (IOException ioe) {
+                  throw new IllegalStateException("Append failed", ioe);
+                }
+              }
             } else {
               throw new IllegalStateException("didn't get a valid command");
             }
@@ -509,7 +547,8 @@ public class ConsoleController implements Controller {
     return next.equalsIgnoreCase("m") || next.equalsIgnoreCase("s")
             || next.equalsIgnoreCase("q") || next.equalsIgnoreCase("move")
             || next.equalsIgnoreCase("shoot")
-            || next.equalsIgnoreCase("quit");
+            || next.equalsIgnoreCase("quit") || next.equalsIgnoreCase("p")
+            || next.equalsIgnoreCase("pickup");
   }
 
   private Direction getDirection() {

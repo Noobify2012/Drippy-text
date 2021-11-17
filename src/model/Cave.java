@@ -99,10 +99,16 @@ public class Cave extends AbstractLocation {
 
   /**Gets the players treasure list.
    *
-   * @return an array list of all the treasure that has been added to the player.
+   * @return a deep copy array list of all the treasure that the cave has.
    */
   public List<Treasure> getTreasureList() {
-    return this.caveTreasureList;
+    List<Treasure> treasureForPlayer = new ArrayList<>();
+    if (!this.caveTreasureList.isEmpty()) {
+      for (int i = 0; i < caveTreasureList.size(); i++) {
+        treasureForPlayer.add(i, this.caveTreasureList.get(i));
+      }
+    }
+    return treasureForPlayer;
   }
 
   List<Treasure> getTreasureFromCave() {
@@ -112,7 +118,19 @@ public class Cave extends AbstractLocation {
         treasureForPlayer.add(i, this.caveTreasureList.get(i));
       }
     }
+    this.caveTreasureList = null;
     return treasureForPlayer;
+  }
+
+  List<CrookedArrow> getArrowsFromCave() {
+    List<CrookedArrow> arrowsForPlayer = new ArrayList<>();
+    if (!this.arrowList.isEmpty()) {
+      for (int i = 0; i < arrowList.size(); i++) {
+        arrowsForPlayer.add(i, this.arrowList.get(i));
+      }
+    }
+    this.arrowList = null;
+    return arrowsForPlayer;
   }
 
   void addMonster(Monster monster) {
@@ -147,5 +165,6 @@ public class Cave extends AbstractLocation {
   Monster getMonster() {
     return this.monsterList.get(0);
   }
+
 
 }

@@ -10,15 +10,14 @@ public interface Player {
   /**
    * The player moves.
    */
-  void move(int index, List<Direction> directions,
-                List<Treasure> curTreasure);
+  void move(Cave cave, List<Direction> directions);
 
   /**This builds and returns the player's status which includes, the index of the cave they are
    * currently in, the treasure the player has collected so far, the moves the player can make based
    * on their current location, and the treasure in the cave they are currently in.
    *
    */
-  void getPlayerStatus(int smell);
+  String getPlayerStatus(int smell, Cave cave);
 
   /**This updates the players location based on the index of the start point, the treasure in the
    * cave that the player enters, and the directions the player can go from that start location.
@@ -43,5 +42,7 @@ public interface Player {
   String monsterEncounter(int monsterHealth, int rand);
 
   String shoot(int distance, Direction direction);
+
+  String pickUp(Cave cave, int option);
 
 }

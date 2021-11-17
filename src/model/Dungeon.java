@@ -47,12 +47,14 @@ public interface Dungeon {
 
   void getGameState();
 
-  void movePlayer(Direction direction);
+  String movePlayer(Direction direction);
 
 //  int checkSmell();
 
   boolean getWrapping();
 
   String shootArrow(int distance, Direction direction);
+
+  String pickUpItem(int option);
 
 }

@@ -40,37 +40,28 @@ public class PlayerImpl implements Player {
    * @param index the index of the cave that the player is moving to.
    * @param directions the directions that the player can move based on the location they are moving
    *                  to.
-   * @param curTreasure the treasure in the cave of associated index.
    */
-  private void updatePlayerLocation(int index, List<Direction> directions,
-                                    List<Treasure> curTreasure) {
+  private void updatePlayerLocation(int index, List<Direction> directions) {
     this.playerLocation = index;
     this.directions = directions;
-    updateTreasure();
-    if (!curTreasure.isEmpty()) {
-      for (int i = 0; i < curTreasure.size(); i++) {
-        this.currentTreasure.add(curTreasure.get(i));
-      }
-    }
+//    updateTreasure();
   }
 
-  private void updateTreasure() {
-    //treasure list is empty and the player picked up treasure in the last cave
-    if (this.currentTreasure != null) {
-      for (int i = 0; i < this.currentTreasure.size(); i++) {
-        this.treasureList.add(this.currentTreasure.get(i));
-      }
-    }
-  }
+//  private void updateTreasure() {
+//    //treasure list is empty and the player picked up treasure in the last cave
+//    if (this.currentTreasure != null) {
+//      for (int i = 0; i < this.currentTreasure.size(); i++) {
+//        this.treasureList.add(this.currentTreasure.get(i));
+//      }
+//    }
+//  }
 
 
   /**
    * The player moves.
    */
-  public void move(int index, List<Direction> directions,
-                   List<Treasure> curTreasure) {
-
-    updatePlayerLocation(index, directions, curTreasure);
+  public void move(Cave cave, List<Direction> directions) {
+    updatePlayerLocation(cave.getIndex(), directions);
   }
 
   /**A helper to get the current treasure list.
@@ -90,10 +81,10 @@ public class PlayerImpl implements Player {
    * on their current location, and the treasure in the cave they are currently in.
    *
    */
-  public void getPlayerStatus(int smell) {
+  public String getPlayerStatus(int smell, Cave cave) {
+
+    //TODO need to change to take a cave so arrow pick up easier
     String treasureString = "";
-    String directionString = "";
-    String curTreasureString = "";
     if (this.treasureList == null || this.treasureList.size() == 0) {
       treasureString = "nothing";
     } else {
@@ -103,6 +94,7 @@ public class PlayerImpl implements Player {
       }
     }
 
+    String directionString = "";
     if (directions.size() == 1) {
       directionString = directions.toString() + " ";
     } else {
@@ -111,22 +103,34 @@ public class PlayerImpl implements Player {
       }
     }
 
-    if (this.currentTreasure == null || this.currentTreasure.size() == 0) {
+    String curTreasureString = "";
+    if (cave.getTreasureList().size() == 0) {
       curTreasureString = "no treasure in this cave";
-    } else if (currentTreasure.size() == 1) {
-      curTreasureString = "a " + currentTreasure.get(0).getName();
+    } else if (cave.getTreasureList().size() == 1) {
+      curTreasureString = "a " + cave.getTreasureList().get(0).getName();
     } else {
-      for (int i = 0; i < currentTreasure.size(); i++) {
-        curTreasureString = getTreasureString(currentTreasure);
+      for (int i = 0; i < cave.getTreasureList().size(); i++) {
+        curTreasureString = getTreasureString(cave.getTreasureList());
         //curTreasureString + " " + this.currentTreasure.get(i).getName() + ",";
       }
     }
+
+    String arrowString = "";
+    if (cave.getArrowListSize() == 0) {
+      //arrow string says it has nothing
+      arrowString = "no arrows";
+    } else {
+      //arrowstring says it has something.
+      arrowString = "an arrow";
+    }
+
+    //TODO Pass in cave and refactor
 
     String monsterString = "";
     String playerString = "The player is currently in Cave " + playerLocation + " and has "
             + treasureString + " in their treasure bag. \nThey can go " + directionString
             + ", there are " + quiver.size() + " arrows remaining in their quiver, and there is "
-            + curTreasureString + " in this cave.\n";
+            + curTreasureString + " and " + arrowString + " in this cave.\n";
     if (smell >= 2) {
       monsterString = ("\nThe player smells something awful and strong.\n");
       playerString = playerString + monsterString;
@@ -134,7 +138,7 @@ public class PlayerImpl implements Player {
       monsterString = ("\nThe player smells something faint but awful.\n");
       playerString = playerString + monsterString;
     }
-    Driver.printHelper(playerString);
+    return playerString;
   }
 
   private String getTreasureString(List<Treasure> treasureList) {
@@ -165,7 +169,7 @@ public class PlayerImpl implements Player {
    */
   public void enterDungeon(int caveIndex, List<Treasure> treasureInCave,
                            List<Direction> directions) {
-    updatePlayerLocation(caveIndex, directions, treasureInCave);
+    updatePlayerLocation(caveIndex, directions);
   }
 
   public boolean isPlayerAlive() {
@@ -181,14 +185,6 @@ public class PlayerImpl implements Player {
     return temp;
   }
 
-  //  @Override
-//  public void moveDirection(Direction direction) {
-//    if (!directions.contains(direction)) {
-//      throw new IllegalArgumentException("direction not an option");
-//    } else {
-//      //not useful at the moment
-//    }
-//  }
   public String monsterEncounter(int monsterHealth, int rand) {
     String encounterString = "";
     if (monsterHealth == 2 || (monsterHealth == 1 && rand == 1)) {
@@ -217,12 +213,72 @@ public class PlayerImpl implements Player {
     return quiverString;
   }
 
+  @Override
+  public String pickUp(Cave cave, int option) {
+    List<Treasure> treasList = new ArrayList<>();
+    List<CrookedArrow> arrowList = new ArrayList<>();
+    String pickupString = "";
+    String arrowString = "";
+    String treasureString = "";
+    if (option == 0) {
+      treasureString = pickupTreasure(cave);
+      pickupString = pickupString + treasureString;
+    } else if (option == 1) {
+      if (cave.getArrowListSize() == 0) {
+        pickupString = "\nThere are no arrows for the player to pick up.";
+      } else {
+        arrowString = pickupArrows(cave);
+        pickupString = pickupString + arrowString;
+      }
+      //pick up arrows
+    } else if (option == 3) {
+      if (cave.getTreasureList().size() == 0 && cave.getArrowListSize() == 0) {
+        pickupString = "\nThere is no treasure or arrows for the player to pick up.";
+      } else {
+        treasureString = pickupTreasure(cave);
+        arrowString = pickupArrows(cave);
+        pickupString = pickupString + treasureString + arrowString;
+
+      }
+      //pick up both
+    }
+    return pickupString;
+  }
+
+  private String pickupTreasure(Cave cave) {
+    String treasureString = "";
+    List<Treasure> treasList = new ArrayList<>();
+    if (cave.getTreasureList().size() == 0) {
+      treasureString = "\nThere is no treasure for the player to pick up.";
+    } else {
+      treasureString = getTreasureString(cave.getTreasureList());
+      treasList = cave.getTreasureFromCave();
+    }
+    for (int i = 0; i < treasList.size(); i++) {
+      this.treasureList.add(treasList.get(i));
+    }
+    return treasureString;
+  }
+
+  private String pickupArrows(Cave cave) {
+    String arrowString = "";
+    List<CrookedArrow> tempList = new ArrayList<>();
+    if (cave.getArrowListSize() == 0) {
+      arrowString = "\nThere are no arrows for the player to pick up.";
+    } else {
+      arrowString = "\nThe player picked up an arrow.";
+      tempList = cave.getArrowsFromCave();
+      this.quiver.add(tempList.get(0));
+    }
+    return arrowString;
+  }
+
   private String updateArrowCount() {
     if (quiver.size() == 0) {
       throw new IllegalArgumentException("Player doesn't have any arrows to shoot.");
     } else {
       quiver.remove(0);
-      String quiverString = "The player has " + quiver.size() + " arrows remaining.";
+      String quiverString = "\nThe player has " + quiver.size() + " arrows remaining.";
       return quiverString;
     }
 

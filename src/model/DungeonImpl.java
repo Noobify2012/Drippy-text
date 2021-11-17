@@ -237,29 +237,29 @@ public class DungeonImpl implements Dungeon {
     Driver.printHelper(dfsString);
   }
 
-  //This executes the player's path through the dungeon
-  private void runDungeon() {
-    for (int i = 0; i < this.shortestPath.size(); i++) {
-      //check for treasure, if it exists add it to the treasure bag, remove it from cave
-      List<Treasure> caveTreasure = new ArrayList<>();
-      if (findCaveByIndex(shortestPath.get(i)).getTreasureList() != null
-              || findCaveByIndex(shortestPath.get(i)).getTreasureList().size() != 0) {
-        caveTreasure = findCaveByIndex(shortestPath.get(i)).getTreasureFromCave();
-      }
-
-      if (i == this.shortestPath.size() - 1) {
-        String endString = "\nThe has reached their end point! Their quest is over. "
-                + "Lets check on our player.";
-        Driver.printHelper(endString);
-      }
-      player.move(shortestPath.get(i), getPossibleDirection(shortestPath.get(i)), caveTreasure);
-
-      //change player location
-      //move to new index announcing direction traveled(get from edge)
-      //run get player status
-      player.getPlayerStatus(checkSmell());
-    }
-  }
+//  //This executes the player's path through the dungeon
+//  private void runDungeon() {
+//    for (int i = 0; i < this.shortestPath.size(); i++) {
+//      //check for treasure, if it exists add it to the treasure bag, remove it from cave
+//      List<Treasure> caveTreasure = new ArrayList<>();
+//      if (findCaveByIndex(shortestPath.get(i)).getTreasureList() != null
+//              || findCaveByIndex(shortestPath.get(i)).getTreasureList().size() != 0) {
+//        caveTreasure = findCaveByIndex(shortestPath.get(i)).getTreasureList();
+//      }
+//
+//      if (i == this.shortestPath.size() - 1) {
+//        String endString = "\nThe has reached their end point! Their quest is over. "
+//                + "Lets check on our player.";
+//        Driver.printHelper(endString);
+//      }
+//      //player.move(shortestPath.get(i), getPossibleDirection(shortestPath.get(i)), caveTreasure);
+//
+//      //change player location
+//      //move to new index announcing direction traveled(get from edge)
+//      //run get player status
+//      player.getPlayerStatus(checkSmell());
+//    }
+//  }
 
   /**
    * This puts the player in their starting cave for navigating through dungeon for moving from the
@@ -828,7 +828,8 @@ public class DungeonImpl implements Dungeon {
   }
 
   @Override
-  public void movePlayer(Direction direction) {
+  public String movePlayer(Direction direction) {
+    String moveString = "";
     if (!getPossibleDirection(player.getPlayerLocation()).contains(direction)) {
       throw new IllegalArgumentException("Can't move that way");
     } else {
@@ -837,14 +838,12 @@ public class DungeonImpl implements Dungeon {
         if (finalEdgeList.get(i).getLeftIndex() == player.getPlayerLocation()
                 && direction == finalEdgeList.get(i).getDirectionToCave2()) {
           //set the new player location to the right index
-          player.move(finalEdgeList.get(i).getRightIndex(),
-                  getPossibleDirection(finalEdgeList.get(i).getRightIndex()),
-                  findCaveByIndex(finalEdgeList.get(i).getRightIndex()).getTreasureFromCave());
+          player.move(findCaveByIndex(finalEdgeList.get(i).getRightIndex()),
+                  getPossibleDirection(finalEdgeList.get(i).getRightIndex()));
         } else if (finalEdgeList.get(i).getRightIndex() == player.getPlayerLocation()
                 && direction == finalEdgeList.get(i).getDirectionToCave1()) {
-          player.move(finalEdgeList.get(i).getLeftIndex(),
-                  getPossibleDirection(finalEdgeList.get(i).getLeftIndex()),
-                  findCaveByIndex(finalEdgeList.get(i).getLeftIndex()).getTreasureFromCave());
+          player.move(findCaveByIndex(finalEdgeList.get(i).getLeftIndex()),
+                  getPossibleDirection(finalEdgeList.get(i).getLeftIndex()));
         }
       }
 
@@ -853,8 +852,7 @@ public class DungeonImpl implements Dungeon {
 
       //check if the cave is the end point
       if (player.getPlayerLocation() == this.endPoint) {
-        String endCave = "Player has reached final cave";
-        Driver.printHelper(endCave);
+        moveString = "\nPlayer has reached final cave\n";
       }
 
       String encounterString = "";
@@ -871,7 +869,7 @@ public class DungeonImpl implements Dungeon {
               && findCaveByIndex(player.getPlayerLocation()).getMonsterHealth() == 1) {
         //player has 50/50 shot of escaping
 
-        int returnInt = randomNumberGenerator.getRandomNumber(0, 1);
+        int returnInt = randomNumberGenerator.getRandomNumber(0, 2);
         if (returnInt == 0) {
           //player escapes
           encounterString = player.monsterEncounter(findCaveByIndex(player.getPlayerLocation())
@@ -895,21 +893,22 @@ public class DungeonImpl implements Dungeon {
 
       }
 
-      Driver.printHelper(encounterString);
 
 
 
       //check for smell;
-
+      String statusString = "";
       if (player.isPlayerAlive()) {
-        player.getPlayerStatus(checkSmell());
+        statusString = player.getPlayerStatus(checkSmell(), findCaveByIndex(player.getPlayerLocation()));
       }
 
 
       //update player location and check around them for stuff.
 
       //update player status
+      moveString = moveString + "\n" + encounterString + "\n" + statusString ;
     }
+    return moveString;
   }
 
   @Override
@@ -1032,8 +1031,6 @@ public class DungeonImpl implements Dungeon {
 
       finalShotString = finalShotString + "\n" + shootString + "\n" + updateString + "\n";
 
-
-
     }
     //move is valid move the player to the new cave
 //
@@ -1138,6 +1135,18 @@ public class DungeonImpl implements Dungeon {
     return finalShotString;
     //check final location for monster, if monster present take damage and send message
     //if not tell user they missed
+  }
+
+  @Override
+  public String pickUpItem(int option) {
+    String pickupString = "";
+    if (option <= 0 || option > 3) {
+      throw new IllegalArgumentException("that is not an option for pickup");
+    } else {
+      pickupString = player.pickUp(findCaveByIndex(player.getPlayerLocation()), option) +
+      player.getPlayerStatus(checkSmell(), findCaveByIndex(player.getPlayerLocation()));
+    }
+    return pickupString;
   }
 
   private Direction getOppositeDirection(Direction direction) {
