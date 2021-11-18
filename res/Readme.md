@@ -2,7 +2,7 @@
 ## _Text Based Adventure Game_
 
 
-## About/Overview:
+# About/Overview:
 This is my implementation of the Dungeon Text Based Adventure game that builds upon our Dungeon Model. A player enters the dungeon with nothing but their empty treasure sack, a bow, and 3 arrows in their quiver. The player then navigates the dungeon from their start point in search of their end point with the ability to pick up treasures and arrows as well as shoot those arrows in order to slay the monsters that await them in the dungeon. The player starts at a randomly selected point and  must navigate to a randomly selected end point at least 5 moves away. There will be at least one monster in the Dungeon at the end point but the user can ask for as many monsters as there are caves. Dungeons are represented as interconnected nodes where row 0, column 0 also known as index 0 is in the top left-hand corner and the index increases from left to right in the increasing x direction of the Cartesian plane(columns). It then drops to the next y position down and all the way to the left like a carriage return to do the same process for the second row. An example 3 row by 3 columns graph is below: 
 
 ### build basic layout pic and drag and drop here 
@@ -15,15 +15,11 @@ This is my implementation of the Dungeon Text Based Adventure game that builds u
 
 The program will print the start cave, end cave, and final list of edges to the screen after it has generated which will have the indexes of both caves connected by a bidirectional arrow(18<========>23).
 
-## Features
+# Features
 
-- When the program starts the user is greeted and presented with the criteria for entering proper command line arguments for starting the dungeon model. The first level of error checking starts there. The controller ensures that the user enters at least true or false for the wrapping requirement and positive integers for rows, columns, interconnectivity, and percentage of caves with treasure. For the purpose of this project, the command line args are parsed by the driver and buids the player and dungeon before passing the model to the controller.
+- With the controller doing the dungeon building,(not the project spec, doesn't take command line args until you have already started the program)when the program starts the user is greeted and presented with the criteria for entering proper command line arguments for starting the dungeon model. The first level of error checking starts there. The controller ensures that the user enters at least true or false for the wrapping requirement and positive integers for rows, columns, interconnectivity, and percentage of caves with treasure. For the purpose of this project, the command line args are parsed by the driver and buids the player and dungeon before passing the model to the controller.
 
 - The user has no real interaction with any constructors. The controller passes all of those arguments, once validated at the first level, to the constructor. From there the dungeon and player are automatically built and run.
-
-- In the dungeon implementation, it can be set to either run automatically as a breadth first path, meaning from start point to end point as efficiently as possible. Or it can run as a depth first path starting at node 0 and go to every node. Player navigates the dungeon via the unique index value of each of the caves or tunnels.
-
-- As the player moves through the dungeon, the program will identify which caves have treasure in them, display the treasure in the cave and then automatically pick it up before the player moves to the next cave.
 
 - One unique design feature is the treasure implementation which is an enum and factory pattern all in one class. This makes the code slightly more compact as a single stop for construction and validation of treasure. This allows the program to easily identify treasure objects in the players treasure list and cleanly present them when called.
 
@@ -34,64 +30,61 @@ one cave to the other. In the next implementation, this will be used so that the
 
 - The constructor for the dungeon will also check for over interconnectivity, ensures there can't be more than 100% treasure in caves.
 
-- As the player moves through the dungeon, they have the ability to pick up arrows and treasure at the same time if they are found together. Else they can pick up each set of items seperatly. 
+- As the player moves through the dungeon, they have the ability to pick up arrows and treasure at the same time if they are found together. Else they can pick up each set of items separately. 
 
-## How To Run
+- The player can either spell out the behaviour they want or use the first letter. For example if the player wants to move east they can either type "move east" or they can type "m e". This applies to all behaviours include shoot, pickup or even quit. 
 
-# How to run the jar file
-The way required for the specification takes the name of the file and the command line arguements for building a dungeon: [wrapping (boolean)] [# of rows (int)] [# of columns (int) ] [level of interconnectivity(int)] [percentage of treasure and arrows (int)] [level of difficulty/# of monsters(int greater than 0)]
+- The player has the option to quit anytime they are prompted to move, shoot, or pickup by entering either quit or the letter q.
+
+- The controller has the methods to both build the dungeon and play the game all in one. It implements the proper functionality to take in the command line arguments and pass them to the model for validation.  
+
+# How To Run
+
+## How to run the jar file
+The way required for the specification takes the name of the file and the command line arguments for building a dungeon: [wrapping (boolean)] [# of rows (int)] [# of columns (int) ] [level of interconnectivity(int)] [percentage of treasure and arrows (int)] [level of difficulty/# of monsters(int greater than 0)]
 "java -jar Project3_Dungeon_Model.jar [wrap] [row] [col] [inter] [treas] [dif]"
 
-The driver can be changed to use the controller to process arguments but that requires the build dugeon function to be called in the driver and the model passed off to the driver at that point. You would also have to wait or the controller to prompt the user for arguements or include the arguements on a seperate line for the driver. 
-
+The driver can be changed to use the controller to process arguments but that requires the build dugeon function to be called in the driver and the model passed off to the driver at that point. You would also have to wait or the controller to prompt the user for arguments or include the arguments on a separate line for the driver.
 
 # How to Use the Program. 
- The user only needs to start the jar file as described above and when prompted enter the dungeon construction requirements. A boolean value for wrapping or non(true for wrapping, false for non), a positive integer for the number of rows, a positive integer for the number of columns, zero or greater for the level of interconnectivity, and an integer between 0 and 100 for the percentage of caves with treasure.
+After the command line arguments are read in and the dungeon is constructed, the program will then drop the player in their starting cave telling them what the index is, what items if any are present in the cave, and which directions are available to them. The user will then be prompted to move, shoot, or pick up an item.
 
-The program will do the rest.
+# Description of Examples/Example Runs
 
-## Description of Examples/Example Runs
-
-# Run 1 -- Run 1.txt:
-1. Welcome Message printed to user with example for how to enter a valid dungeon request.
-2. Generates the dungeon based on the parameters passed(wrapping, 10 row by 10 column dungeon, level 0 interconnectivity, and 20% treasure).
-3. It then prints out the final edge list after Kruskal's has been completed. It then announces where the player is entering the dungeon(ie its randomly selected start point) and what the route they will follow through the dungeon is.
-4. The player then navigates the dungeon. At each step along the way the player's status is printed out which includes what cave they are in, identified by cave index, what they currently have in their treasure bag, what direction they can move from that cave(North, South, East, and/or West), and what treasure is in that cave that they will pick up.
-5. After the player has completed their route through the cave, the program prints a final message announcing the completion of navigating the dungeon and presents a final list of what the player collected for treasure along the way.
+## Run 1 -- Run 1.txt:
+1. Generates the dungeon based on the parameters passed(non-wrapping, 4 row by 3 column dungeon, level 0 interconnectivity, 50% treasure and arrows and level 1 difficulty).
+2. It then prints out the final edge list, starting cave and ending cave after Kruskal's has been completed. It then announces where the player is entering the dungeon(ie its randomly selected start point) and what the route they will follow through the dungeon is.
+3. The player then navigates the dungeon. At each step along the way the player's status is printed out which includes what cave they are in, identified by cave index, what they currently have in their treasure bag, what direction they can move from that cave(North, South, East, and/or West), and what treasure is in that cave that they will pick up.
+4. After the player has completed their route through the cave, the program prints a final message announcing the completion of navigating the dungeon and presents a final list of what the player collected for treasure along the way.
 
 
-# Run 2 -- Run2.txt:
+## Run 2 -- Run2.txt:
 1. Welcome Message printed to user with example for how to enter a valid dungeon request.
 2. Generates the dungeon based on the parameters passed(non- wrapping, 10 row by 10 column dungeon,  level 0 interconnectivity, and 20% treasure).
 3. It then prints out the final edge list after Kruskal's has been completed. It then announces where the player is entering the dungeon(ie its randomly selected start point) and what the route they will follow through the dungeon is.
 4. The player then navigates the dungeon. At each step along the way the player's status is printed out which includes what cave they are in, identified by cave index, what they currently have in their treasure bag, what direction they can move from that cave(North, South, East, and/or West), and what treasure is in that cave that they will pick up.
 5. After the player has completed their route through the cave, the program prints a final message announcing the completion of navigating the dungeon and presents a final list of what the player collected for treasure along the way.
 
-## Design/Model Changes.
+# Design/Model Changes.
 
-- I had to change some fields in both the cave and dungeon classes in order to help out with some functionality. This includes adding a set field in the cave class in order to do help with Kruskal's algorithm.
+- I was able to simplify a lot of my code by passing whole objects instead .
 
-- In order to do the depth first search, I had to add a helper class called graph for doing most of the work. This code was found on geeks for geeks and adapted for my implementation. Citations are in line.
+- I was able to remove a bunch of code for executing the depth first and breadth first searches. 
+
+- Made the player able to move via direction instead of by index like project 3 by implementing a look up for my final edge list. 
 
 - lots of private methods were added to handle all the object passing and maintenance.
 
-## Assumptions
-
-- For the first model version where the driver class runs everything the player will navigate the dungeon via determined paths. I executed this by using an index look up based on the caves along shared edges.
+# Assumptions
 
 - A player will always want to pick up all treasure and doesn't have a limit to how much treasure they can carry.
 
-## Limitations
+- The player does not care about any treasure or nodes in the cave that serves as the end point. 
 
-- While the program can run through the dungeon as either a breadth first(the shortest path from start point to end point) or depth first(start at node 0 and run through all the nodes), that has to be specifically configured in the code. One has to be turned on and the other turned off.
-
-- The player has a move method and there are directions in the enum in the game which are used to determine direction from one cave to another along an edge object but that is not how the player currently navigates. In its current implementation, the player moves via a list of indexes instead of a list of directions. This will be an improved feature that is fixed in the next project
-deliverable.
-
-- The program can keep track of the players treasure that they pick up but presents it an ugly manner. Instead of accumulating it and saying how many of each type of treasure, it just appends each piece of treasure and prints a large ugly this. This will be improved in the next version if there is time.
+# Limitations
+- The player cannot pick up treasure or arrows in the final cave. The program will terminate because they have reached the end point. 
 
 - Due to almost every method being private or package private it is hard to test the functionality without the testing being done in the same class or package.
 
-
-## Citations. 
-I found an example of how to do depth first and breadth first searches on geeks for geeks and adapted that code for my needs. Madhira Datta walked me through how to calculate the maximum number of edges in a graph for wrapping and non wrapping dungeons. I also found the method to condense my treasure enum and factory into one class and adapted that code from https://connected2know.com/programming/java-factory-pattern/. All citations have in line citations.
+# Citations. 
+Madhira Datta walked me through how to calculate the maximum number of edges in a graph for wrapping and non wrapping dungeons. I also found the method to condense my treasure enum and factory into one class and adapted that code from https://connected2know.com/programming/java-factory-pattern/. All citations have in line citations.
