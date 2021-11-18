@@ -5,8 +5,16 @@ package model;
  */
 public interface Treasure {
 
+  /**Generates a new piece of treasure.
+   *
+   * @return A treasure object.
+   */
   Treasure getTreasure();
 
+  /**Gets the name of the piece of treasure.
+   *
+   * @return the name of the piece of treasure as a string.
+   */
   String getName();
 
 }

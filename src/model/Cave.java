@@ -118,7 +118,10 @@ public class Cave extends AbstractLocation {
         treasureForPlayer.add(i, this.caveTreasureList.get(i));
       }
     }
-    this.caveTreasureList.remove(0);
+    int temp = this.caveTreasureList.size();
+    for (int t = 0; t < temp; t++) {
+      this.caveTreasureList.remove(0);
+    }
     return treasureForPlayer;
   }
 

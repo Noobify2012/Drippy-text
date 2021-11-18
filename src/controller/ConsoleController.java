@@ -1,7 +1,6 @@
 package controller;
 
 import java.io.IOException;
-import java.nio.CharBuffer;
 import java.util.Scanner;
 import model.Direction;
 import model.Dungeon;
@@ -9,11 +8,24 @@ import model.DungeonImpl;
 import model.Player;
 import model.PlayerImpl;
 
+/**
+ * The controller class for the dungeon adventure game. this class parses and processes all
+ * information passed in. This class can take in and validate all command line input for building
+ * the dungeon but based on project requirements, that is being handled in the driver.
+ */
 public class ConsoleController implements Controller {
 
   private final Appendable out;
   private final Scanner scan;
 
+  /**The constructor for the controller which takes in any data being fed in and appends to any
+   * data stream out.
+   *
+   * @param in the data stream coming into the controller. The current implementation passes in
+   *           system.in.
+   * @param out the data stream coming out of the controller. The current implementation uses
+   *            system.out.
+   */
   public ConsoleController(Readable in, Appendable out) {
     if (in == null || out == null) {
       throw new IllegalArgumentException("Readable and Appendable can't be null");
@@ -22,6 +34,12 @@ public class ConsoleController implements Controller {
     scan = new Scanner(in);
   }
 
+  /**
+   * Collects the information for building the dungeon and attempts to contstruct it based off of
+   * user input. In the current implementation, it does not get used because of needing the ability
+   * to take in command line arguments but does have the capability to do so as well as create a
+   * player.
+   */
   @Override
   public void buildDungeon() {
 
@@ -281,7 +299,11 @@ public class ConsoleController implements Controller {
     }
   }
 
-
+  /**Takes in a dungeon and allows the user to act as the player moving through the dungeon, firing
+   * arrows, and picking up treasure and arrows.
+   *
+   * @param d the dungeon that is required for the user to navigate and play.
+   */
   @Override
   public void playGame(Dungeon d) {
     boolean quitFlag = false;
@@ -313,13 +335,6 @@ public class ConsoleController implements Controller {
         } else {
           gameAction = validateAction(next);
           if (gameAction == true) {
-//            try {
-//              //String element = scan.next();
-//              out.append("got a valid action\n");
-//            } catch (IOException ioe) {
-//              throw new IllegalStateException("Append failed", ioe);
-//            }
-
             Direction playerDirection = null;
             if (next.equalsIgnoreCase("move") || next.equalsIgnoreCase("m")
                     || next.equalsIgnoreCase("s")
@@ -338,7 +353,6 @@ public class ConsoleController implements Controller {
               } catch (IOException ioe) {
                 throw new IllegalStateException("Append failed", ioe);
               }
-
             }
             next2 = scan.next();
 
@@ -382,12 +396,6 @@ public class ConsoleController implements Controller {
                     || next.equalsIgnoreCase("shoot")) {
               // get distance and direction
               Direction arrowDirection = null;
-//              try {
-//                //String element = scan.next();
-//                out.append("which direction?\n");
-//              } catch (IOException ioe) {
-//                throw new IllegalStateException("Append failed", ioe);
-//              }
 
               if (next2.equalsIgnoreCase("North")
                       || next2.equalsIgnoreCase("n")) {
@@ -483,32 +491,6 @@ public class ConsoleController implements Controller {
             || next.equalsIgnoreCase("pickup");
   }
 
-  private Direction getDirection() {
-
-    boolean validMove = false;
-    while (!validMove) {
-      try {
-        //String element = scan.next();
-        out.append("Which Direction? \n");
-      } catch (IOException ioe) {
-        throw new IllegalStateException("Append failed", ioe);
-      }
-      String next = scan.next();
-
-    }
-    return Direction.NORTH;
-  }
-
-
-  public void outHelper(String printString) {
-
-    try {
-      out.append(printString + "\n");
-    } catch (IOException ioe) {
-      throw new IllegalStateException("Append failed", ioe);
-    }
-
-  }
 
 
 }

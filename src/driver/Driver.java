@@ -1,15 +1,13 @@
 package driver;
 
 import controller.ConsoleController;
-import controller.Controller;
+import java.io.InputStreamReader;
+import java.util.Scanner;
 import model.Dungeon;
 import model.DungeonImpl;
 import model.Player;
 import model.PlayerImpl;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Scanner;
 
 /**
  * Driver that acts as the controller for the Dungeon project. This just needs to be run.
@@ -29,7 +27,7 @@ public class Driver {
     } else if (!validateInput(args[1])) {
       throw new IllegalArgumentException("the second argument must be a positive integer");
     } else if (!(validateInput(args[2]))) {
-    throw new IllegalArgumentException("the third argument must be a positive integer");
+      throw new IllegalArgumentException("the third argument must be a positive integer");
     } else if (!(validateInput(args[3]))) {
       throw new IllegalArgumentException("the fourth argument must be a positive integer");
     } else if (!(validateInput(args[4]))) {
@@ -56,7 +54,6 @@ public class Driver {
       Readable inputs = new InputStreamReader(System.in);
       Appendable output = System.out;
       new ConsoleController(inputs, output).playGame(test);
-//      playGame(test);
     } catch (IllegalArgumentException iae) {
       System.out.println(iae.getMessage() + "\n");
     } catch (IllegalStateException ise) {
@@ -73,14 +70,14 @@ public class Driver {
       Integer.parseInt(next);
       return true;
     } catch (NumberFormatException nfe) {
-        System.out.println("Not a valid number: " + next + "\n");
-        return false;
+      System.out.println("Not a valid number: " + next + "\n");
+      return false;
     }
   }
 
   private void quitGame(Dungeon d) {
-      String quitString = d.quitGame();
-      System.out.println(quitString + "\n");
+    String quitString = d.quitGame();
+    System.out.println(quitString + "\n");
 
   }
 }
