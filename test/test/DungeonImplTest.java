@@ -1,16 +1,13 @@
 package test;
 
 import org.junit.Test;
-
 import java.util.ArrayList;
-
 import model.Cave;
 import model.Direction;
 import model.Dungeon;
 import model.DungeonImpl;
 import model.Player;
 import model.PlayerImpl;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -153,13 +150,8 @@ public class DungeonImplTest {
     Dungeon test = new DungeonImpl(false, 4,3,0,20, player,
             1, 1);
     String createString = test.getDungeon();
-    String testString = "status of final edge list: [0<========>1, 8<========>11, 3<========>6,"
-            + " 6<========>7, 0<========>3, 4<========>5, 2<========>5, 1<========>2, 7<========>8,"
-            + " 9<========>10, 6<========>9]\n" +
-            "The Player StartPoint is 3.\n" +
+    String testString =
             "\n" +
-            "The Player enters the dungeon at Cave 3. They can go [SOUTH, NORTH]. They currently"
-            + " have no treasure.\n" +
             "The player is currently in Cave 3 and has nothing in their treasure bag. \n" +
             "They can go SOUTH NORTH , there are 3 arrows remaining in their quiver, and there is "
             + "no treasure in this cave and no arrows in this cave.\n";

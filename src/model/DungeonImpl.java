@@ -206,8 +206,7 @@ public class DungeonImpl implements Dungeon {
     String initPlayerStat = player.getPlayerStatus(checkSmell(),
             findCaveByIndex(player.getPlayerLocation()));
 
-    String dungeonString = kruskalsString + "\n" + startString + "\n" + setUpString + "\n"
-            + initPlayerStat;
+    String dungeonString = "\n" + initPlayerStat;
     return dungeonString;
 
   }
@@ -568,7 +567,7 @@ public class DungeonImpl implements Dungeon {
 
   @Override
   public boolean isGameOver() {
-    return player.isPlayerAlive() && !checkForEnd() && !quitFlag;
+    return !player.isPlayerAlive() || checkForEnd() || quitFlag;
   }
 
   private boolean checkForEnd() {
