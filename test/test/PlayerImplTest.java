@@ -39,7 +39,7 @@ public class PlayerImplTest {
             1, 1);
     test.getDungeon();
     Cave[][] testdungeon = test.getGameBoard();
-    String testString = "The player is currently in Cave 3 and has nothing in their treasure " +
+    String testString = "The player is currently in a Tunnel and has nothing in their treasure " +
             "bag. \n" +
             "They can go SOUTH NORTH , there are 3 arrows remaining in their quiver, and there is" +
             " no treasure in this cave and an arrow in this cave.\n";
@@ -63,9 +63,9 @@ public class PlayerImplTest {
 
   @Test
   public void monsterEncounter() {
-    String monsterHealthTwoString = "Chomp! Our player was eaten by a monster.";
-    String monsterHealthOneZeroString = "Whew! Our player barely escapes being eaten by a monster.";
-    String monsterHealthZeroString = "Our player finds the body of a slain monster.";
+    String monsterHealthTwoString = "Chomp! Our player was eaten by a Monster.";
+    String monsterHealthOneZeroString = "Whew! Our player barely escapes being eaten by a Monster.";
+    String monsterHealthZeroString = "Our player finds the body of a slain Monster.";
     Player player = new PlayerImpl();
     String testString1 = player.monsterEncounter(2,0);
     String monsterHealthOneRandOneString = player.monsterEncounter(1, 1);

@@ -104,7 +104,13 @@ public class PlayerImpl implements Player {
     }
 
     String monsterString = "";
-    String playerString = "The player is currently in Cave " + playerLocation + " and has "
+    String locationString = "";
+    if (cave.getNeighbors().size() != 2) {
+      locationString = "a Cave";
+    } else {
+      locationString = "a Tunnel";
+    }
+    String playerString = "The player is currently in " + locationString + " and has "
             + treasureString + " in their treasure bag. \nThey can go " + directionString
             + ", there are " + quiver.size() + " arrows remaining in their quiver, and there is "
             + curTreasureString + " and " + arrowString + " in this cave.\n";

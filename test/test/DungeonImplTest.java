@@ -152,7 +152,7 @@ public class DungeonImplTest {
     String createString = test.getDungeon();
     String testString =
             "\n" +
-            "The player is currently in Cave 3 and has nothing in their treasure bag. \n" +
+            "The player is currently in a Tunnel and has nothing in their treasure bag. \n" +
             "They can go SOUTH NORTH , there are 3 arrows remaining in their quiver, and there is "
             + "no treasure in this cave and no arrows in this cave.\n";
     assertEquals(testString, createString);
@@ -175,7 +175,7 @@ public class DungeonImplTest {
             1, 1);
     test.getDungeon();
     String moveString = test.movePlayer(Direction.NORTH);
-    String result = "\n\nThe player is currently in Cave 0 and has nothing in their treasure bag."
+    String result = "\n\nThe player is currently in a Tunnel and has nothing in their treasure bag."
             + " \n" +
             "They can go EAST SOUTH , there are 3 arrows remaining in their quiver, and there is "
             + "no treasure in this cave and no arrows in this cave.\n";
@@ -241,7 +241,7 @@ public class DungeonImplTest {
     String pickUp = test.pickUpItem(1);
     String pickUpString = "\n" +
             "The player picked up an arrow.\n" +
-            "The player is currently in Cave 3 and has nothing in their treasure bag. \n" +
+            "The player is currently in a Tunnel and has nothing in their treasure bag. \n" +
             "They can go SOUTH NORTH , there are 4 arrows remaining in their quiver, and there is"
             + " no treasure in this cave and no arrows in this cave.\n";
     assertEquals(pickUpString, pickUp);
@@ -255,7 +255,7 @@ public class DungeonImplTest {
     test.getDungeon();
     String quitString = test.quitGame();
     String finalString = "Game quit! Thank You for Playing Dungeon Adventure.\n" +
-            "The player is currently in Cave 3 and has nothing in their treasure bag. \n" +
+            "The player is currently in a Tunnel and has nothing in their treasure bag. \n" +
             "They can go SOUTH NORTH , there are 3 arrows remaining in their quiver, and there is "
             + "no treasure in this cave and an arrow in this cave.\n";
     assertEquals(finalString, quitString);
@@ -332,7 +332,7 @@ public class DungeonImplTest {
             1, 1);
     test.getDungeon();
     String moveString = test.movePlayer(Direction.NORTH);
-    String result = "\n\nThe player is currently in Cave 0 and has nothing in their treasure bag."
+    String result = "\n\nThe player is currently in a Tunnel and has nothing in their treasure bag."
             + " \n" +
             "They can go EAST SOUTH , there are 3 arrows remaining in their quiver, and there is "
             + "no treasure in this cave and no arrows in this cave.\n";
@@ -341,7 +341,7 @@ public class DungeonImplTest {
     String smellStringOne = test.movePlayer(Direction.EAST);
     String smellResultOne = "\n" +
             "\n" +
-            "The player is currently in Cave 2 and has nothing in their treasure bag. \n" +
+            "The player is currently in a Tunnel and has nothing in their treasure bag. \n" +
             "They can go SOUTH WEST , there are 3 arrows remaining in their quiver, and there is " +
             "no treasure in this cave and no arrows in this cave.\n" +
             "\n" +
@@ -350,7 +350,7 @@ public class DungeonImplTest {
     String smellStringTwo = test.movePlayer(Direction.SOUTH);
     String smellResultTwo = "\n" +
             "\n" +
-            "The player is currently in Cave 5 and has nothing in their treasure bag. \n" +
+            "The player is currently in a Tunnel and has nothing in their treasure bag. \n" +
             "They can go WEST NORTH , there are 3 arrows remaining in their quiver, and there is " +
             "no treasure in this cave and no arrows in this cave.\n" +
             "\n" +
@@ -358,7 +358,6 @@ public class DungeonImplTest {
     assertEquals(smellResultTwo, smellStringTwo);
   }
 
-  //TODO - check smell with dead monster
 
   @Test
   public void deadMonsterSmellCheck() {
@@ -367,7 +366,7 @@ public class DungeonImplTest {
             1, 1);
     test.getDungeon();
     String moveString = test.movePlayer(Direction.NORTH);
-    String result = "\n\nThe player is currently in Cave 0 and has nothing in their treasure bag."
+    String result = "\n\nThe player is currently in a Tunnel and has nothing in their treasure bag."
             + " \n" +
             "They can go EAST SOUTH , there are 3 arrows remaining in their quiver, and there is "
             + "no treasure in this cave and no arrows in this cave.\n";
@@ -376,7 +375,7 @@ public class DungeonImplTest {
     String smellStringOne = test.movePlayer(Direction.EAST);
     String smellResultOne = "\n" +
             "\n" +
-            "The player is currently in Cave 2 and has nothing in their treasure bag. \n" +
+            "The player is currently in a Tunnel and has nothing in their treasure bag. \n" +
             "They can go SOUTH WEST , there are 3 arrows remaining in their quiver, and there is " +
             "no treasure in this cave and no arrows in this cave.\n" +
             "\n" +
@@ -387,7 +386,7 @@ public class DungeonImplTest {
     String smellStringTwo = test.movePlayer(Direction.SOUTH);
     String smellResultTwo = "\n" +
             "\n" +
-            "The player is currently in Cave 5 and has nothing in their treasure bag. \n" +
+            "The player is currently in a Tunnel and has nothing in their treasure bag. \n" +
             "They can go WEST NORTH , there are 1 arrows remaining in their quiver, and there" +
             " is no treasure in this cave and no arrows in this cave.\n";
     assertEquals(smellResultTwo, smellStringTwo);
