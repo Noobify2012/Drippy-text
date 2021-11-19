@@ -30,7 +30,11 @@ one cave to the other. In the next implementation, this will be used so that the
 
 - The player has the option to quit anytime they are prompted to move, shoot, or pickup by entering either quit or the letter q.
 
-- The controller has the methods to both build the dungeon and play the game all in one. It implements the proper functionality to take in the command line arguments and pass them to the model for validation.  
+- The controller has the methods to both build the dungeon and play the game all in one. It implements the proper functionality to take in the command line arguments and pass them to the model for validation.
+
+- With minor line changes, the program could be reconfigured to give more hints to the player as to where they are by adding situation updates providing the index of where the player is.
+
+- The full print out of the final edges could also be included to help the player or other developers build features. It only takes one line change in the model to implement.  
 
 # How To Run
 
@@ -47,8 +51,8 @@ After the command line arguments are read in and the dungeon is constructed, the
 
 ## Run 1 -- Run 1.txt:
 1. Generates the dungeon based on the parameters passed(non-wrapping, 4 row by 3 column dungeon, level 0 interconnectivity, 50% treasure and arrows and level 1 difficulty).
-2. It then drops the player in the starting cave(cave 3) and gives their current status.
-3. The player then navigates the dungeon moving from cave 3 to cave 6 picking up both arrows and treasure at the same time. Then move to cave 9 and then 10 where they pick up both arrows and treasure separately. At each step along the way the player's status is printed out which includes what cave they are in, identified by cave index, what they currently have in their treasure bag, what direction they can move from that cave(North, South, East, and/or West), how many arrows they have in their quiver, and what treasure and arrows are in that cave that they will pick up.
+2. It then drops the player in the starting cave and gives their current status.
+3. The player then navigates the dungeon moving from cave to cave  picking up both arrows and treasure at the same time. Then move from cave to another cave where they pick up both arrows and treasure separately. At each step along the way the player's status is printed out which includes if they are in a cave or tunnel, what they currently have in their treasure bag, what direction they can move from that cave(North, South, East, and/or West), how many arrows they have in their quiver, and what treasure and arrows are in that cave that they will pick up.
 4. The player then navigates back to cave 3 and then move north to cave 0 where they shoot an arrow 1 space east and hear a howl as the arrow hits the monster. 
 5. The player then moves east and then south until they smell something "faint but awful(Monster is 2 spaces away) and then "The player smells something awful and strong."(a monster within 1 space or 2 monsters within 2 spaces
 6. The player shoots again and hears "A great howl echos through the dungeon and a loud crash as the monster falls over dead."
@@ -58,9 +62,9 @@ After the command line arguments are read in and the dungeon is constructed, the
 
 ## Run 2 -- Run2.txt:
 1. Generates the dungeon based on the parameters passed(non-wrapping, 4 row by 3 column dungeon, level 0 interconnectivity, 50% treasure and arrows and level 1 difficulty).
-2. It then drops the player in the starting cave(cave 3) and gives their current status.
-3. The player navigates north to cave 0 then east to cave 1 and then cave 2. The play smells something faint but awful. The player then moves south and smells something strong and awful.  
-4. The player then moves west to cave 4 from cave 5 where they are eaten by the monster, "Chomp! Our player was eaten by a Monster."
+2. It then drops the player in the starting cave and gives their current status.
+3. The player navigates north then moves east twice. The player smells something faint but awful. The player then moves south and smells something strong and awful.  
+4. The player then moves west where they are eaten by the monster, "Chomp! Our player was eaten by a Monster."
 
 # Design/Model Changes.
 
@@ -78,7 +82,9 @@ After the command line arguments are read in and the dungeon is constructed, the
 
 - I added a isAlive and reachedEnd method that checks if the player is alive or if the player has reached the end cave and the game is over. 
 
-- I also changed my random number generator to more consistently produce the same results by producing just single random numbers with the same seed across the entire program.  
+- I also changed my random number generator to more consistently produce the same results by producing just single random numbers with the same seed across the entire program.
+
+- Changed my player status messages and output to allow the player to figure out where they are. I keep the possible strings to make it easier if the customer needs more help to find their way. 
 
 # Assumptions
 
