@@ -223,6 +223,21 @@ public class DungeonImplTest {
   }
 
   @Test
+  public void missShot() {
+    Player player = new PlayerImpl();
+    Dungeon test = new DungeonImpl(false, 4,3,0,20, player,
+            1, 1);
+    test.getDungeon();
+    String firstShot = test.shootArrow(2,Direction.NORTH);
+    String missString = "\n" +
+            "Fired an arrow 2 spaces NORTH\n" +
+            "\n" +
+            "The player has 2 arrows remaining.\n" +
+            "Zing! The arrow bounced off a wall.\n";
+    assertEquals(missString,firstShot);
+  }
+
+  @Test
   public void pickUpItem() {
     Player player = new PlayerImpl();
     Dungeon test = new DungeonImpl(false, 4,3,0,50, player,
