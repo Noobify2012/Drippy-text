@@ -13,10 +13,7 @@ public class TreasureImpl {
   enum TreasureType {
     RUBY("Ruby"), DIAMOND("Diamond"), SAPPHIRE("Sapphire");
 
-    private final String name;
-
     TreasureType(String name) {
-      this.name = name;
     }
   }
 

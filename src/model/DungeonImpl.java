@@ -568,7 +568,7 @@ public class DungeonImpl implements Dungeon {
 
   @Override
   public boolean isGameOver() {
-      return player.isPlayerAlive() && !checkForEnd() && !quitFlag;
+    return player.isPlayerAlive() && !checkForEnd() && !quitFlag;
   }
 
   private boolean checkForEnd() {

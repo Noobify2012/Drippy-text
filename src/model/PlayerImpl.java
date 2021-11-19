@@ -154,7 +154,7 @@ public class PlayerImpl implements Player {
    * @return a boolean value of whether the player is alive or not. False is dead, true is alive.
    */
   public boolean isPlayerAlive() {
-      return this.isAlive;
+    return this.isAlive;
   }
 
   /**This just returns the index of the cave which the player is located in.

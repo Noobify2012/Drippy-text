@@ -8,7 +8,6 @@ import java.util.Random;
 public class RandomNumberGenerator {
   private int min;
   private int max;
-  private int seed;
   private Random generator;
 
 
@@ -28,7 +27,6 @@ public class RandomNumberGenerator {
       this.min = min;
     }
     this.max = max + 1;
-    this.seed = seed;
 
 
     if (min >= max) {
