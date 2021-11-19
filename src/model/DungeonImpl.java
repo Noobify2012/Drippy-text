@@ -20,7 +20,6 @@ public class DungeonImpl implements Dungeon {
   private int startPoint;
   private int endPoint;
   private Player player;
-  private List<Integer> shortestPath;
   private int difficulty;
   private RandomNumberGenerator randomNumberGenerator;
   private int genSeed;
@@ -62,7 +61,6 @@ public class DungeonImpl implements Dungeon {
     this.startPoint = 0;
     this.endPoint = 0;
     this.player = player;
-    this.shortestPath = shortestPath;
     this.difficulty = difficulty;
     this.randomNumberGenerator = new RandomNumberGenerator(genSeed);
     this.quitFlag = false;

@@ -27,4 +27,10 @@ public interface Location {
    */
   int getArrowListSize();
 
+  /**Gets the size of the monster list in a given cave.
+   *
+   * @return returns the size of the monster list as an integer. Possible values are 0 and 1.
+   */
+  int getMonsterListSize();
+
 }

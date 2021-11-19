@@ -267,4 +267,85 @@ public class DungeonImplTest {
     }
     assertEquals(6, arrowInt);
   }
+
+  @Test
+  public void getMonsterTest() {
+    Player player = new PlayerImpl();
+    Dungeon test = new DungeonImpl(false, 4,3,0,50, player, 1, 1);
+    test.getDungeon();
+    Cave[][] testboard = test.getGameBoard();
+    int monsterInt = 0;
+    for (int r = 0; r < 4; r++) {
+      for (int c = 0; c < 3; c++) {
+        if (testboard[r][c].getMonsterListSize() != 0) {
+          monsterInt++;
+        }
+      }
+    }
+    assertEquals(1, monsterInt);
+  }
+
+  @Test
+  public void getMultiMonsterTest() {
+    Player player = new PlayerImpl();
+    Dungeon test = new DungeonImpl(false, 4,3,0,50, player, 2, 1);
+    test.getDungeon();
+    Cave[][] testboard = test.getGameBoard();
+    int monsterInt = 0;
+    for (int r = 0; r < 4; r++) {
+      for (int c = 0; c < 3; c++) {
+        if (testboard[r][c].getMonsterListSize() != 0) {
+          monsterInt++;
+        }
+      }
+    }
+    assertEquals(2, monsterInt);
+  }
+
+  @Test (expected = IllegalArgumentException.class)
+  public void notEnoughMonstersTest() {
+    Player player = new PlayerImpl();
+    Dungeon test = new DungeonImpl(false, 4,3,0,20, player, 0, 1);
+  }
+
+  @Test (expected = IllegalArgumentException.class)
+  public void tooManyMonstersTest() {
+    Player player = new PlayerImpl();
+    Dungeon test = new DungeonImpl(false, 4,3,0,20, player, 5, 1);
+    test.getDungeon();
+  }
+
+  @Test
+  public void smellCheck() {
+    Player player = new PlayerImpl();
+    Dungeon test = new DungeonImpl(false, 4,3,0,20, player,
+            1, 1);
+    test.getDungeon();
+    String moveString = test.movePlayer(Direction.NORTH);
+    String result = "\n\nThe player is currently in Cave 0 and has nothing in their treasure bag."
+            + " \n" +
+            "They can go EAST SOUTH , there are 3 arrows remaining in their quiver, and there is "
+            + "no treasure in this cave and no arrows in this cave.\n";
+    assertEquals(result, moveString);
+    test.movePlayer(Direction.EAST);
+    String smellStringOne = test.movePlayer(Direction.EAST);
+    String smellResultOne = "\n" +
+            "\n" +
+            "The player is currently in Cave 2 and has nothing in their treasure bag. \n" +
+            "They can go SOUTH WEST , there are 3 arrows remaining in their quiver, and there is no treasure in this cave and no arrows in this cave.\n" +
+            "\n" +
+            "The player smells something faint but awful.\n";
+    assertEquals(smellResultOne, smellStringOne);
+    String smellStringTwo = test.movePlayer(Direction.SOUTH);
+    String smellResultTwo = "\n" +
+            "\n" +
+            "The player is currently in Cave 5 and has nothing in their treasure bag. \n" +
+            "They can go WEST NORTH , there are 3 arrows remaining in their quiver, and there is no treasure in this cave and no arrows in this cave.\n" +
+            "\n" +
+            "The player smells something awful and strong.\n";
+    assertEquals(smellResultTwo, smellStringTwo);
+  }
+
+
+
 }
