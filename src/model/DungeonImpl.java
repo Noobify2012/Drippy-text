@@ -228,7 +228,6 @@ public class DungeonImpl implements Dungeon {
               + " go " + getPossibleDirection(this.startPoint).toString() + ". They currently have"
               + " no treasure.";
     } else {
-      //TODO - figure out why it is not hitting this
       String dirString = "";
       for (int s = 0; s < getPossibleDirection(this.startPoint).size(); s++) {
         if (s != getPossibleDirection(this.startPoint).size() - 1) {
@@ -562,7 +561,7 @@ public class DungeonImpl implements Dungeon {
     Cave[][] copy = new Cave[rows][columns];
     for (int r = 0; r < rows; r++) {
       for (int c = 0; c < columns; c++) {
-        copy[c][r] = gameboard[c][r];
+        copy[r][c] = gameboard[r][c];
       }
     }
     //make deep copy and return
@@ -582,11 +581,6 @@ public class DungeonImpl implements Dungeon {
     return player.getPlayerLocation() == this.endPoint;
   }
 
-  @Override
-  public void getGameState() {
-    //TODO - find a way to pass the game state to appendable.
-
-  }
 
   @Override
   public String movePlayer(Direction direction) {
@@ -601,10 +595,12 @@ public class DungeonImpl implements Dungeon {
           //set the new player location to the right index
           player.move(findCaveByIndex(finalEdgeList.get(i).getRightIndex()),
                   getPossibleDirection(finalEdgeList.get(i).getRightIndex()));
+          break;
         } else if (finalEdgeList.get(i).getRightIndex() == player.getPlayerLocation()
                 && direction == finalEdgeList.get(i).getDirectionToCave1()) {
           player.move(findCaveByIndex(finalEdgeList.get(i).getLeftIndex()),
                   getPossibleDirection(finalEdgeList.get(i).getLeftIndex()));
+          break;
         }
       }
       //check if the cave is the end point
@@ -662,15 +658,6 @@ public class DungeonImpl implements Dungeon {
       copy.add(finalEdgeList.get(i));
     }
     return copy;
-  }
-
-  @Override
-  public List<Integer> getFinalPath() {
-    List<Integer> copyList = new ArrayList<>();
-    for (int i = 0; i < shortestPath.size(); i++) {
-      copyList.add(shortestPath.get(i));
-    }
-    return copyList;
   }
 
   private void addArrows() {

@@ -15,9 +15,9 @@ public class Cave extends AbstractLocation {
   private List<CrookedArrow> arrowList;
   private List<Monster> monsterList;
 
-  protected Cave(int row, int column, List<Integer> neighborList,
-                 List<Treasure> treasureList, int index, int set, List<CrookedArrow> arrowList,
-                 List<Monster> monsterList) {
+  public Cave(int row, int column, List<Integer> neighborList,
+              List<Treasure> treasureList, int index, int set, List<CrookedArrow> arrowList,
+              List<Monster> monsterList) {
     super(new Point2D(row, column), neighborList, treasureList, arrowList);
     this.index = index;
     this.set = set;
@@ -37,7 +37,7 @@ public class Cave extends AbstractLocation {
    *
    * @return the cave's row value as an integer.
    */
-  protected int getRow() {
+  int getRow() {
     return location.getRow();
   }
 
@@ -45,7 +45,7 @@ public class Cave extends AbstractLocation {
    *
    * @return the cave's column as an integer.
    */
-  protected int getColumn() {
+  int getColumn() {
     return location.getColumn();
   }
 
@@ -53,7 +53,7 @@ public class Cave extends AbstractLocation {
    *
    * @return the cave's unique id or index as an integer.
    */
-  protected int getIndex() {
+  int getIndex() {
     return this.index;
   }
 
@@ -61,7 +61,7 @@ public class Cave extends AbstractLocation {
    *
    * @return the cave's set as an integer.
    */
-  protected int getSet() {
+  int getSet() {
     return this.set;
   }
 
@@ -69,7 +69,7 @@ public class Cave extends AbstractLocation {
    *
    * @param set the integer value of the new set that the cave is being added to.
    */
-  protected void adjSet(int set) {
+  void adjSet(int set) {
     this.set = set;
   }
 
@@ -156,7 +156,13 @@ public class Cave extends AbstractLocation {
     }
   }
 
-  int getArrowListSize() {
+
+  /**Gets the size of the arrow list in a given cave.
+   *
+   * @return the size of the arrow list as an integer.
+   */
+  @Override
+  public int getArrowListSize() {
     return this.arrowList.size();
   }
 

@@ -39,6 +39,7 @@ public class Otyugh implements Monster {
    *
    * @return The remaining health of the monster as an integer. Returns a value between 0 and 1.
    */
+  @Override
   public int getHealth() {
     int temp = this.health;
     return temp;

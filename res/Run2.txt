@@ -12,44 +12,49 @@ final edges and just dropped them down to the next line.
 --------------------------------------------------------------------------------------------------------------------------
 C:\Users\matth\Documents\ACS\CS 5010\projects\Project4_Text_Based_Game\out\artifacts\Project4_Text_Based_Game_jar>
 java -jar Project4_Text_Based_Game.jar false 4 3 0 50 1
-
 status of final edge list: [0<========>1, 8<========>11, 3<========>6, 6<========>7, 0<========>3, 4<========>5,
-2<========>5, 1<========>2, 7<========>8, 9<========>10, 6<========>9]
+ 2<========>5, 1<========>2, 7<========>8, 9<========>10, 6<========>9]
 The Player StartPoint is 3.
 The end point is cave : 4
 
 The Player enters the dungeon at Cave 3. They can go [SOUTH, NORTH]. They currently have no treasure.
-The player is currently in Cave 3 and has nothing in their treasure bag.
+The player is currently in Cave 3 and has nothing in their treasure bag. 
 They can go SOUTH NORTH , there are 3 arrows remaining in their quiver, and there is no treasure in this cave and an arrow in this cave.
 
 
 Would you like to move, shoot, or pickup?
-move
+move 
 which direction?
 north
 
 
-The player is currently in Cave 0 and has nothing in their treasure bag.
+The player is currently in Cave 0 and has nothing in their treasure bag. 
 They can go EAST SOUTH , there are 3 arrows remaining in their quiver, and there is no treasure in this cave and an arrow in this cave.
 
 Would you like to move, shoot, or pickup?
-m
+move east
 which direction?
-e
 
 
-The player is currently in Cave 2 and has nothing in their treasure bag.
+The player is currently in Cave 1 and has nothing in their treasure bag. 
+They can go WEST EAST , there are 3 arrows remaining in their quiver, and there is no treasure in this cave and an arrow in this cave.
+
+Would you like to move, shoot, or pickup?
+move east
+which direction?
+
+
+The player is currently in Cave 2 and has nothing in their treasure bag. 
 They can go SOUTH WEST , there are 3 arrows remaining in their quiver, and there is no treasure in this cave and no arrows in this cave.
 
 The player smells something faint but awful.
 
 Would you like to move, shoot, or pickup?
-move
+move south
 which direction?
-south
 
 
-The player is currently in Cave 5 and has nothing in their treasure bag.
+The player is currently in Cave 5 and has nothing in their treasure bag. 
 They can go WEST NORTH , there are 3 arrows remaining in their quiver, and there is no treasure in this cave and no arrows in this cave.
 
 The player smells something awful and strong.

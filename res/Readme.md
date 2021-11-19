@@ -1,17 +1,11 @@
-# Project 4
+ # Project 4
 ## _Text Based Adventure Game_
 
 
 # About/Overview:
-This is my implementation of the Dungeon Text Based Adventure game that builds upon our Dungeon Model. A player enters the dungeon with nothing but their empty treasure sack, a bow, and 3 arrows in their quiver. The player then navigates the dungeon from their start point in search of their end point with the ability to pick up treasures and arrows as well as shoot those arrows in order to slay the monsters that await them in the dungeon. The player starts at a randomly selected point and  must navigate to a randomly selected end point at least 5 moves away. There will be at least one monster in the Dungeon at the end point but the user can ask for as many monsters as there are caves. Dungeons are represented as interconnected nodes where row 0, column 0 also known as index 0 is in the top left-hand corner and the index increases from left to right in the increasing x direction of the Cartesian plane(columns). It then drops to the next y position down and all the way to the left like a carriage return to do the same process for the second row. An example 3 row by 3 columns graph is below: 
+This is my implementation of the Dungeon Text Based Adventure game that builds upon our Dungeon Model. A player enters the dungeon with nothing but their empty treasure sack, a bow, and 3 arrows in their quiver. The player then navigates the dungeon from their start point in search of their end point with the ability to pick up treasures and arrows as well as shoot those arrows in order to slay the monsters that await them in the dungeon. The player starts at a randomly selected point and  must navigate to a randomly selected end point at least 5 moves away. There will be at least one monster in the Dungeon at the end point but the user can ask for as many monsters as there are caves. Dungeons are represented as interconnected nodes where row 0, column 0 also known as index 0 is in the top left-hand corner and the index increases from left to right in the increasing x direction of the Cartesian plane(columns). It then drops to the next y position down and all the way to the left like a carriage return to do the same process for the second row. The example 4 row by 3 columns graph is below: 
 
-### build basic layout pic and drag and drop here 
-#        columns
-    0       1       2
-# r
-# o   3       4       5
-# w
-# s   6       7       8
+![](demo_dungeon.jpg)
 
 The program will print the start cave, end cave, and final list of edges to the screen after it has generated which will have the indexes of both caves connected by a bidirectional arrow(18<========>23).
 
@@ -53,17 +47,20 @@ After the command line arguments are read in and the dungeon is constructed, the
 
 ## Run 1 -- Run 1.txt:
 1. Generates the dungeon based on the parameters passed(non-wrapping, 4 row by 3 column dungeon, level 0 interconnectivity, 50% treasure and arrows and level 1 difficulty).
-2. It then prints out the final edge list, starting cave and ending cave after Kruskal's has been completed. It then announces where the player is entering the dungeon(ie its randomly selected start point) and what the route they will follow through the dungeon is.
-3. The player then navigates the dungeon. At each step along the way the player's status is printed out which includes what cave they are in, identified by cave index, what they currently have in their treasure bag, what direction they can move from that cave(North, South, East, and/or West), and what treasure is in that cave that they will pick up.
-4. After the player has completed their route through the cave, the program prints a final message announcing the completion of navigating the dungeon and presents a final list of what the player collected for treasure along the way.
+2. It then prints out the final edge list, starting cave and ending cave after Kruskal's has been completed. It then announces where the player is entering the dungeon(ie its randomly selected start point) and drops the player in the starting cave(cave 3) and gives their current status.
+3. The player then navigates the dungeon moving from cave 3 to cave 6 picking up both arrows and treasure at the same time. Then move to cave 9 and then 10 where they pick up both arrows and treasure separately. At each step along the way the player's status is printed out which includes what cave they are in, identified by cave index, what they currently have in their treasure bag, what direction they can move from that cave(North, South, East, and/or West), how many arrows they have in their quiver, and what treasure and arrows are in that cave that they will pick up.
+4. The player then navigates back to cave 3 and then move north to cave 0 where they shoot an arrow 1 space east and hear a howl as the arrow hits the monster. 
+5. The player then moves east and then south until they smell something "faint but awful(Monster is 2 spaces away) and then "The player smells something awful and strong."(a monster within 1 space or 2 monsters within 2 spaces
+6. The player shoots again and hears "A great howl echos through the dungeon and a loud crash as the monster falls over dead."
+7. The player then moves west where they reach the final cave discovering the monster's body and have reached their end point. 
+8. The game terminates as they have reached their final destination. 
 
 
 ## Run 2 -- Run2.txt:
-1. Welcome Message printed to user with example for how to enter a valid dungeon request.
-2. Generates the dungeon based on the parameters passed(non- wrapping, 10 row by 10 column dungeon,  level 0 interconnectivity, and 20% treasure).
-3. It then prints out the final edge list after Kruskal's has been completed. It then announces where the player is entering the dungeon(ie its randomly selected start point) and what the route they will follow through the dungeon is.
-4. The player then navigates the dungeon. At each step along the way the player's status is printed out which includes what cave they are in, identified by cave index, what they currently have in their treasure bag, what direction they can move from that cave(North, South, East, and/or West), and what treasure is in that cave that they will pick up.
-5. After the player has completed their route through the cave, the program prints a final message announcing the completion of navigating the dungeon and presents a final list of what the player collected for treasure along the way.
+1. Generates the dungeon based on the parameters passed(non-wrapping, 4 row by 3 column dungeon, level 0 interconnectivity, 50% treasure and arrows and level 1 difficulty).
+2. It then prints out the final edge list, starting cave and ending cave after Kruskal's has been completed. It then announces where the player is entering the dungeon(ie its randomly selected start point) and drops the player in the starting cave(cave 3) and gives their current status.
+3. The player navigates north to cave 0 then east to cave 1 and then cave 2. The play smells something faint but awful. The player then moves south and smells something strong and awful.  
+4. The player then moves west to cave 4 from cave 5 where they are eaten by the monster, "Chomp! Our player was eaten by a Monster."
 
 # Design/Model Changes.
 
@@ -71,13 +68,21 @@ After the command line arguments are read in and the dungeon is constructed, the
 
 - I was able to remove a bunch of code for executing the depth first and breadth first searches. 
 
-- Made the player able to move via direction instead of by index like project 3 by implementing a look up for my final edge list. 
+- Made the player able to move via direction instead of by index like project 3 by implementing a lookup for my final edge list. 
 
-- lots of private methods were added to handle all the object passing and maintenance.
+- Lots of private methods were added to handle all the object passing and maintenance.
+
+- I obviously added the Otyugh, the ability to shoot, the ability to smell the Otyugh, as well as the crooked arrow objects and spread them among the caves and tunnels at the same percentage as the treasure. 
+
+- I changed how I updated the players update location method by decoupling the pickup method allowing the player the choice to pick up or not.
+
+- I added a isAlive and reachedEnd method that checks if the player is alive or if the player has reached the end cave and the game is over. 
+
+- I also changed my random number generator to more consistently produce the same results by producing just single random numbers with the same seed across the entire program.  
 
 # Assumptions
 
-- A player will always want to pick up all treasure and doesn't have a limit to how much treasure they can carry.
+- A player will always want to pick up all treasure and doesn't have a limit to how much treasure they can carry. There is no point in not picking up all treasure in a cave. 
 
 - The player does not care about any treasure or nodes in the cave that serves as the end point. 
 

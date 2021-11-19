@@ -9,6 +9,10 @@ import java.util.List;
  */
 public interface Location {
 
+  /**Gets the players treasure list.
+   *
+   * @return a deep copy array list of all the treasure that the cave has.
+   */
   List<Treasure> getTreasureList();
 
   /**Gets the list of neighbors for the current cave.
@@ -16,5 +20,11 @@ public interface Location {
    * @return an ArrayList of the neighbors of the current cave.
    */
   List<Integer> getNeighbors();
+
+  /**Gets the size of the arrow list in a given cave.
+   *
+   * @return the size of the arrow list as an integer.
+   */
+  int getArrowListSize();
 
 }

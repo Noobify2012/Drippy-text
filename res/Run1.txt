@@ -13,128 +13,159 @@ final edges and just dropped them down to the next line.
 
 C:\Users\matth\Documents\ACS\CS 5010\projects\Project4_Text_Based_Game\out\artifacts\Project4_Text_Based_Game_jar>
 java -jar Project4_Text_Based_Game.jar false 4 3 0 50 1
-
-status of final edge list: [0<========>1, 8<========>11, 3<========>6, 6<========>7, 0<========>3, 4<========>5,
-2<========>5, 1<========>2, 7<========>8, 9<========>10, 6<========>9]
+status of final edge list: [0<========>1, 8<========>11, 3<========>6, 6<========>7, 0<========>3, 4<========>5, 2<========>5, 1<========>2, 7<========>8, 9<========>10, 6<========>9]
 The Player StartPoint is 3.
 The end point is cave : 4
 
 The Player enters the dungeon at Cave 3. They can go [SOUTH, NORTH]. They currently have no treasure.
-The player is currently in Cave 3 and has nothing in their treasure bag.
+The player is currently in Cave 3 and has nothing in their treasure bag. 
 They can go SOUTH NORTH , there are 3 arrows remaining in their quiver, and there is no treasure in this cave and an arrow in this cave.
 
 
 Would you like to move, shoot, or pickup?
-move
+move south
+which direction?
+
+
+The player is currently in Cave 6 and has nothing in their treasure bag. 
+They can go NORTH EAST SOUTH , there are 3 arrows remaining in their quiver, and there is a Sapphire and an arrow in this cave.
+
+Would you like to move, shoot, or pickup?
+p
+treasure, arrows, or both?
+b
+The player picked up  0 rubies, 0 diamonds, 1 sapphires.
+The player picked up an arrow.
+The player is currently in Cave 6 and has  0 rubies, 0 diamonds, 1 sapphires. in their treasure bag. 
+They can go NORTH EAST SOUTH , there are 4 arrows remaining in their quiver, and there is no treasure in this cave and no arrows in this cave.
+
+Would you like to move, shoot, or pickup?
+move 
 which direction?
 south
 
 
-The player is currently in Cave 9 and has nothing in their treasure bag.
-They can go EAST NORTH , there are 3 arrows remaining in their quiver, and there is no treasure in this cave and no arrows in this cave.
+The player is currently in Cave 9 and has  0 rubies, 0 diamonds, 1 sapphires. in their treasure bag. 
+They can go EAST NORTH , there are 4 arrows remaining in their quiver, and there is no treasure in this cave and no arrows in this cave.
 
 Would you like to move, shoot, or pickup?
-move
+move east
 which direction?
-east
 
 
-The player is currently in Cave 10 and has nothing in their treasure bag.
-They can go [WEST] , there are 3 arrows remaining in their quiver, and there is  0 rubies, 3 diamonds, 2 sapphires. and an arrow in this cave.
+The player is currently in Cave 10 and has  0 rubies, 0 diamonds, 1 sapphires. in their treasure bag. 
+They can go [WEST] , there are 4 arrows remaining in their quiver, and there is  0 rubies, 3 diamonds, 2 sapphires. and an arrow in this cave.
 
 Would you like to move, shoot, or pickup?
-p
+p 
 treasure, arrows, or both?
 t
 The player picked up  0 rubies, 3 diamonds, 2 sapphires.
-The player is currently in Cave 10 and has  0 rubies, 3 diamonds, 2 sapphires. in their treasure bag.
-They can go [WEST] , there are 3 arrows remaining in their quiver, and there is no treasure in this cave and an arrow in this cave.
+The player is currently in Cave 10 and has  0 rubies, 3 diamonds, 3 sapphires. in their treasure bag. 
+They can go [WEST] , there are 4 arrows remaining in their quiver, and there is no treasure in this cave and an arrow in this cave.
 
 Would you like to move, shoot, or pickup?
-p
+p 
 treasure, arrows, or both?
 a
 
 The player picked up an arrow.
-The player is currently in Cave 10 and has  0 rubies, 3 diamonds, 2 sapphires. in their treasure bag.
-They can go [WEST] , there are 4 arrows remaining in their quiver, and there is no treasure in this cave and no arrows in this cave.
+The player is currently in Cave 10 and has  0 rubies, 3 diamonds, 3 sapphires. in their treasure bag. 
+They can go [WEST] , there are 5 arrows remaining in their quiver, and there is no treasure in this cave and no arrows in this cave.
 
 Would you like to move, shoot, or pickup?
-m w
+move north
+which direction?
+Can't move that way
+Would you like to move, shoot, or pickup?
+move west
 which direction?
 
 
-The player is currently in Cave 9 and has  0 rubies, 3 diamonds, 2 sapphires. in their treasure bag.
-They can go EAST NORTH , there are 4 arrows remaining in their quiver, and there is no treasure in this cave and no arrows in this cave.
-
-Would you like to move, shoot, or pickup?
-move
-which direction?
-north
-
-
-The player is currently in Cave 6 and has  0 rubies, 3 diamonds, 2 sapphires. in their treasure bag.
-They can go NORTH EAST SOUTH , there are 4 arrows remaining in their quiver, and there is a Sapphire and an arrow in this cave.
-
-Would you like to move, shoot, or pickup?
-shoot
-which direction?
-N
-how far?
-1
-
-Fired an arrow 1 spaces NORTH
-
-The player has 3 arrows remaining.
-A great howl echos through the dungeon.
+The player is currently in Cave 9 and has  0 rubies, 3 diamonds, 3 sapphires. in their treasure bag. 
+They can go EAST NORTH , there are 5 arrows remaining in their quiver, and there is no treasure in this cave and no arrows in this cave.
 
 Would you like to move, shoot, or pickup?
 move north
 which direction?
 
 
-The player is currently in Cave 0 and has  0 rubies, 3 diamonds, 2 sapphires. in their treasure bag.
-They can go EAST SOUTH , there are 3 arrows remaining in their quiver, and there is no treasure in this cave and an arrow in this cave.
+The player is currently in Cave 6 and has  0 rubies, 3 diamonds, 3 sapphires. in their treasure bag. 
+They can go NORTH EAST SOUTH , there are 5 arrows remaining in their quiver, and there is no treasure in this cave and no arrows in this cave.
 
 Would you like to move, shoot, or pickup?
-move
+move north
 which direction?
-east
 
 
-The player is currently in Cave 2 and has  0 rubies, 3 diamonds, 2 sapphires. in their treasure bag.
-They can go SOUTH WEST , there are 3 arrows remaining in their quiver, and there is no treasure in this cave and no arrows in this cave.
+The player is currently in Cave 3 and has  0 rubies, 3 diamonds, 3 sapphires. in their treasure bag. 
+They can go SOUTH NORTH , there are 5 arrows remaining in their quiver, and there is no treasure in this cave and an arrow in this cave.
 
-The player smells something faint but awful.
+Would you like to move, shoot, or pickup?
+move north
+which direction?
+
+
+The player is currently in Cave 0 and has  0 rubies, 3 diamonds, 3 sapphires. in their treasure bag. 
+They can go EAST SOUTH , there are 5 arrows remaining in their quiver, and there is no treasure in this cave and an arrow in this cave.
 
 Would you like to move, shoot, or pickup?
 shoot
 which direction?
-south
+east
 how far?
 1
 
-Fired an arrow 1 spaces SOUTH
+Fired an arrow 1 spaces EAST
 
-The player has 2 arrows remaining.
+The player has 4 arrows remaining.
+A great howl echos through the dungeon.
+
+Would you like to move, shoot, or pickup?
+move east
+which direction?
+
+
+The player is currently in Cave 1 and has  0 rubies, 3 diamonds, 3 sapphires. in their treasure bag. 
+They can go WEST EAST , there are 4 arrows remaining in their quiver, and there is no treasure in this cave and an arrow in this cave.
+
+Would you like to move, shoot, or pickup?
+move east
+which direction?
+
+
+The player is currently in Cave 2 and has  0 rubies, 3 diamonds, 3 sapphires. in their treasure bag. 
+They can go SOUTH WEST , there are 4 arrows remaining in their quiver, and there is no treasure in this cave and no arrows in this cave.
+
+The player smells something faint but awful.
+
+Would you like to move, shoot, or pickup?
+move south
+which direction?
+
+
+The player is currently in Cave 5 and has  0 rubies, 3 diamonds, 3 sapphires. in their treasure bag. 
+They can go WEST NORTH , there are 4 arrows remaining in their quiver, and there is no treasure in this cave and no arrows in this cave.
+
+The player smells something awful and strong.
+
+Would you like to move, shoot, or pickup?
+shoot west
+which direction?
+how far?
+1
+
+Fired an arrow 1 spaces WEST
+
+The player has 3 arrows remaining.
 A great howl echos through the dungeon and a loud crash as the monster falls over dead.
 
 Would you like to move, shoot, or pickup?
-move
+move west
 which direction?
-south
-
-
-The player is currently in Cave 5 and has  0 rubies, 3 diamonds, 2 sapphires. in their treasure bag.
-They can go WEST NORTH , there are 2 arrows remaining in their quiver, and there is no treasure in this cave and no arrows in this cave.
-
-Would you like to move, shoot, or pickup?
-m
-which direction?
-w
 
 Player has reached final cave
 
 Our player finds the body of a slain Monster.
-The player is currently in Cave 4 and has  0 rubies, 3 diamonds, 2 sapphires. in their treasure bag.
-They can go [EAST] , there are 2 arrows remaining in their quiver, and there is a Sapphire and an arrow in this cave.
+The player is currently in Cave 4 and has  0 rubies, 3 diamonds, 3 sapphires. in their treasure bag. 
+They can go [EAST] , there are 3 arrows remaining in their quiver, and there is a Sapphire and an arrow in this cave.

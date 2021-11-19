@@ -1,6 +1,5 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**This represents a dungeon which is where the player navigates from a start point to an end point.
@@ -31,12 +30,6 @@ public interface Dungeon {
    */
   List<Edge> getFinalEdgeList();
 
-  /**A getter that returns the final path the player will take from the start point to the end.
-   *
-   * @return an ArrayList of the indexes of the path from the start point to the end point.
-   */
-  List<Integer> getFinalPath();
-
   /**A getter that returns a copy of the game board data.
    *
    * @return a deep copy of the game board.
@@ -45,7 +38,6 @@ public interface Dungeon {
 
   boolean isGameOver();
 
-  void getGameState();
 
   String movePlayer(Direction direction);
 
