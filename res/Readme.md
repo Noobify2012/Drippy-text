@@ -84,7 +84,11 @@ After the command line arguments are read in and the dungeon is constructed, the
 
 - A player will always want to pick up all treasure and doesn't have a limit to how much treasure they can carry. There is no point in not picking up all treasure in a cave. 
 
-- The player does not care about any treasure or nodes in the cave that serves as the end point. 
+- The player does not care about any treasure or nodes in the cave that serves as the end point.
+
+- A cave will only have 1 monster because they are solitary creatures. 
+
+- A cave or tunnel will only have 1 arrow in it if it does have an arrow. This is to prevent the player from having tons of arrows and shooting them everywhere. The player will have to be strategic about how they use those arrows. 
 
 # Limitations
 - The player cannot pick up treasure or arrows in the final cave. The program will terminate because they have reached the end point. 

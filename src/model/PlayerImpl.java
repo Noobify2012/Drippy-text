@@ -1,7 +1,5 @@
 package model;
 
-import controller.Controller;
-import driver.Driver;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +11,6 @@ public class PlayerImpl implements Player {
   private int playerLocation;
   private List<Treasure> treasureList;
   private List<Direction> directions;
-  private List<Treasure> currentTreasure;
   private List<CrookedArrow> quiver;
   private boolean isAlive;
 
@@ -25,7 +22,6 @@ public class PlayerImpl implements Player {
     this.treasureList = new ArrayList<>();
     List<Treasure> treasureList = new ArrayList<>();
     List<Direction> directions = new ArrayList<>();
-    this.currentTreasure = new ArrayList<>();
     this.isAlive = true;
     this.quiver = new ArrayList<>();
 
@@ -158,11 +154,7 @@ public class PlayerImpl implements Player {
    * @return a boolean value of whether the player is alive or not. False is dead, true is alive.
    */
   public boolean isPlayerAlive() {
-    if (this.isAlive) {
-      return true;
-    } else {
-      return false;
-    }
+      return this.isAlive;
   }
 
   /**This just returns the index of the cave which the player is located in.

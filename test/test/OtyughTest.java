@@ -7,6 +7,9 @@ import model.Otyugh;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Testing for the monster functionality.
+ */
 public class OtyughTest {
 
   @Test

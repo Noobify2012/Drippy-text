@@ -87,7 +87,7 @@ public class ConsoleController implements Controller {
           break;
         } else {
           firstBool = validBool(next);
-          if (firstBool == true) {
+          if (firstBool) {
             try {
               out.append("got a valid wrap\n");
             } catch (IOException ioe) {
@@ -116,7 +116,7 @@ public class ConsoleController implements Controller {
           break;
         } else {
           firstInt = validateInput(next2);
-          if (firstInt == true) {
+          if (firstInt) {
             try {
               out.append("got a valid row\n");
             } catch (IOException ioe) {
@@ -140,7 +140,7 @@ public class ConsoleController implements Controller {
           break;
         } else {
           secondInt = validateInput(next3);
-          if (secondInt == true) {
+          if (secondInt) {
             try {
               //String element = scan.next();
               out.append("got a valid column\n");
@@ -165,7 +165,7 @@ public class ConsoleController implements Controller {
           break;
         } else {
           thirdInt = validateInput(next4);
-          if (thirdInt == true) {
+          if (thirdInt) {
             try {
               //String element = scan.next();
               out.append("got a valid interconnect\n");
@@ -190,7 +190,7 @@ public class ConsoleController implements Controller {
           break;
         } else {
           forthInt = validateInput(next5);
-          if (forthInt == true) {
+          if (forthInt) {
             try {
               //String element = scan.next();
               out.append("got a valid treas\n");
@@ -215,7 +215,7 @@ public class ConsoleController implements Controller {
           break;
         } else {
           fifthInt = validateInput(next6);
-          if (fifthInt == true) {
+          if (fifthInt) {
             try {
               //String element = scan.next();
               out.append("got a valid difficulty\n");
@@ -334,7 +334,7 @@ public class ConsoleController implements Controller {
           break;
         } else {
           gameAction = validateAction(next);
-          if (gameAction == true) {
+          if (gameAction) {
             Direction playerDirection = null;
             if (next.equalsIgnoreCase("move") || next.equalsIgnoreCase("m")
                     || next.equalsIgnoreCase("s")

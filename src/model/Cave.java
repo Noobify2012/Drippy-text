@@ -15,6 +15,19 @@ public class Cave extends AbstractLocation {
   private List<CrookedArrow> arrowList;
   private List<Monster> monsterList;
 
+  /**The constructor for a cave object which inherets most of its fields from the super class
+   * Abstract Location.
+   *
+   * @param row the integer value of the row the cave is in.
+   * @param column the integer value of the column that the cave is in.
+   * @param neighborList the integer list of indexes of a cave's neighbors.
+   * @param treasureList the list that holds the treasure objects found in the cave if there are
+   *                     any.
+   * @param index the integer index of the cave.
+   * @param set the set of the cave used for calculating Kruskal's.
+   * @param arrowList the list of arrows that are in the cave if there are any.
+   * @param monsterList the list holding the monster if there is on in this cave.
+   */
   public Cave(int row, int column, List<Integer> neighborList,
               List<Treasure> treasureList, int index, int set, List<CrookedArrow> arrowList,
               List<Monster> monsterList) {

@@ -51,11 +51,7 @@ class Edge {
    * @return a boolean to indicate if they are in the same set or not.
    */
   boolean compareSets() {
-    if (this.cave1.getSet() == this.cave2.getSet()) {
-      return true;
-    } else {
-      return false;
-    }
+      return this.cave1.getSet() == this.cave2.getSet();
   }
 
   int findCavebyDirection(int index, Direction direction) {

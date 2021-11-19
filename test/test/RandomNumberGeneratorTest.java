@@ -4,6 +4,9 @@ import random.RandomNumberGenerator;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Testing for the random number generator. This uses a seed so that we can know the next value.
+ */
 public class RandomNumberGeneratorTest {
 
   @org.junit.Test

@@ -11,6 +11,9 @@ import model.PlayerImpl;
 import static org.junit.Assert.assertEquals;
 
 
+/**
+ * Testing the functionality of the player. 
+ */
 public class PlayerImplTest {
 
   @Before
@@ -36,8 +39,10 @@ public class PlayerImplTest {
             1, 1);
     test.getDungeon();
     Cave[][] testdungeon = test.getGameBoard();
-    String testString = "The player is currently in Cave 3 and has nothing in their treasure bag. \n" +
-            "They can go SOUTH NORTH , there are 3 arrows remaining in their quiver, and there is no treasure in this cave and an arrow in this cave.\n";
+    String testString = "The player is currently in Cave 3 and has nothing in their treasure " +
+            "bag. \n" +
+            "They can go SOUTH NORTH , there are 3 arrows remaining in their quiver, and there is" +
+            " no treasure in this cave and an arrow in this cave.\n";
     assertEquals(testString, player.getPlayerStatus(0, testdungeon[1][0]));
   }
 
@@ -58,18 +63,18 @@ public class PlayerImplTest {
 
   @Test
   public void monsterEncounter() {
-    String MonsterHealthTwoString = "Chomp! Our player was eaten by a Monster.";
-    String MonsterHealthOneZeroString = "Whew! Our player barely escapes being eaten by a Monster.";
-    String MonsterHealthZeroString = "Our player finds the body of a slain Monster.";
+    String monsterHealthTwoString = "Chomp! Our player was eaten by a monster.";
+    String monsterHealthOneZeroString = "Whew! Our player barely escapes being eaten by a monster.";
+    String monsterHealthZeroString = "Our player finds the body of a slain monster.";
     Player player = new PlayerImpl();
     String testString1 = player.monsterEncounter(2,0);
-    String MonsterHealthOneRandOneString = player.monsterEncounter(1, 1);
-    String MonsterHealthOneRandZeroString = player.monsterEncounter(1, 0);
-    String MonsterHealthZero = player.monsterEncounter(0, 1);
-    assertEquals(MonsterHealthTwoString, testString1);
-    assertEquals(MonsterHealthTwoString, MonsterHealthOneRandOneString);
-    assertEquals(MonsterHealthOneZeroString, MonsterHealthOneRandZeroString);
-    assertEquals(MonsterHealthZeroString, MonsterHealthZero);
+    String monsterHealthOneRandOneString = player.monsterEncounter(1, 1);
+    String monsterHealthOneRandZeroString = player.monsterEncounter(1, 0);
+    String monsterHealthZero = player.monsterEncounter(0, 1);
+    assertEquals(monsterHealthTwoString, testString1);
+    assertEquals(monsterHealthTwoString, monsterHealthOneRandOneString);
+    assertEquals(monsterHealthOneZeroString, monsterHealthOneRandZeroString);
+    assertEquals(monsterHealthZeroString, monsterHealthZero);
   }
 
   @Test

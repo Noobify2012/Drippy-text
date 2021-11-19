@@ -10,6 +10,9 @@ import model.PlayerImpl;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Testing for the functionality of locations.
+ */
 public class LocationTest {
 
   @Test
