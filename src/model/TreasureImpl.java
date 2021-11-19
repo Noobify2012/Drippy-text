@@ -13,7 +13,10 @@ public class TreasureImpl {
   enum TreasureType {
     RUBY("Ruby"), DIAMOND("Diamond"), SAPPHIRE("Sapphire");
 
+
     TreasureType(String name) {
+      //This is just the constructor for the name, which never used in this class but is used
+      //to identify a piece of treasure when the player comes across it or picks it up
     }
   }
 
