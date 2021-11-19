@@ -360,6 +360,39 @@ public class DungeonImplTest {
 
   //TODO - check smell with dead monster
 
+  @Test
+  public void deadMonsterSmellCheck() {
+    Player player = new PlayerImpl();
+    Dungeon test = new DungeonImpl(false, 4,3,0,20, player,
+            1, 1);
+    test.getDungeon();
+    String moveString = test.movePlayer(Direction.NORTH);
+    String result = "\n\nThe player is currently in Cave 0 and has nothing in their treasure bag."
+            + " \n" +
+            "They can go EAST SOUTH , there are 3 arrows remaining in their quiver, and there is "
+            + "no treasure in this cave and no arrows in this cave.\n";
+    assertEquals(result, moveString);
+    test.movePlayer(Direction.EAST);
+    String smellStringOne = test.movePlayer(Direction.EAST);
+    String smellResultOne = "\n" +
+            "\n" +
+            "The player is currently in Cave 2 and has nothing in their treasure bag. \n" +
+            "They can go SOUTH WEST , there are 3 arrows remaining in their quiver, and there is " +
+            "no treasure in this cave and no arrows in this cave.\n" +
+            "\n" +
+            "The player smells something faint but awful.\n";
+    assertEquals(smellResultOne, smellStringOne);
+    test.shootArrow(1, Direction.SOUTH);
+    test.shootArrow(1, Direction.SOUTH);
+    String smellStringTwo = test.movePlayer(Direction.SOUTH);
+    String smellResultTwo = "\n" +
+            "\n" +
+            "The player is currently in Cave 5 and has nothing in their treasure bag. \n" +
+            "They can go WEST NORTH , there are 1 arrows remaining in their quiver, and there" +
+            " is no treasure in this cave and no arrows in this cave.\n";
+    assertEquals(smellResultTwo, smellStringTwo);
+  }
+
 
 
 }
