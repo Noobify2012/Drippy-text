@@ -157,7 +157,6 @@ public class DungeonImplTest {
             + " 6<========>7, 0<========>3, 4<========>5, 2<========>5, 1<========>2, 7<========>8,"
             + " 9<========>10, 6<========>9]\n" +
             "The Player StartPoint is 3.\n" +
-            "The end point is cave : 4\n" +
             "\n" +
             "The Player enters the dungeon at Cave 3. They can go [SOUTH, NORTH]. They currently"
             + " have no treasure.\n" +
@@ -366,6 +365,8 @@ public class DungeonImplTest {
             "The player smells something awful and strong.\n";
     assertEquals(smellResultTwo, smellStringTwo);
   }
+
+  //TODO - check smell with dead monster
 
 
 

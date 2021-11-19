@@ -206,8 +206,8 @@ public class DungeonImpl implements Dungeon {
     String initPlayerStat = player.getPlayerStatus(checkSmell(),
             findCaveByIndex(player.getPlayerLocation()));
 
-    String dungeonString = kruskalsString + "\n" + startString + "\n" + endPointString + "\n"
-            + setUpString + "\n" + initPlayerStat;
+    String dungeonString = kruskalsString + "\n" + startString + "\n" + setUpString + "\n"
+            + initPlayerStat;
     return dungeonString;
 
   }
