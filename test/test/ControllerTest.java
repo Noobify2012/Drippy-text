@@ -9,30 +9,28 @@ import controller.ConsoleController;
 import controller.Controller;
 import model.Dungeon;
 import model.DungeonImpl;
+import model.IDungeon;
 import model.Player;
 import model.PlayerImpl;
 
 import static org.junit.Assert.*;
 
 /**
- * The testing for the controller. In this class we not only test the controllers functionality
+ * The testing for the controller. In this class we not only test the controller's functionality
  * but also mock the model.
  */
 public class ControllerTest {
 
-  @Test
-  public void buildDungeon() {
-  }
 
   @Test
   public void playGame() {
     StringBuffer out = new StringBuffer();
     Reader in = new StringReader("m n m e m e m s m w");
     Player player = new PlayerImpl();
-    Dungeon dungeon = new DungeonImpl(false, 4, 3, 0 , 50, player, 1, 1);
+    IDungeon dungeon = new DungeonImpl(false, 4, 3, 0 , 50, player, 1, 1);
     dungeon.getDungeon();
     Controller control = new ConsoleController(in, out);
-    control.playGame(dungeon);
+//    control.playGame((IDungeon) dungeon);
     String shortestPath = "Would you like to move, shoot, or pickup?\n" +
             "which direction?\n" +
             "\n" +
@@ -72,5 +70,50 @@ public class ControllerTest {
             "\n" +
             "Chomp! Our player was eaten by a Monster.\n\n";
     assertEquals(shortestPath , out.toString());
+  }
+
+  @Test
+  public void playMock() {
+    StringBuffer out = new StringBuffer();
+    Reader in = new StringReader("p a s n 1 m n m e m e m s m w");
+    Player player = new PlayerImpl();
+    StringBuilder log = new StringBuilder();
+    IDungeon dungeon = new MockModel(log, 123);
+    dungeon.getDungeon();
+    assertEquals("Got the dungeon\n", log.toString());
+    Controller control = new ConsoleController(in, out);
+    control.playGame((IDungeon) dungeon);
+    String shortestPath = "Got the dungeon\n" +
+            "Input: pickup 1\n" +
+            "Input: shoot 1 NORTH\n" +
+            "Input: move NORTH\n" +
+            "Input: move EAST\n" +
+            "Input: move EAST\n" +
+            "Input: move SOUTH\n" +
+            "Input: move WEST\n";
+    assertEquals(shortestPath , log.toString());
+    String outString = "Would you like to move, shoot, or pickup?\n" +
+            "treasure, arrows, or both?\n" +
+            "pickUpItem\n" +
+            "Would you like to move, shoot, or pickup?\n" +
+            "which direction?\n" +
+            "how far?\n" +
+            "shootArrow\n" +
+            "Would you like to move, shoot, or pickup?\n" +
+            "which direction?\n" +
+            "movePlayer\n" +
+            "Would you like to move, shoot, or pickup?\n" +
+            "which direction?\n" +
+            "movePlayer\n" +
+            "Would you like to move, shoot, or pickup?\n" +
+            "which direction?\n" +
+            "movePlayer\n" +
+            "Would you like to move, shoot, or pickup?\n" +
+            "which direction?\n" +
+            "movePlayer\n" +
+            "Would you like to move, shoot, or pickup?\n" +
+            "which direction?\n" +
+            "movePlayer\n";
+    assertEquals(outString, out.toString());
   }
 }

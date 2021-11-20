@@ -6,6 +6,7 @@ import model.Cave;
 import model.Direction;
 import model.Dungeon;
 import model.DungeonImpl;
+import model.IDungeon;
 import model.Player;
 import model.PlayerImpl;
 import static org.junit.Assert.assertEquals;
@@ -19,7 +20,7 @@ public class PlayerImplTest {
   @Before
   public void setup() {
     Player player = new PlayerImpl();
-    Dungeon test = new DungeonImpl(false, 4, 3, 0 , 50, player,
+    IDungeon test = new DungeonImpl(false, 4, 3, 0 , 50, player,
             1, 1 );
     String dungeonString = test.getDungeon();
   }
@@ -28,14 +29,14 @@ public class PlayerImplTest {
   @Test
   public void getTreasureList() {
     Player player = new PlayerImpl();
-    Dungeon test = new DungeonImpl(false, 5,5,0,20, player, 1, 0);
+    IDungeon test = new DungeonImpl(false, 5,5,0,20, player, 1, 0);
     assertEquals(0, player.getTreasureList().size());
   }
 
   @Test
   public void getPlayerStatus() {
     Player player = new PlayerImpl();
-    Dungeon test = new DungeonImpl(false, 4, 3, 0, 50, player,
+    IDungeon test = new DungeonImpl(false, 4, 3, 0, 50, player,
             1, 1);
     test.getDungeon();
     Cave[][] testdungeon = test.getGameBoard();
@@ -55,7 +56,7 @@ public class PlayerImplTest {
   @Test
   public void getPlayerLocation() {
     Player player = new PlayerImpl();
-    Dungeon test = new DungeonImpl(false, 4, 3, 0, 50, player,
+    IDungeon test = new DungeonImpl(false, 4, 3, 0, 50, player,
             1, 1);
     test.getDungeon();
     assertEquals(3, player.getPlayerLocation());
@@ -94,7 +95,7 @@ public class PlayerImplTest {
   @Test
   public void pickUp() {
     Player player = new PlayerImpl();
-    Dungeon test = new DungeonImpl(false, 4, 3, 0, 50, player,
+    IDungeon test = new DungeonImpl(false, 4, 3, 0, 50, player,
             1, 1);
     test.getDungeon();
     Cave[][] testdungeon = test.getGameBoard();

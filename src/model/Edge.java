@@ -1,12 +1,12 @@
 package model;
 
-class Edge {
+public class Edge {
   private Cave cave1;
   private Cave cave2;
   private Direction directionToCave1;
   private Direction directionToCave2;
 
-  Edge(Cave cave1, Cave cave2) {
+  public Edge(Cave cave1, Cave cave2) {
     this.cave1 = cave1;
     this.cave2 = cave2;
     this.directionToCave1 = directionToCave1;

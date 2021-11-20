@@ -5,6 +5,7 @@ import java.util.Scanner;
 import model.Direction;
 import model.Dungeon;
 import model.DungeonImpl;
+import model.IDungeon;
 import model.Player;
 import model.PlayerImpl;
 
@@ -236,7 +237,7 @@ public class ConsoleController implements Controller {
         //build dungeon and try to catch errors
         Player player = new PlayerImpl();
         try {
-          Dungeon test = new DungeonImpl(wraps, rows, columns, interconnect, treasPer, player,
+          IDungeon test = new DungeonImpl(wraps, rows, columns, interconnect, treasPer, player,
                   diff, 1);
           String dungeonBuilder = test.getDungeon();
           try {
@@ -244,7 +245,7 @@ public class ConsoleController implements Controller {
           } catch (IOException ioe) {
             throw new IllegalStateException("Append failed", ioe);
           }
-          playGame(test);
+          playGame((IDungeon) test);
         } catch (IllegalArgumentException iae) {
           try {
             out.append(iae.getMessage() + "\n");
@@ -305,7 +306,7 @@ public class ConsoleController implements Controller {
    * @param d the dungeon that is required for the user to navigate and play.
    */
   @Override
-  public void playGame(Dungeon d) {
+  public void playGame(IDungeon d) {
     boolean quitFlag = false;
     if (d == null) {
       throw new IllegalStateException("the dungeon model cannot be null");
@@ -327,7 +328,7 @@ public class ConsoleController implements Controller {
         // is first thing either an int or char, request new input
         if (next.equalsIgnoreCase("q")) {
           //get game state, append, and quit method.
-          quitGame(d);
+          quitGame((Dungeon) d);
           quitFlag = true;
           gameAction = true;
           //validInput = true;

@@ -7,7 +7,7 @@ import random.RandomNumberGenerator;
 /**
  * The implementation of the Dungeon interface.
  */
-public class DungeonImpl implements Dungeon {
+public class DungeonImpl implements IDungeon {
   private boolean wraps;
   private int rows;
   private int columns;
