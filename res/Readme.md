@@ -7,7 +7,7 @@ This is my implementation of the Dungeon Text Based Adventure game that builds u
 
 ![](demo_dungeon.jpg)
 
-The program will print the start cave, end cave, and final list of edges to the screen after it has generated which will have the indexes of both caves connected by a bidirectional arrow(18<========>23).
+If re-enabled, the program will print the start cave, end cave, and final list of edges to the screen after it has generated which will have the indexes of both caves connected by a bidirectional arrow(18<========>23).
 
 # Features
 

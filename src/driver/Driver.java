@@ -1,6 +1,8 @@
 package driver;
 
 import controller.ConsoleController;
+
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Scanner;
 import model.Dungeon;
