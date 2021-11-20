@@ -6,7 +6,6 @@ import model.Cave;
 import model.Direction;
 import model.Dungeon;
 import model.DungeonImpl;
-import model.Dungeon;
 import model.Player;
 import model.PlayerImpl;
 import static org.junit.Assert.assertEquals;

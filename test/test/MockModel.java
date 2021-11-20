@@ -7,15 +7,23 @@ import model.Direction;
 import model.Edge;
 import model.Dungeon;
 
+/**
+ * This is the mock model for mocking the controller.
+ */
 public class MockModel implements Dungeon {
 
 
-  private final int uCode;
   private StringBuilder log;
 
+  /** The constructor for the mockmodel which uses the log and uCode or unique code for testing the
+   *  controller.
+   *
+   * @param log For recording which methods were called to test the controller.
+   * @param uCode the unique code returned at the end of the method to compare with the out at the
+   *              end.
+   */
   public MockModel(StringBuilder log, int uCode) {
     this.log = log;
-    this.uCode = uCode;
   }
 
   /**
@@ -66,10 +74,11 @@ public class MockModel implements Dungeon {
   public Cave[][] getGameBoard() {
     return new Cave[0][];
   }
+
   int iter = 0;
+
   @Override
   public boolean isGameOver() {
-//    int iter = 0;
     boolean retBool = false;
     iter++;
     if (iter > 7) {

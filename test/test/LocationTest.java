@@ -5,7 +5,6 @@ import org.junit.Test;
 import model.Cave;
 import model.Dungeon;
 import model.DungeonImpl;
-import model.Dungeon;
 import model.Player;
 import model.PlayerImpl;
 

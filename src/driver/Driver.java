@@ -5,7 +5,6 @@ import java.io.InputStreamReader;
 import java.util.Scanner;
 import model.Dungeon;
 import model.DungeonImpl;
-import model.Dungeon;
 import model.Player;
 import model.PlayerImpl;
 
@@ -49,7 +48,7 @@ public class Driver {
     Player player = new PlayerImpl();
     try {
       Dungeon test = new DungeonImpl(wraps, row, col, inter, treas, player,
-              dif, 1);
+              dif, 0);
       String dungeonBuilder = test.getDungeon();
       System.out.println(dungeonBuilder + "\n");
       Readable inputs = new InputStreamReader(System.in);

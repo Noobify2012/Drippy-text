@@ -1,7 +1,6 @@
 package controller;
 
 import model.Dungeon;
-import model.Dungeon;
 
 /**
  * This is the controller of the MVC implementation. this class provides the user the ability to

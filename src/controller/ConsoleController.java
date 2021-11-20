@@ -5,7 +5,6 @@ import java.util.Scanner;
 import model.Direction;
 import model.Dungeon;
 import model.DungeonImpl;
-import model.Dungeon;
 import model.Player;
 import model.PlayerImpl;
 
