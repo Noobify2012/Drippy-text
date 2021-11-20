@@ -5,7 +5,7 @@ import java.io.InputStreamReader;
 import java.util.Scanner;
 import model.Dungeon;
 import model.DungeonImpl;
-import model.iDungeon;
+import model.Dungeon;
 import model.Player;
 import model.PlayerImpl;
 
@@ -48,13 +48,13 @@ public class Driver {
 
     Player player = new PlayerImpl();
     try {
-      iDungeon test = new DungeonImpl(wraps, row, col, inter, treas, player,
+      Dungeon test = new DungeonImpl(wraps, row, col, inter, treas, player,
               dif, 1);
       String dungeonBuilder = test.getDungeon();
       System.out.println(dungeonBuilder + "\n");
       Readable inputs = new InputStreamReader(System.in);
       Appendable output = System.out;
-      new ConsoleController(inputs, output).playGame((iDungeon) test);
+      new ConsoleController(inputs, output).playGame((Dungeon) test);
     } catch (IllegalArgumentException iae) {
       System.out.println(iae.getMessage() + "\n");
     } catch (IllegalStateException ise) {

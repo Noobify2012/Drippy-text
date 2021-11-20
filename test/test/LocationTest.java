@@ -5,7 +5,7 @@ import org.junit.Test;
 import model.Cave;
 import model.Dungeon;
 import model.DungeonImpl;
-import model.iDungeon;
+import model.Dungeon;
 import model.Player;
 import model.PlayerImpl;
 
@@ -19,7 +19,7 @@ public class LocationTest {
   @Test
   public void getTreasureList() {
     Player player = new PlayerImpl();
-    iDungeon test = new DungeonImpl(false, 4,3,0,50, player,
+    Dungeon test = new DungeonImpl(false, 4,3,0,50, player,
             1, 1);
     test.getDungeon();
     Cave[][] testboard = test.getGameBoard();
@@ -31,7 +31,7 @@ public class LocationTest {
   @Test
   public void getNeighbors() {
     Player player = new PlayerImpl();
-    iDungeon test = new DungeonImpl(false, 4,3,0,50, player,
+    Dungeon test = new DungeonImpl(false, 4,3,0,50, player,
             1, 1);
     test.getDungeon();
     Cave[][] testboard = test.getGameBoard();
@@ -42,7 +42,7 @@ public class LocationTest {
   @Test
   public void getArrowList() {
     Player player = new PlayerImpl();
-    iDungeon test = new DungeonImpl(false, 4,3,0,50, player,
+    Dungeon test = new DungeonImpl(false, 4,3,0,50, player,
             1, 1);
     test.getDungeon();
     Cave[][] testboard = test.getGameBoard();
