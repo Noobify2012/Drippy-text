@@ -2,7 +2,10 @@ package model;
 
 import java.util.List;
 
-public interface IDungeon {
+/**
+ * The mock interface for the controller test.
+ */
+public interface iDungeon {
 
 
   /**A helper to get the number of rows in the game board.

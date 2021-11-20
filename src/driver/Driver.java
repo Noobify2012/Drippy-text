@@ -1,12 +1,11 @@
 package driver;
 
 import controller.ConsoleController;
-
 import java.io.InputStreamReader;
 import java.util.Scanner;
 import model.Dungeon;
 import model.DungeonImpl;
-import model.IDungeon;
+import model.iDungeon;
 import model.Player;
 import model.PlayerImpl;
 
@@ -49,13 +48,13 @@ public class Driver {
 
     Player player = new PlayerImpl();
     try {
-      IDungeon test = new DungeonImpl(wraps, row, col, inter, treas, player,
+      iDungeon test = new DungeonImpl(wraps, row, col, inter, treas, player,
               dif, 1);
-      String DungeonBuilder = test.getDungeon();
-      System.out.println(DungeonBuilder + "\n");
+      String dungeonBuilder = test.getDungeon();
+      System.out.println(dungeonBuilder + "\n");
       Readable inputs = new InputStreamReader(System.in);
       Appendable output = System.out;
-      new ConsoleController(inputs, output).playGame((IDungeon) test);
+      new ConsoleController(inputs, output).playGame((iDungeon) test);
     } catch (IllegalArgumentException iae) {
       System.out.println(iae.getMessage() + "\n");
     } catch (IllegalStateException ise) {

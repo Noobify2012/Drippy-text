@@ -9,7 +9,7 @@ import controller.ConsoleController;
 import controller.Controller;
 import model.Dungeon;
 import model.DungeonImpl;
-import model.IDungeon;
+import model.iDungeon;
 import model.Player;
 import model.PlayerImpl;
 
@@ -27,10 +27,10 @@ public class ControllerTest {
     StringBuffer out = new StringBuffer();
     Reader in = new StringReader("m n m e m e m s m w");
     Player player = new PlayerImpl();
-    IDungeon dungeon = new DungeonImpl(false, 4, 3, 0 , 50, player, 1, 1);
+    iDungeon dungeon = new DungeonImpl(false, 4, 3, 0 , 50, player, 1, 1);
     dungeon.getDungeon();
     Controller control = new ConsoleController(in, out);
-//    control.playGame((IDungeon) dungeon);
+    control.playGame((iDungeon) dungeon);
     String shortestPath = "Would you like to move, shoot, or pickup?\n" +
             "which direction?\n" +
             "\n" +
@@ -78,11 +78,11 @@ public class ControllerTest {
     Reader in = new StringReader("p a s n 1 m n m e m e m s m w");
     Player player = new PlayerImpl();
     StringBuilder log = new StringBuilder();
-    IDungeon dungeon = new MockModel(log, 123);
+    iDungeon dungeon = new MockModel(log, 123);
     dungeon.getDungeon();
     assertEquals("Got the dungeon\n", log.toString());
     Controller control = new ConsoleController(in, out);
-    control.playGame((IDungeon) dungeon);
+    control.playGame((iDungeon) dungeon);
     String shortestPath = "Got the dungeon\n" +
             "Input: pickup 1\n" +
             "Input: shoot 1 NORTH\n" +

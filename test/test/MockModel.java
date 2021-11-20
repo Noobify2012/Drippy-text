@@ -5,9 +5,9 @@ import java.util.List;
 import model.Cave;
 import model.Direction;
 import model.Edge;
-import model.IDungeon;
+import model.iDungeon;
 
-public class MockModel implements IDungeon {
+public class MockModel implements iDungeon {
 
 
   private final int uCode;

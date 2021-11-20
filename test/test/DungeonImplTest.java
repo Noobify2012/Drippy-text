@@ -6,7 +6,7 @@ import model.Cave;
 import model.Direction;
 import model.Dungeon;
 import model.DungeonImpl;
-import model.IDungeon;
+import model.iDungeon;
 import model.Player;
 import model.PlayerImpl;
 import static org.junit.Assert.assertEquals;
@@ -16,7 +16,7 @@ import static org.junit.Assert.assertTrue;
  * This is the tests for all Dungeon functionality and construction.
  */
 public class DungeonImplTest {
-  private IDungeon test;
+  private iDungeon test;
   private Player player;
   private ArrayList edgeList;
 
@@ -25,7 +25,7 @@ public class DungeonImplTest {
   @Test
   public void getGameBoardRows() {
     Player player = new PlayerImpl();
-    IDungeon test = new DungeonImpl(false, 5,5,0,20, player, 1, 1);
+    iDungeon test = new DungeonImpl(false, 5,5,0,20, player, 1, 1);
     test.getDungeon();
     assertEquals(5, test.getGameBoardRows());
   }
@@ -33,7 +33,7 @@ public class DungeonImplTest {
   @Test
   public void getGameBoardCols() {
     Player player = new PlayerImpl();
-    IDungeon test = new DungeonImpl(false, 5,8,0,20, player, 1, 1);
+    iDungeon test = new DungeonImpl(false, 5,8,0,20, player, 1, 1);
     test.getDungeon();
     assertEquals(8, test.getGameBoardCols());
   }
@@ -41,7 +41,7 @@ public class DungeonImplTest {
   @Test
   public void getFinalEdgeList() {
     Player player = new PlayerImpl();
-    IDungeon test = new DungeonImpl(false, 5,5,0,20, player, 1, 1);
+    iDungeon test = new DungeonImpl(false, 5,5,0,20, player, 1, 1);
     test.getDungeon();
     assertTrue(test.getFinalEdgeList().size() >= 24);
   }
@@ -49,7 +49,7 @@ public class DungeonImplTest {
   @Test
   public void getFinalEdgeListMax() {
     Player player = new PlayerImpl();
-    IDungeon test = new DungeonImpl(false, 5,5,16,20, player, 1, 1);
+    iDungeon test = new DungeonImpl(false, 5,5,16,20, player, 1, 1);
     test.getDungeon();
     assertEquals(40,test.getFinalEdgeList().size());
   }
@@ -57,55 +57,55 @@ public class DungeonImplTest {
   @Test (expected = IllegalArgumentException.class)
   public void dungeonConstructorNotNodesTest() {
     Player player = new PlayerImpl();
-    IDungeon test = new DungeonImpl(false, 2,2,16,20, player, 1, 1);
+    iDungeon test = new DungeonImpl(false, 2,2,16,20, player, 1, 1);
   }
 
   @Test (expected = IllegalArgumentException.class)
   public void dungeonConstructorNotEnoughRowsTest() {
     Player player = new PlayerImpl();
-    IDungeon test = new DungeonImpl(false, 0,5,16,20, player, 1, 1);
+    iDungeon test = new DungeonImpl(false, 0,5,16,20, player, 1, 1);
   }
 
   @Test (expected = IllegalArgumentException.class)
   public void dungeonConstructorNotEnoughColsTest() {
     Player player = new PlayerImpl();
-    IDungeon test = new DungeonImpl(false, 5,0,16,20, player, 1, 1);
+    iDungeon test = new DungeonImpl(false, 5,0,16,20, player, 1, 1);
   }
 
   @Test (expected = IllegalArgumentException.class)
   public void dungeonConstructorNegTreasureTest() {
     Player player = new PlayerImpl();
-    IDungeon test = new DungeonImpl(false, 5,5,1,-20, player, 1, 1);
+    iDungeon test = new DungeonImpl(false, 5,5,1,-20, player, 1, 1);
   }
 
   @Test (expected = IllegalArgumentException.class)
   public void dungeonConstructorTooMuchTreasureTest() {
     Player player = new PlayerImpl();
-    IDungeon test = new DungeonImpl(false, 5,5,1,200, player, 1, 1);
+    iDungeon test = new DungeonImpl(false, 5,5,1,200, player, 1, 1);
   }
 
   @Test (expected = IllegalArgumentException.class)
   public void dungeonConstructorNegInterconTest() {
     Player player = new PlayerImpl();
-    IDungeon test = new DungeonImpl(false, 5,5,-1,20, player, 1, 1);
+    iDungeon test = new DungeonImpl(false, 5,5,-1,20, player, 1, 1);
   }
 
   @Test (expected = IllegalArgumentException.class)
   public void dungeonConstructorNonwrapTooMuchIntercon() {
     Player player = new PlayerImpl();
-    IDungeon test = new DungeonImpl(false, 5,5,40,20, player, 1, 1);
+    iDungeon test = new DungeonImpl(false, 5,5,40,20, player, 1, 1);
   }
 
   @Test (expected = IllegalArgumentException.class)
   public void dungeonConstructorWrapTooMuchIntercon() {
     Player player = new PlayerImpl();
-    IDungeon test = new DungeonImpl(false, 5,5,50,20, player, 1, 1);
+    iDungeon test = new DungeonImpl(false, 5,5,50,20, player, 1, 1);
   }
 
   @Test
   public void getGameBoard() {
     Player player = new PlayerImpl();
-    IDungeon test = new DungeonImpl(false, 5,5,0,20, player, 1, 1);
+    iDungeon test = new DungeonImpl(false, 5,5,0,20, player, 1, 1);
     test.getDungeon();
     assertEquals(5,test.getGameBoard().length);
   }
@@ -113,7 +113,7 @@ public class DungeonImplTest {
   @Test
   public void getTeasureTest() {
     Player player = new PlayerImpl();
-    IDungeon test = new DungeonImpl(false, 4,3,0,50, player, 1, 1);
+    iDungeon test = new DungeonImpl(false, 4,3,0,50, player, 1, 1);
     test.getDungeon();
     Cave[][] testboard = test.getGameBoard();
     int treasureInt = 0;
@@ -130,7 +130,7 @@ public class DungeonImplTest {
   @Test
   public void getZeroTunnelTreasureTest() {
     Player player = new PlayerImpl();
-    IDungeon test = new DungeonImpl(false, 5,5,0,20, player, 1, 1);
+    iDungeon test = new DungeonImpl(false, 5,5,0,20, player, 1, 1);
     test.getDungeon();
     Cave[][] testboard = test.getGameBoard();
     int treasureInt = 0;
@@ -148,7 +148,7 @@ public class DungeonImplTest {
   @Test
   public void getDungeon() {
     Player player = new PlayerImpl();
-    IDungeon test = new DungeonImpl(false, 4,3,0,20, player,
+    iDungeon test = new DungeonImpl(false, 4,3,0,20, player,
             1, 1);
     String createString = test.getDungeon();
     String testString =
@@ -162,7 +162,7 @@ public class DungeonImplTest {
   @Test
   public void isGameOver() {
     Player player = new PlayerImpl();
-    IDungeon test = new DungeonImpl(false, 4,3,0,20, player,
+    iDungeon test = new DungeonImpl(false, 4,3,0,20, player,
             1, 1);
     test.getDungeon();
     boolean testBool = test.isGameOver();
@@ -172,7 +172,7 @@ public class DungeonImplTest {
   @Test
   public void movePlayer() {
     Player player = new PlayerImpl();
-    IDungeon test = new DungeonImpl(false, 4,3,0,20, player,
+    iDungeon test = new DungeonImpl(false, 4,3,0,20, player,
             1, 1);
     test.getDungeon();
     String moveString = test.movePlayer(Direction.NORTH);
@@ -186,7 +186,7 @@ public class DungeonImplTest {
   @Test
   public void getWrapping() {
     Player player = new PlayerImpl();
-    IDungeon test = new DungeonImpl(false, 4,3,0,20, player,
+    iDungeon test = new DungeonImpl(false, 4,3,0,20, player,
             1, 1);
     test.getDungeon();
     boolean wraps = test.getWrapping();
@@ -197,7 +197,7 @@ public class DungeonImplTest {
   @Test
   public void shootArrow() {
     Player player = new PlayerImpl();
-    IDungeon test = new DungeonImpl(false, 4,3,0,20, player,
+    iDungeon test = new DungeonImpl(false, 4,3,0,20, player,
             1, 1);
     test.getDungeon();
     String firstShot = test.shootArrow(1,Direction.NORTH);
@@ -221,7 +221,7 @@ public class DungeonImplTest {
   @Test
   public void missShot() {
     Player player = new PlayerImpl();
-    IDungeon test = new DungeonImpl(false, 4,3,0,20, player,
+    iDungeon test = new DungeonImpl(false, 4,3,0,20, player,
             1, 1);
     test.getDungeon();
     String firstShot = test.shootArrow(2,Direction.NORTH);
@@ -236,7 +236,7 @@ public class DungeonImplTest {
   @Test
   public void pickUpItem() {
     Player player = new PlayerImpl();
-    IDungeon test = new DungeonImpl(false, 4,3,0,50, player,
+    iDungeon test = new DungeonImpl(false, 4,3,0,50, player,
             1, 1);
     test.getDungeon();
     String pickUp = test.pickUpItem(1);
@@ -251,7 +251,7 @@ public class DungeonImplTest {
   @Test
   public void quitGame() {
     Player player = new PlayerImpl();
-    IDungeon test = new DungeonImpl(false, 4,3,0,50, player,
+    iDungeon test = new DungeonImpl(false, 4,3,0,50, player,
             1, 1);
     test.getDungeon();
     String quitString = test.quitGame();
@@ -265,7 +265,7 @@ public class DungeonImplTest {
   @Test
   public void getArrowTest() {
     Player player = new PlayerImpl();
-    IDungeon test = new DungeonImpl(false, 4,3,0,50, player, 1, 1);
+    iDungeon test = new DungeonImpl(false, 4,3,0,50, player, 1, 1);
     test.getDungeon();
     Cave[][] testboard = test.getGameBoard();
     int arrowInt = 0;
@@ -282,7 +282,7 @@ public class DungeonImplTest {
   @Test
   public void getMonsterTest() {
     Player player = new PlayerImpl();
-    IDungeon test = new DungeonImpl(false, 4,3,0,50, player, 1, 1);
+    iDungeon test = new DungeonImpl(false, 4,3,0,50, player, 1, 1);
     test.getDungeon();
     Cave[][] testboard = test.getGameBoard();
     int monsterInt = 0;
@@ -299,7 +299,7 @@ public class DungeonImplTest {
   @Test
   public void getMultiMonsterTest() {
     Player player = new PlayerImpl();
-    IDungeon test = new DungeonImpl(false, 4,3,0,50, player, 2, 1);
+    iDungeon test = new DungeonImpl(false, 4,3,0,50, player, 2, 1);
     test.getDungeon();
     Cave[][] testboard = test.getGameBoard();
     int monsterInt = 0;
@@ -316,20 +316,20 @@ public class DungeonImplTest {
   @Test (expected = IllegalArgumentException.class)
   public void notEnoughMonstersTest() {
     Player player = new PlayerImpl();
-    IDungeon test = new DungeonImpl(false, 4,3,0,20, player, 0, 1);
+    iDungeon test = new DungeonImpl(false, 4,3,0,20, player, 0, 1);
   }
 
   @Test (expected = IllegalArgumentException.class)
   public void tooManyMonstersTest() {
     Player player = new PlayerImpl();
-    IDungeon test = new DungeonImpl(false, 4,3,0,20, player, 5, 1);
+    iDungeon test = new DungeonImpl(false, 4,3,0,20, player, 5, 1);
     test.getDungeon();
   }
 
   @Test
   public void smellCheck() {
     Player player = new PlayerImpl();
-    IDungeon test = new DungeonImpl(false, 4,3,0,20, player,
+    iDungeon test = new DungeonImpl(false, 4,3,0,20, player,
             1, 1);
     test.getDungeon();
     String moveString = test.movePlayer(Direction.NORTH);
@@ -363,7 +363,7 @@ public class DungeonImplTest {
   @Test
   public void deadMonsterSmellCheck() {
     Player player = new PlayerImpl();
-    IDungeon test = new DungeonImpl(false, 4,3,0,20, player,
+    iDungeon test = new DungeonImpl(false, 4,3,0,20, player,
             1, 1);
     test.getDungeon();
     String moveString = test.movePlayer(Direction.NORTH);

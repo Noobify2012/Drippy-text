@@ -1,11 +1,21 @@
 package model;
 
+/**
+ * Object representing an edge in a graph between two nodes. In this case the structure that
+ * connects two caves.
+ */
 public class Edge {
   private Cave cave1;
   private Cave cave2;
   private Direction directionToCave1;
   private Direction directionToCave2;
 
+  /**The object that connects two caves. The constructor calculates the direction to each cave from
+   * the other when the object is built based on their location in the graph(row and column).
+   *
+   * @param cave1 the first cave object in the edge.
+   * @param cave2 the second cave object in the edge.
+   */
   public Edge(Cave cave1, Cave cave2) {
     this.cave1 = cave1;
     this.cave2 = cave2;
