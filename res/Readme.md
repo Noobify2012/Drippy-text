@@ -34,7 +34,9 @@ one cave to the other. In the next implementation, this will be used so that the
 
 - With minor line changes, the program could be reconfigured to give more hints to the player as to where they are by adding situation updates providing the index of where the player is.
 
-- The full print out of the final edges could also be included to help the player or other developers build features. It only takes one line change in the model to implement.  
+- The full print out of the final edges could also be included to help the player or other developers build features. It only takes one line change in the model to implement.
+
+- I have included the jar file with the normal program as well as a seeded version for predictability. 
 
 # How To Run
 
@@ -43,6 +45,8 @@ The way required for the specification takes the name of the file and the comman
 "java -jar Project3_Dungeon_Model.jar [wrap] [row] [col] [inter] [treas] [dif]"
 
 The driver can be changed to use the controller to process arguments but that requires the build dugeon function to be called in the driver and the model passed off to the driver at that point. You would also have to wait or the controller to prompt the user for arguments or include the arguments on a separate line for the driver.
+
+If you would like to use the seeded jar file run the same commands but run them with the jar file labeled seeded. 
 
 # How to Use the Program. 
 After the command line arguments are read in and the dungeon is constructed, the program will then drop the player in their starting cave telling them what the index is, what items if any are present in the cave, and which directions are available to them. The user will then be prompted to move, shoot, or pick up an item.
