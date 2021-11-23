@@ -1,0 +1,3329 @@
+
+Matt
+Courses 
+Log Out
+CS 5010 PDP Boston Freifeld
+Fall 2021
+Section 11049 : Freifeld at 1:35 - 3:15pm TF (Lecture)
+You are a student of this course.
+
+ 
+This will be an individual response.
+
+res/
+Project 4 - Test Plan.pdf
+Project 4 - Text Based Adventure Game Final.pdf
+Project 4 - Text Based Adventure Game Original.pdf
+Project4_Text_Based_Game.jar
+Readme.md
+Run1.txt
+Run2.txt
+demo_dungeon.jpg
+src/
+META-INF/
+MANIFEST.MF
+controller/
+ConsoleController.java
+Controller.java
+driver/
+Driver.java
+model/
+AbstractLocation.java
+Cave.java
+CrookedArrow.java
+Direction.java
+Dungeon.java
+DungeonImpl.java
+Edge.java
+Location.java
+Monster.java
+Otyugh.java
+Player.java
+PlayerImpl.java
+Point2D.java
+Treasure.java
+TreasureImpl.java
+random/
+RandomNumberGenerator.java
+test/
+test/
+ControllerTest.java
+DungeonImplTest.java
+LocationTest.java
+MockModel.java
+OtyughTest.java
+PlayerImplTest.java
+RandomNumberGeneratorTest.java
+1
+package model;
+2
+​
+3
+import java.util.ArrayList;
+4
+import java.util.List;
+5
+import random.RandomNumberGenerator;
+6
+​
+7
+/**
+8
+ * The implementation of the Dungeon interface.
+9
+ */
+10
+public class DungeonImpl implements Dungeon {
+11
+  private boolean wraps;
+12
+  private int rows;
+13
+  private int columns;
+14
+  private int interconnect;
+15
+  private int treasure;
+16
+  private Cave[][] gameboard;
+17
+  private List<Edge> potEdgeList;
+18
+  private List<Edge> leftOverEdge;
+19
+  private List<Edge> finalEdgeList;
+20
+  private int startPoint;
+21
+  private int endPoint;
+22
+  private Player player;
+23
+  private int difficulty;
+24
+  private RandomNumberGenerator randomNumberGenerator;
+25
+  private int genSeed;
+26
+  private boolean quitFlag;
+27
+​
+28
+  /**This creates a dungeon that requires the specification of whether the dungeon should wrap or
+29
+   * not. How many rows and columns there should be specified as integers. The degree of
+30
+   * interconnectivity(default is 0) or how many paths between nodes should there be. An
+31
+   * interconnectivity of 0 means that there is exactly 1 path between all nodes. Each degree above
+32
+   * that is an additional edge/connection added to the map. Finally, what percentage of caves
+33
+   * should have treasure in it. The default is 20%. Caves are defined as having 1, 3, or 4
+34
+   * entrances. Tunnels only have 2 entrances and do not have treasure.
+35
+   Params:
+36
+   wraps – A boolean which determines if a dungeon wraps its edges around to the other side.
+37
+   rows – The number of rows in the dungeon as an integer.
+38
+   columns – The number of columns in the dungeon as an integer.
+39
+   interconnect – The level of interconnectivity expressed as an integer. Default is 0.
+40
+   treasure – The percentage of caves with treasure expressed as an integer. Default is 20.
+41
+   Returns:
+42
+   The dungeon built to specification represented as a 2 dimensional array.**/
+43
+  public DungeonImpl(boolean wraps, int rows, int columns, int interconnect, int treasure,
+44
+                     Player player, int difficulty, int genSeed) {
+45
+​
+46
+    List<Edge> potEdgeList = new ArrayList<>();
+47
+    List<Edge> leftOverEdge = new ArrayList<>();
+48
+    List<Edge> finalEdgeList = new ArrayList<>();
+49
+    List<Integer> shortestPath = new ArrayList<>();
+50
+    Cave[][] gameboard = new Cave[rows][columns];
+51
+​
+52
+    this.wraps = wraps;
+53
+    this.rows = rows;
+54
+    this.columns = columns;
+55
+    this.interconnect = interconnect;
+56
+    this.treasure = treasure;
+57
+    this.gameboard = gameboard;
+58
+    this.potEdgeList = potEdgeList;
+59
+    this.leftOverEdge = leftOverEdge;
+60
+    this.finalEdgeList = finalEdgeList;
+61
+    this.startPoint = 0;
+62
+    this.endPoint = 0;
+63
+    this.player = player;
+64
+    this.difficulty = difficulty;
+65
+    this.randomNumberGenerator = new RandomNumberGenerator(genSeed);
+66
+    this.quitFlag = false;
+67
+​
+68
+​
+69
+​
+70
+    if (difficulty < 1) {
+71
+      throw new IllegalArgumentException("There must be at least one monster in the dungeon");
+72
+    }
+73
+​
+74
+    if (rows < 1 || columns < 1) {
+75
+      throw new IllegalArgumentException("Rows or Columns cannot be less than 1.");
+76
+    } else if (rows == 1 && columns < 6 || rows < 6 && columns == 1) {
+77
+      throw new IllegalArgumentException("You must have at least 6 rows or columns if the other "
+78
+              + "is 1.");
+79
+    } else if (rows == 2 && columns < 3 || rows < 3 && columns == 2) {
+80
+      throw new IllegalArgumentException("You must have at least 6 nodes in the graph.");
+81
+    }
+82
+​
+83
+    if (treasure < 0) {
+84
+      throw new IllegalArgumentException("You cannot have negative treasure");
+85
+    } else if (treasure > 100) {
+86
+      throw new IllegalArgumentException("You cannot have more than 100% treasure");
+87
+    }
+88
+​
+89
+    if (interconnect < 0) {
+90
+      throw new IllegalArgumentException("The interconnectivity cannot be less than 0");
+91
+    }
+92
+​
+93
+    if (interconnect > 0 && !wraps) {
+94
+      //forumla derived by Madhira Datta
+95
+      int maxEdges = 2 * rows * columns - rows - columns;
+96
+      if (interconnect > maxEdges -  (rows  * columns - 1)) {
+97
+        throw new IllegalArgumentException("Interconnectivity too high, beyond number of edges in"
+98
+                + " graph.");
+99
+      }
+100
+    } else if (interconnect > 0 && wraps) {
+101
+      //formula derived by Madhira Datta
+102
+      int maxEdges = 2 * rows * columns;
+103
+      if (interconnect > maxEdges) {
+104
+        throw new IllegalArgumentException("Interconnectivity too high, beyond number of edges in"
+105
+                + " graph.");
+106
+      }
+107
+    }
+108
+​
+109
+    if (difficulty <= 0) {
+110
+      throw new IllegalArgumentException("Must have at least 1 monster");
+111
+    }
+112
+​
+113
+​
+114
+    //construct caves
+115
+    int index = 0;
+116
+    for (int r = 0; r < rows; r++) {
+117
+      for (int c = 0; c < columns; c++) {
+118
+        List<Integer> neighborList = new ArrayList<>();
+119
+        List<Treasure> treasureList = new ArrayList<>();
+120
+        List<CrookedArrow> arrowList = new ArrayList<>();
+121
+        List<Monster> monsterList = new ArrayList<>();
+122
+        Cave cave = new Cave(r, c, neighborList, treasureList, index, index, arrowList,
+123
+                monsterList);
+124
+        gameboard[r][c] = cave;
+125
+        index++;
+126
+      }
+127
+    }
+128
+    // build edges
+129
+    if (!wraps) {
+130
+      for (int r = 0; r < rows; r++) {
+131
+        for (int c = 0; c < columns; c++) {
+132
+          //case for nodes that aren't on far edge
+133
+          if (c < columns - 1 && r < rows - 1) {
+134
+            Edge edge = new Edge(gameboard[r][c], gameboard[r + 1][c]);
+135
+            potEdgeList.add(edge);
+136
+            Edge edge2 = new Edge(gameboard[r][c], gameboard[r][c + 1]);
+137
+            potEdgeList.add(edge2);
+138
+            //bottom right hand corner, opposite origin
+139
+          } else if (c == columns - 1 && r == rows - 1) {
+140
+            //do nothing
+141
+            //max column, co
+142
+          } else if (c == columns - 1 && r <= rows - 1) {
+143
+            Edge edge = new Edge(gameboard[r][c], gameboard[r + 1][c]);
+144
+            potEdgeList.add(edge);
+145
+          } else {
+146
+            Edge edge = new Edge(gameboard[r][c], gameboard[r][c + 1]);
+147
+            potEdgeList.add(edge);
+148
+          }
+149
+        }
+150
+      }
+151
+    } else {
+152
+      //figure out wrapping logic for finding edges
+153
+      for (int r = 0; r < rows; r++) {
+154
+        for (int c = 0; c < columns; c++) {
+155
+          //case: not an edge node, add edge right, add edge down
+156
+          if (c < columns - 1 && r < rows - 1) {
+157
+            Edge edge = new Edge(gameboard[r][c], gameboard[r + 1][c]);
+158
+            potEdgeList.add(edge);
+159
+            Edge edge2 = new Edge(gameboard[r][c], gameboard[r][c + 1]);
+160
+            potEdgeList.add(edge2);
+161
+            //case: bottom right edge, wrap right, wrap down
+162
+          } else if (c == columns - 1 && r == rows - 1) {
+163
+            Edge edge = new Edge(gameboard[r][c], gameboard[0][c]);
+164
+            potEdgeList.add(edge);
+165
+            Edge edge2 = new Edge(gameboard[r][c], gameboard[r][0]);
+166
+            potEdgeList.add(edge2);
+167
+​
+168
+            //case: right edge, not bottom
+169
+          } else if (c == columns - 1 && r <= rows - 1) {
+170
+            Edge edge = new Edge(gameboard[r][c], gameboard[r + 1][c]);
+171
+            potEdgeList.add(edge);
+172
+            Edge edge2 = new Edge(gameboard[r][c], gameboard[r][0]);
+173
+            potEdgeList.add(edge2);
+174
+          } else {
+175
+            Edge edge = new Edge(gameboard[r][c], gameboard[r][c + 1]);
+176
+            potEdgeList.add(edge);
+177
+            Edge edge2 = new Edge(gameboard[r][c], gameboard[0][c]);
+178
+            potEdgeList.add(edge2);
+179
+          }
+180
+        }
+181
+      }
+182
+    }
+183
+  }
+184
+​
+185
+​
+186
+  /**
+187
+   * This builds all aspects of the dungeon including finding the start and end point. Adding
+188
+   * treasure and placing the player in the dungeon and running them through the path.
+189
+   */
+190
+  public String getDungeon() {
+191
+    //runs Kruscals, adds interconnectivity
+192
+    String kruskalsString = runKruscals();
+193
+    //generates a start point by index
+194
+    String startString = getStartPoint(getCavesByIndex());
+195
+    //finds a viable end point
+196
+    String endPointString = findEndPoint(this.startPoint);
+197
+    //find caves and adds Treasure
+198
+    findCaves(getCavesByIndex());
+199
+​
+200
+    addMonstersToDungeon(getCavesByIndex());
+201
+​
+202
+    addArrows();
+203
+​
+204
+    String setUpString = setUpPlayer();
+205
+​
+206
+    String initPlayerStat = player.getPlayerStatus(checkSmell(),
+207
+            findCaveByIndex(player.getPlayerLocation()));
+208
+​
+209
+    String dungeonString = "\n" + initPlayerStat;
+210
+    return dungeonString;
+211
+​
+212
+  }
+213
+​
+214
+  /**
+215
+   * This puts the player in their starting cave for navigating through dungeon for moving from the
+216
+   * start point to the end point.
+217
+   */
+218
+  private String setUpPlayer() {
+219
+    //place the player in the dungeon at the cave index
+220
+    player.enterDungeon(this.startPoint, findCaveByIndex(this.startPoint).getTreasureList(),
+221
+            getPossibleDirection(this.startPoint));
+222
+    String enterString = "";
+223
+    if (getPossibleDirection(this.startPoint).size() > 1) {
+224
+      enterString = "\nThe Player enters the dungeon at Cave " + this.startPoint + ". They can"
+225
+              + " go " + getPossibleDirection(this.startPoint).toString() + ". They currently have"
+226
+              + " no treasure.";
+227
+    } else {
+228
+      String dirString = "";
+229
+      for (int s = 0; s < getPossibleDirection(this.startPoint).size(); s++) {
+230
+        if (s != getPossibleDirection(this.startPoint).size() - 1) {
+231
+          dirString = dirString + getPossibleDirection(this.startPoint).get(s).toString() + " or ";
+232
+        } else {
+233
+          dirString = dirString + getPossibleDirection(this.startPoint).get(s).toString();
+234
+        }
+235
+      }
+236
+      enterString = "\nThe Player enters the dungeon at Cave " + this.startPoint + ". They can"
+237
+              + " go " + dirString + ". They currently have no treasure.";
+238
+    }
+239
+    return enterString;
+240
+  }
+241
+​
+242
+  /**A helper to get the directions from the next cave to give the player all the options for the
+243
+   * next cave for which direction to travel.
+244
+   *
+245
+   * @param index takes in the index of the next cave
+246
+   * @return a list of the possible directions for the player to travel.
+247
+   */
+248
+  private List<Direction> getPossibleDirection(int index) {
+249
+    List<Direction> tempArray = new ArrayList<>();
+250
+    for (int i = 0; i < finalEdgeList.size(); i++) {
+251
+      if (finalEdgeList.get(i).getLeftIndex() == index) {
+252
+        if (!tempArray.contains(finalEdgeList.get(i).getDirectionToCave2())) {
+253
+          tempArray.add(finalEdgeList.get(i).getDirectionToCave2());
+254
+        }
+255
+      } else if (finalEdgeList.get(i).getRightIndex() == index) {
+256
+        if (!tempArray.contains(finalEdgeList.get(i).getDirectionToCave1())) {
+257
+          tempArray.add(finalEdgeList.get(i).getDirectionToCave1());
+258
+        }
+259
+      }
+260
+    }
+261
+    return tempArray;
+262
+  }
+263
+​
+264
+  /**Gets the players start point by first finding all possible caves(1,3,4 entrances) and randomly
+265
+   * selecting one from a list of eligible caves.
+266
+   *
+267
+   * @param caves takes an array list of caves to select from
+268
+   * @return the index of the starting cave as an integer.
+269
+   */
+270
+  private String getStartPoint(List<Integer> caves) {
+271
+    int startIndex = randomNumberGenerator.getRandomNumber(0, caves.size());
+272
+    this.startPoint = startIndex;
+273
+    return "The Player StartPoint is " + this.startPoint + ".";
+274
+  }
+275
+​
+276
+  /**This finds the end point by searching through all nodes within 5 moves of the start node by
+277
+   * finding the children of the previous nodes. It then performs a difference between the caves
+278
+   * found and the total caves. It then randomly selects an end point from the caves remaining.
+279
+   *
+280
+   * @param startIndex takes in the start index as an integer.
+281
+   * @return the end point index as an integer.
+282
+   */
+283
+  private String findEndPoint(int startIndex) {
+284
+    List<Integer> nonViable = new ArrayList<>();
+285
+    List<Integer> viable = new ArrayList<>();
+286
+    List<Integer> allCaves = getCavesByIndex();
+287
+    List<Integer> listToCheck = new ArrayList<>();
+288
+    int endPoint = 0;
+289
+​
+290
+    //add start index to list of things to check and those that can't be an end point
+291
+    nonViable.add(startIndex);
+292
+    listToCheck.add(startIndex);
+293
+    //check for incomplete graph
+294
+    if (findCaveByIndex(startIndex).getNeighbors().size() != 0) {
+295
+      //loop through the list of neighbors of the start index
+296
+      for (int i = 0; i < findCaveByIndex(startIndex).getNeighbors().size(); i++) {
+297
+        //check that we already haven't seen the current node
+298
+        if (!(nonViable.contains(findCaveByIndex(startIndex).getNeighbors().get(i)))) {
+299
+          //add current neighbor node to list of indexes to check and nonviable
+300
+          nonViable.add((int) findCaveByIndex(startIndex).getNeighbors().get(i));
+301
+          listToCheck.add((int) findCaveByIndex(startIndex).getNeighbors().get(i));
+302
+        }
+303
+      }
+304
+      //remove node we just checked from list of nodes to check
+305
+      listToCheck.remove(0);
+306
+      //loop 3 times
+307
+      for (int y = 0; y < 3; y++) {
+308
+        //list size at time of iteration, not to keep looping through more stuff
+309
+        int temp = listToCheck.size();
+310
+        for (int c = 0; c < temp; c++) {
+311
+          //grab next value in list to check
+312
+          int tempInt = listToCheck.get(c);
+313
+          List<Integer> tempList = findCaveByIndex(tempInt).getNeighbors();
+314
+          //checks to see if next element down has children
+315
+          if (tempList.size() > 1) {
+316
+            //if it does have children add them to the lists
+317
+            for (int a = 0; a < tempList.size(); a++) {
+318
+              if (!(nonViable.contains((int) findCaveByIndex(tempInt).getNeighbors().get(a)))) {
+319
+                nonViable.add((int) findCaveByIndex(tempInt).getNeighbors().get(a));
+320
+                listToCheck.add((int) findCaveByIndex(tempInt).getNeighbors().get(a));
+321
+              }
+322
+            }
+323
+          }
+324
+          //add current neighbor node to list of indexes to check and nonviable
+325
+        }
+326
+        for (int r = 0; r < temp; r++) {
+327
+          listToCheck.remove(0);
+328
+        }
+329
+      }
+330
+    } else {
+331
+      throw new IllegalStateException("Start Node has no neighbors.");
+332
+    }
+333
+    //compare list of non-viable vs total list
+334
+    if (nonViable.size() == (rows * columns)) {
+335
+      throw new IllegalStateException("There are no viable end points, try increasing the size of "
+336
+              + "your dungeon");
+337
+    } else {
+338
+      for (int t = 0; t < allCaves.size(); t++) {
+339
+        if (!nonViable.contains(allCaves.get(t))) {
+340
+          viable.add(allCaves.get(t));
+341
+        }
+342
+      }
+343
+      if (viable.size() != 1) {
+344
+        int endRand = randomNumberGenerator.getRandomNumber(0, viable.size());
+345
+        endPoint = viable.get(endRand);
+346
+      } else {
+347
+        endPoint = viable.get(0);
+348
+      }
+349
+    }
+350
+    String endPointString = "The end point is cave : " + endPoint;
+351
+    this.endPoint = endPoint;
+352
+    return endPointString;
+353
+  }
+354
+​
+355
+  /**This is used for setting up the caves and adding treasure.
+356
+   *
+357
+   * @param caves takes the complete list of nodes as an array list of their integer indexes.
+358
+   */
+359
+  private void findCaves(List<Integer> caves) {
+360
+    int treasureInt = 0;
+361
+​
+362
+    //calculate how many caves require treasure
+363
+    if (this.treasure != 0) {
+364
+      int treasCaveNum = (int) Math.ceil((caves.size() * treasure) / 100);
+365
+      if (treasCaveNum == 0) {
+366
+        treasCaveNum++;
+367
+      }
+368
+      TreasureImpl treasureFactory = new TreasureImpl();
+369
+      for (int t = 0; t < treasCaveNum; t++) {
+370
+        int treasureRand = randomNumberGenerator.getRandomNumber(1, 3);
+371
+        if (treasureRand == 0) {
+372
+          for (int r = 0; r <= treasureRand + 1; r++) {
+373
+            findCaveByIndex(caves.get(randomNumberGenerator.getRandomNumber(0, caves.size() - 1)))
+374
+                    .addTreasure(TreasureImpl
+375
+                            .TreasureFactory.getTreasureFromEnum(TreasureImpl.TreasureType.RUBY));
+376
+          }
+377
+        } else if (treasureRand == 1) {
+378
+          for (int r = 0; r <= treasureRand + 1; r++) {
+379
+            findCaveByIndex(caves.get(randomNumberGenerator.getRandomNumber(0, caves.size() - 1)))
+380
+                    .addTreasure(TreasureImpl.TreasureFactory.getTreasureFromEnum(TreasureImpl
+381
+                            .TreasureType.DIAMOND));
+382
+          }
+383
+        } else {
+384
+          for (int r = 0; r <= treasureRand + 1; r++) {
+385
+            findCaveByIndex(caves.get(randomNumberGenerator.getRandomNumber(0, caves.size() - 1)))
+386
+                    .addTreasure(TreasureImpl.TreasureFactory
+387
+                            .getTreasureFromEnum(TreasureImpl.TreasureType.SAPPHIRE));
+388
+          }
+389
+        }
+390
+      }
+391
+    }
+392
+  }
+393
+​
+394
+  private void addMonstersToDungeon(List<Integer> caves) {
+395
+​
+396
+    // add monster to end cave
+397
+    Monster endPointMonster = new Otyugh(2);
+398
+    findCaveByIndex(endPoint).addMonster(endPointMonster);
+399
+​
+400
+    if (difficulty > 1 && difficulty < caves.size()) {
+401
+      int monsterCount = difficulty - 1;
+402
+      while (monsterCount > 0) {
+403
+​
+404
+        int rand = randomNumberGenerator.getRandomNumber(0, caves.size());
+405
+        if (findCaveByIndex(caves.get(rand)).getMonsterListSize() == 0) {
+406
+          Monster caveMonster = new Otyugh(2);
+407
+          findCaveByIndex(caves.get(rand)).addMonster(caveMonster);
+408
+          monsterCount--;
+409
+        }
+410
+      }
+411
+      //get new random cave from list
+412
+​
+413
+      //check if it has a monster
+414
+​
+415
+      //if it does get new random cave
+416
+​
+417
+      //if not add monster and change count.
+418
+​
+419
+    } else if (difficulty > caves.size()) {
+420
+      throw new IllegalArgumentException("Not enough caves for monsters reduce difficulty");
+421
+    }
+422
+  }
+423
+​
+424
+  /**This does a lookup specific caves and returns the cave of the associated index that is passed
+425
+   * to it.
+426
+   *
+427
+   * @param index the integer index of the cave being searched.
+428
+   * @return the cave of the index that was searched for.
+429
+   */
+430
+  private Cave findCaveByIndex(int index) {
+431
+    for (int r = 0; r < rows; r++) {
+432
+      for (int c = 0; c < columns; c++) {
+433
+        if (gameboard[r][c].getIndex() == index) {
+434
+          return gameboard[r][c];
+435
+        }
+436
+      }
+437
+    }
+438
+    throw new IllegalArgumentException("couldn't find cave index of " + index);
+439
+  }
+440
+​
+441
+  /**This returns the potentential edge list for performing Kruskal's.
+442
+   *
+443
+   * @return the array list of edges.
+444
+   */
+445
+  private List<Edge> getPotEdgeList() {
+446
+    return this.potEdgeList;
+447
+  }
+448
+​
+449
+  /**This builds and returns all the cave and tunnel index values in the dungeon.
+450
+   *
+451
+   * @return an array list of the indexes of all caves and tunnels in the dungeon.
+452
+   */
+453
+  private List<Integer> getCavesByIndex() {
+454
+    List<Integer> caves = new ArrayList<>();
+455
+    //make list of caves, exclude tunnels
+456
+    for (int r = 0; r < rows; r++) {
+457
+      for (int c = 0; c < columns; c++) {
+458
+        if (gameboard[r][c].getNeighbors().size() != 2) {
+459
+          caves.add(gameboard[r][c].getIndex());
+460
+        }
+461
+      }
+462
+    }
+463
+    return caves;
+464
+  }
+465
+​
+466
+  /**
+467
+   * This runs Kruscal's algorithm on the edges which have been generated and produces a complete
+468
+   * dungeon.
+469
+   */
+470
+  private String runKruscals() {
+471
+    //start condition - every cave in own set
+472
+    boolean exitCond = false;
+473
+    List<Integer> setList = new ArrayList<>();
+474
+    for (int s = 0; s < rows * columns; s++) {
+475
+      setList.add(s);
+476
+    }
+477
+    if (setList.size() - 1 != gameboard[rows - 1][columns - 1].getIndex()) {
+478
+      throw new IllegalArgumentException("the set list doesn't match the number of elements");
+479
+    }
+480
+    while (!exitCond) {
+481
+      // grab random edge
+482
+      int random = randomNumberGenerator.getRandomNumber(0, this.getPotEdgeList().size());
+483
+      //if they are in the same set check to see if this edge has already been called,
+484
+      // if not add to left over list
+485
+      if (this.potEdgeList.get(random).compareSets()) {
+486
+        if (!this.leftOverEdge.contains(this.potEdgeList.get(random))) {
+487
+          this.leftOverEdge.add(this.potEdgeList.get(random));
+488
+        }
+489
+      } else {
+490
+        //if not in the same set
+491
+        //add edge to final set
+492
+        this.potEdgeList.get(random).addNeighbors();
+493
+        finalEdgeList.add(this.potEdgeList.get(random));
+494
+​
+495
+        // save set number of right cave
+496
+        int tempint = this.potEdgeList.get(random).getRightSet();
+497
+        int newSetNum = this.potEdgeList.get(random).getLeftSet();
+498
+        //remove from potential edge list
+499
+        this.potEdgeList.remove(random);
+500
+        //loop through all members of that set and set to left set value
+501
+        for (int r = 0; r < rows; r++) {
+502
+          for (int c = 0; c < columns; c++) {
+503
+            if (gameboard[r][c].getSet() == tempint) {
+504
+              gameboard[r][c].adjSet(newSetNum);
+505
+            }
+506
+          }
+507
+        }
+508
+        //remove setnum from setList
+509
+        if (setList.contains(tempint)) {
+510
+          int removeInt = setList.indexOf(tempint);
+511
+          setList.remove(setList.indexOf(tempint));
+512
+        }
+513
+​
+514
+        //check for single set
+515
+        if (setList.size() == 1 && interconnect == 0) {
+516
+          exitCond = true;
+517
+        } else if (setList.size() == 1 && interconnect > 0) {
+518
+          //dump edges into single list
+519
+          for (int l = 0; l < this.potEdgeList.size(); l++) {
+520
+            if (!this.leftOverEdge.contains(this.potEdgeList.get(l))) {
+521
+              this.leftOverEdge.add(this.potEdgeList.get(l));
+522
+            }
+523
+          }
+524
+          for (int j = 0; j < interconnect; j++) {
+525
+            if (leftOverEdge.size() <= 0) {
+526
+              throw new IllegalStateException("Left over edge list is already empty");
+527
+            } else {
+528
+              int randomInt = randomNumberGenerator.getRandomNumber(0, leftOverEdge.size());
+529
+              finalEdgeList.add(leftOverEdge.get(randomInt));
+530
+              leftOverEdge.get(randomInt).addNeighbors();
+531
+              leftOverEdge.remove(randomInt);
+532
+            }
+533
+​
+534
+          }
+535
+          exitCond = true;
+536
+        }
+537
+      }
+538
+    }
+539
+    String finalEdgeListString = "status of final edge list: " + finalEdgeList.toString();
+540
+    return finalEdgeListString;
+541
+  }
+542
+​
+543
+​
+544
+  @Override
+545
+  public int getGameBoardRows() {
+546
+    //make deep copy and return
+547
+    return rows;
+548
+  }
+549
+​
+550
+  @Override
+551
+  public int getGameBoardCols() {
+552
+    //make deep copy and return
+553
+    return columns;
+554
+  }
+555
+​
+556
+  @Override
+557
+  public Cave[][] getGameBoard() {
+558
+    Cave[][] copy = new Cave[rows][columns];
+559
+    for (int r = 0; r < rows; r++) {
+560
+      for (int c = 0; c < columns; c++) {
+561
+        copy[r][c] = gameboard[r][c];
+562
+      }
+563
+    }
+564
+    //make deep copy and return
+565
+    return copy;
+566
+  }
+567
+​
+568
+  @Override
+569
+  public boolean isGameOver() {
+570
+    return !player.isPlayerAlive() || checkForEnd() || quitFlag;
+571
+  }
+572
+​
+573
+  private boolean checkForEnd() {
+574
+    return player.getPlayerLocation() == this.endPoint;
+575
+  }
+576
+​
+577
+​
+578
+  @Override
+579
+  public String movePlayer(Direction direction) {
+580
+    String moveString = "";
+581
+    if (!getPossibleDirection(player.getPlayerLocation()).contains(direction)) {
+582
+      throw new IllegalArgumentException("Can't move that way");
+583
+    } else {
+584
+      //move is valid move the player to the new cave
+585
+      for (int i = 0; i < finalEdgeList.size(); i++) {
+586
+        if (finalEdgeList.get(i).getLeftIndex() == player.getPlayerLocation()
+587
+                && direction == finalEdgeList.get(i).getDirectionToCave2()) {
+588
+          //set the new player location to the right index
+589
+          player.move(findCaveByIndex(finalEdgeList.get(i).getRightIndex()),
+590
+                  getPossibleDirection(finalEdgeList.get(i).getRightIndex()));
+591
+          break;
+592
+        } else if (finalEdgeList.get(i).getRightIndex() == player.getPlayerLocation()
+593
+                && direction == finalEdgeList.get(i).getDirectionToCave1()) {
+594
+          player.move(findCaveByIndex(finalEdgeList.get(i).getLeftIndex()),
+595
+                  getPossibleDirection(finalEdgeList.get(i).getLeftIndex()));
+596
+          break;
+597
+        }
+598
+      }
+599
+      //check if the cave is the end point
+600
+      if (player.getPlayerLocation() == this.endPoint) {
+601
+        moveString = "\nPlayer has reached final cave\n";
+602
+      }
+603
+​
+604
+      String encounterString = "";
+605
+      //check if it has a monster
+606
+      if (findCaveByIndex(player.getPlayerLocation()).getMonsterListSize() == 1
+607
+              && findCaveByIndex(player.getPlayerLocation()).getMonsterHealth() == 2) {
+608
+        encounterString = player.monsterEncounter(findCaveByIndex(player.getPlayerLocation())
+609
+                .getMonsterHealth(), 0);
+610
+        //the player dies
+611
+      } else if (findCaveByIndex(player.getPlayerLocation()).getMonsterListSize() == 1
+612
+              && findCaveByIndex(player.getPlayerLocation()).getMonsterHealth() == 1) {
+613
+        //player has 50/50 shot of escaping
+614
+        int returnInt = randomNumberGenerator.getRandomNumber(0, 2);
+615
+        if (returnInt == 0) {
+616
+          //player escapes
+617
+          encounterString = player.monsterEncounter(findCaveByIndex(player.getPlayerLocation())
+618
+                  .getMonsterHealth(), returnInt);
+619
+        } else {
+620
+          encounterString = player.monsterEncounter(findCaveByIndex(player.getPlayerLocation())
+621
+                  .getMonsterHealth(), returnInt);
+622
+        }
+623
+      } else {
+624
+        if (findCaveByIndex(player.getPlayerLocation()).getMonsterListSize() == 0) {
+625
+          encounterString = "";
+626
+        } else {
+627
+          encounterString = player.monsterEncounter(findCaveByIndex(player.getPlayerLocation())
+628
+                  .getMonsterHealth(), 0);
+629
+        }
+630
+        //monster is dead do nothing
+631
+      }
+632
+​
+633
+      //check for smell;
+634
+      String statusString = "";
+635
+      if (player.isPlayerAlive()) {
+636
+        statusString = player.getPlayerStatus(checkSmell(),
+637
+                findCaveByIndex(player.getPlayerLocation()));
+638
+      }
+639
+      //update player location and check around them for stuff.
+640
+​
+641
+      //update player status
+642
+      moveString = moveString + "\n" + encounterString + "\n" + statusString;
+643
+    }
+644
+    return moveString;
+645
+  }
+646
+​
+647
+  @Override
+648
+  public List<Edge> getFinalEdgeList() {
+649
+    List<Edge> copy = new ArrayList<>();
+650
+    for (int i = 0; i < finalEdgeList.size(); i++) {
+651
+      copy.add(finalEdgeList.get(i));
+652
+    }
+653
+    return copy;
+654
+  }
+655
+​
+656
+  private void addArrows() {
+657
+    int arrowNum = (int) Math.ceil((treasure  * rows * columns) / 100);
+658
+    while (arrowNum > 0) {
+659
+      //generate random number for index
+660
+      int rand = randomNumberGenerator.getRandomNumber(0, (rows * columns) - 1);
+661
+      if (findCaveByIndex(rand).getArrowListSize() == 0) {
+662
+        CrookedArrow arrow = new CrookedArrow();
+663
+        findCaveByIndex(rand).addArrow(arrow);
+664
+        arrowNum--;
+665
+      }
+666
+    }
+667
+  }
+668
+​
+669
+​
+670
+  private int checkSmell() {
+671
+    List<Integer> checked = new ArrayList<>();
+672
+    List<Integer> listToCheck = new ArrayList<>();
+673
+    List<Integer> listToLoop = new ArrayList<>();
+674
+    //find the neighbors of the current location
+675
+    checked.add(player.getPlayerLocation());
+676
+    for (int i = 0; i < findCaveByIndex(player.getPlayerLocation()).getNeighbors().size(); i++) {
+677
+      if (!(checked.contains(findCaveByIndex(player.getPlayerLocation()).getNeighbors().get(i)))) {
+678
+        listToCheck.add(findCaveByIndex(player.getPlayerLocation()).getNeighbors().get(i));
+679
+        listToLoop.add(findCaveByIndex(player.getPlayerLocation()).getNeighbors().get(i));
+680
+      }
+681
+    }
+682
+    int smell = 0;
+683
+​
+684
+    //check neighbors for monsters
+685
+    for (int n = 0; n < listToCheck.size(); n++) {
+686
+      if (findCaveByIndex(listToCheck.get(n)).getMonsterListSize() == 1
+687
+              && findCaveByIndex(listToCheck.get(n)).getMonsterHealth() > 0) {
+688
+        smell++;
+689
+        smell++;
+690
+      }
+691
+    }
+692
+​
+693
+    for (int y = 0; y < 1; y++) {
+694
+      //list size at time of iteration, not to keep looping through more stuff
+695
+      int temp = listToCheck.size();
+696
+      for (int c = 0; c < temp; c++) {
+697
+        //grab next value in list to check
+698
+        int tempInt = listToCheck.get(c);
+699
+        List<Integer> tempList = findCaveByIndex(tempInt).getNeighbors();
+700
+        //checks to see if next element down has children
+701
+        if (tempList.size() > 1) {
+702
+          //if it does have children add them to the lists
+703
+          for (int a = 0; a < tempList.size(); a++) {
+704
+            if (!(checked.contains((int) findCaveByIndex(tempInt).getNeighbors().get(a)))) {
+705
+              checked.add((int) findCaveByIndex(tempInt).getNeighbors().get(a));
+706
+              listToCheck.add((int) findCaveByIndex(tempInt).getNeighbors().get(a));
+707
+            }
+708
+          }
+709
+        }
+710
+      }
+711
+    }
+712
+​
+713
+    for (int l = 0; l < listToCheck.size(); l++) {
+714
+      if (findCaveByIndex(listToCheck.get(l)).getMonsterListSize() == 1
+715
+              && findCaveByIndex(listToCheck.get(l)).getMonsterHealth() > 0) {
+716
+        smell++;
+717
+      }
+718
+    }
+719
+    return smell;
+720
+  }
+721
+​
+722
+  public boolean getWrapping() {
+723
+    return this.wraps;
+724
+  }
+725
+​
+726
+  @Override
+727
+  public String shootArrow(int distance, Direction direction) {
+728
+    String finalShotString = "";
+729
+    if (distance < 0) {
+730
+      throw new IllegalArgumentException("Cannot shoot less than 0");
+731
+    }
+732
+​
+733
+    if (direction == null) {
+734
+      throw new IllegalArgumentException("Direction cannot be null");
+735
+    }
+736
+​
+737
+    if (!getPossibleDirection(player.getPlayerLocation()).contains(direction)) {
+738
+      throw new IllegalArgumentException("Can't shoot that way");
+739
+    } else {
+740
+      String shootString = "Fired an arrow " + distance + " spaces " + direction;
+741
+      String updateString = player.shoot(distance, direction);
+742
+      finalShotString = finalShotString + "\n" + shootString + "\n" + updateString + "\n";
+743
+​
+744
+    }
+745
+​
+746
+    //decriment player arrow count by 1
+747
+    int nextCaveIndex = 0;
+748
+    int monsterHealth = -1;
+749
+    int currentIndex = this.player.getPlayerLocation();
+750
+    Direction currentDirection = direction;
+751
+    Direction nextDirection = null;
+752
+    String shotString = "";
+753
+    if (distance == 0
+754
+            && findCaveByIndex(this.player.getPlayerLocation()).getMonsterListSize() == 1
+755
+            && findCaveByIndex(this.player.getPlayerLocation()).getMonster().getHealth() != 0) {
+756
+      monsterHealth = findCaveByIndex(this.player.getPlayerLocation()).getMonster().takeDamage();
+757
+    } else if (distance == 0
+758
+            && (findCaveByIndex(this.player.getPlayerLocation()).getMonsterListSize() != 1
+759
+            || findCaveByIndex(this.player.getPlayerLocation()).getMonster().getHealth() == 0)) {
+760
+      shotString = "The shot missed!";
+761
+​
+762
+    } else {
+763
+      while (distance > 0) {
+764
+        if (findCaveByIndex(currentIndex).getNeighbors().size() == 1) {
+765
+          break;
+766
+        }
+767
+        for (int i = 0; i < finalEdgeList.size(); i++) {
+768
+          //find the next cave based on current direction and current index;
+769
+          if (finalEdgeList.get(i).getLeftIndex() == currentIndex
+770
+                  && currentDirection == finalEdgeList.get(i).getDirectionToCave2()) {
+771
+            nextCaveIndex = finalEdgeList.get(i).getRightIndex();
+772
+          } else if (finalEdgeList.get(i).getRightIndex() == currentIndex
+773
+                  && currentDirection == finalEdgeList.get(i).getDirectionToCave1()) {
+774
+            nextCaveIndex = finalEdgeList.get(i).getLeftIndex();
+775
+          }
+776
+        }
+777
+​
+778
+        List<Direction> tempList = getPossibleDirection(nextCaveIndex);
+779
+        if (tempList.contains(currentDirection) && tempList.size() != 2) {
+780
+          nextDirection = currentDirection;
+781
+          distance--;
+782
+        } else if (tempList.size() == 2) {
+783
+          for (int i = 0; i < 2; i++) {
+784
+            if (tempList.get(i) != getOppositeDirection(currentDirection)) {
+785
+              nextDirection = tempList.get(i);
+786
+            }
+787
+          }
+788
+        } else if (distance != 1) {
+789
+          shotString = "Zing! The arrow bounced off a wall.";
+790
+          break;
+791
+        } else {
+792
+          currentIndex = nextCaveIndex;
+793
+          break;
+794
+        }
+795
+        //next index becomes current
+796
+        //if the distance is zero quit, else set up for next round;
+797
+​
+798
+        //handle tunnels
+799
+        //if direction equals current direction then don't change it,
+800
+        //if not direction !the opposite direction
+801
+        //find next cave/tunnel that the arrow is entering
+802
+​
+803
+        //check if going through a cave or tunnel
+804
+        //if cave find out if there is an adjacent exit,
+805
+        //if so decriment and move on
+806
+        //if not arrow hits the wall break out and message
+807
+​
+808
+        //if tunnel check directions and adjust if its a bender, do not decriment
+809
+        currentIndex = nextCaveIndex;
+810
+        currentDirection = nextDirection;
+811
+      }
+812
+      if (findCaveByIndex(currentIndex).getMonsterListSize() == 1
+813
+              && findCaveByIndex(currentIndex).getMonster().getHealth() != 0) {
+814
+        monsterHealth = findCaveByIndex(currentIndex).getMonster().takeDamage();
+815
+      }
+816
+​
+817
+    }
+818
+    if (monsterHealth == -1) {
+819
+      finalShotString = finalShotString + shotString + "\n";
+820
+    } else if (monsterHealth == 0) {
+821
+      finalShotString = finalShotString + "A great howl echos through the dungeon and a loud "
+822
+              + "crash as the monster falls over dead.\n";
+823
+    } else {
+824
+      finalShotString = finalShotString + "A great howl echos through the dungeon.\n";
+825
+    }
+826
+​
+827
+    return finalShotString;
+828
+    //check final location for monster, if monster present take damage and send message
+829
+    //if not tell user they missed
+830
+  }
+831
+​
+832
+  @Override
+833
+  public String pickUpItem(int option) {
+834
+    String pickupString;
+835
+    if (option < 0 || option >= 3) {
+836
+      throw new IllegalArgumentException("that is not an option for pickup");
+837
+    } else {
+838
+      pickupString = player.pickUp(findCaveByIndex(player.getPlayerLocation()), option) + "\n"
+839
+              + player.getPlayerStatus(checkSmell(), findCaveByIndex(player.getPlayerLocation()));
+840
+    }
+841
+    return pickupString;
+842
+  }
+843
+​
+844
+  @Override
+845
+  public String quitGame() {
+846
+    String quitString = "Game quit! Thank You for Playing Dungeon Adventure.\n";
+847
+    String finalPlayerStatus = player.getPlayerStatus(checkSmell(),
+848
+            findCaveByIndex(player.getPlayerLocation()));
+849
+    quitFlag = true;
+850
+    return quitString + finalPlayerStatus;
+851
+  }
+852
+​
+853
+  private Direction getOppositeDirection(Direction direction) {
+854
+    Direction returnDirection = null;
+855
+    if (direction == Direction.NORTH) {
+856
+      returnDirection = Direction.SOUTH;
+857
+    } else if (direction == Direction.SOUTH) {
+858
+      returnDirection = Direction.NORTH;
+859
+    } else if (direction == Direction.EAST) {
+860
+      returnDirection = Direction.WEST;
+861
+    } else if (direction == Direction.WEST) {
+862
+      returnDirection = Direction.EAST;
+863
+    }
+864
+    return returnDirection;
+865
+  }
+866
+}
+867
+​
+Administrative
+By submitting this self-evaluation, I agree that:
+
+The solution that I am submitting is a result of my own work and not the work of someone else.
+I have followed the academic integrity policy for this course (see the course syllabus).
+I will not share my solution with other students (past or present) or on any public website without the explicit permission of the instructor.
+To confirm that you agree with this statement, type your full name in the answer space. (0 points)
+Matthew Joseph Myers Greene
+Submission
+Did you submit a README file? (1 point)
+
+ 
+if Yes, tag the first line of your README
+
+File: 
+res/Readme.md
+ Line number: 
+1
+
+Optional explanation
+
+Does your README file contain instructions for how to run and use your program? (1 point)
+
+ 
+if Yes, tag where in your README you do this
+
+File: 
+res/Readme.md
+ Line number: 
+41
+
+Optional explanation
+
+I removed the seeded version of the jar file. The only version included is with the random number generator not seeded.
+Did you submit an executable JAR file? (8 points)
+
+ 
+tag your JAR file, if it exists
+
+File: 
+res/Project4_Text_Based_Game.jar
+ Line number: 
+1
+
+Did you submit at least one example run of your program? (1 point)
+
+ 
+if Yes, tag the first result of a battle
+
+File: 
+res/Run1.txt
+ Line number: 
+1
+
+if Yes, tag the second (and different) result of a battle
+
+File: 
+res/Run2.txt
+ Line number: 
+1
+
+Optional explanation
+
+Run 1 demonstrates he player navigating the dungeon, picking up treasure, picking up arrows, killing an otyugh, and winning the game by reaching the end. 
+Run 2 demonstrates the player being eaten by the otyugh. 
+Does your README file describe what is contained in your example runs? (1 point)
+
+ 
+if Yes, tag where in your README you do this
+
+File: 
+res/Readme.md
+ Line number: 
+56
+
+Optional explanation
+
+Did you submit both original & revised design documents? (8 points)
+
+ 
+tag your original design document, if it exists
+
+File: 
+res/Project 4 - Text Based Adventure Game Original.pdf
+ Line number: 
+1
+
+tag your revised design document, if it exists
+
+File: 
+res/Project 4 - Text Based Adventure Game Final.pdf
+ Line number: 
+1
+
+Optional explanation
+
+Does your README file contain a section that describes the changes that were made in your model? (2 points)
+
+ 
+if Yes, tag where in your README you do this
+
+File: 
+res/Readme.md
+ Line number: 
+73
+
+Optional explanation
+
+Does your README file describe any assumptions that you made during the implementation? (1 point)
+
+ 
+if Yes, tag where in your README you do this
+
+File: 
+res/Readme.md
+ Line number: 
+93
+
+Optional explanation
+
+Does your README file describe the limitations of your program? (1 point)
+
+ 
+if Yes, tag where in your README you do this
+
+File: 
+res/Readme.md
+ Line number: 
+104
+
+Optional explanation
+
+Does your README file contain citations for the resources you used during development? (1 point)
+
+ 
+if Yes, tag where in your README you do this
+
+File: 
+res/Readme.md
+ Line number: 
+108
+
+Optional explanation
+
+there are also inline citations that i mentioned in the readme
+Model
+Does your model implement a single interface that is used by the controller? (5 points)
+
+ 
+explanation
+
+The model does require that the player constructor be used and passed into the dungeon. However all the the model actions are executed by the dungeon interface. tag 1 shows the player player being constructed in the driver before being passed into the model. Tag 2 then shows that player being passed into the dungeon with the rest of the arguments and the dungeon being build in line 52 with the get dungeon method call which is from the dungeon interface. The play game method is a call to the controller on line 56 of the driver this then passes the model into the controller and all actions continue to be called from the dungeon interface . Tag 3 shows the actions being performed within the model using the dungeon interface such as moving the player. 
+Tag 1 - explain how this tag supports your response
+
+File: 
+src/driver/Driver.java
+ Line number: 
+48
+
+Tag 2 - explain how this tag supports your response
+
+File: 
+src/driver/Driver.java
+ Line number: 
+50
+
+Tag 3 - explain how this tag supports your response
+
+File: 
+src/controller/ConsoleController.java
+ Line number: 
+379
+
+How do you represent Otyughs in your model? (2 points)
+
+Implemented an interface and one or more clases
+Implemented one or more classes but did not include an interface
+Without a defined type (explain)
+Other (explain)
+explanation
+
+Otyughs are represented as a class underneath the monster interface, this allows for more monsters to be created later.  
+Tag 1 - explain how this tag supports your response
+
+File: 
+src/model/Otyugh.java
+ Line number: 
+7
+
+Tag 2 - explain how this tag supports your response
+
+File: 
+src/model/Monster.java
+ Line number: 
+6
+
+Tag 3 - explain how this tag supports your response
+
+File: 
+<none>
+ Line number: 
+
+How do you add Otyughs to the caves in the model? (2 points)
+
+Otyughs are added to caves by first checking how many are requested based on the difficulty the player selects. The first one is then added to the end cave as required by the specification. If there is more than one required, then a list of caves(tunnels excluded) is generated and they are selected at random ensuring that they don't already have a Otyughs in them until the number is completed or all the caves have Otyughs and no more can be added. 
+explanation
+
+The first tag shows the Otyugh being added to the final cave before then proceeding to distribute the rest if there is more than 1. 
+
+The second tag shows the attempted constructions and distribution of the other Otyughs based on the specification. it will get a random number based on the size of the list of caves(tunnels excluded), check that cave for a monster already and if it doesn't contain one, add it. Then decrement its count. 
+
+The third tag shows where it checks that the difficulty is not greater than the number of caves(tunnels excluded) which would cause an illegal argument. exception
+Tag 1 - explain how this tag supports your response
+
+File: 
+src/model/DungeonImpl.java
+ Line number: 
+398
+
+Tag 2 - explain how this tag supports your response
+
+File: 
+src/model/DungeonImpl.java
+ Line number: 
+400
+
+Tag 3 - explain how this tag supports your response
+
+File: 
+src/model/DungeonImpl.java
+ Line number: 
+419
+
+Do you guarantee that there is at least one Otyugh, at the end cave? (1 point)
+
+ 
+Tag an example of the player encountering an Otyugh at the end cave in one of the example runs
+
+File: 
+res/Run2.txt
+ Line number: 
+62
+
+explanation
+
+In the first tag you can see in the last argument being passed in that the difficulty is 1 meaning 1 Otyugh is in the dungeon. In the tag above it shows where the player is eaten as they reach the final cave location. In my dungeon implementation(tag 2), it shows that monster being constructed and placed in the end cave as the first action for adding monsters to the dungeon. 
+
+Finally in run 1 you can see that when a player comes across the Otyugh in the final cave after it has been slain. 
+Tag 1 - explain how this tag supports your response
+
+File: 
+res/Run2.txt
+ Line number: 
+14
+
+Tag 2 - explain how this tag supports your response
+
+File: 
+src/model/DungeonImpl.java
+ Line number: 
+398
+
+Tag 3 - explain how this tag supports your response
+
+File: 
+res/Run1.txt
+ Line number: 
+171
+
+Can the player detect the smell of a Otyugh that is at least 2 positions from the player's current location? (3 points)
+
+ 
+Tag an example of how you did this in one of the example runs
+
+File: 
+res/Run2.txt
+ Line number: 
+44
+
+explanation
+
+As you can see the player is 2 moves away from the final cave in run 2 before proceeding 1 more cave where the smell intensifies. They then move to the final cave where they are eaten. The same thing happens in run 1(tag 1), where the player begins to smell something faint but awful 2 caves away from the monster, then it intensifies as they get one cave closer.
+
+The check smell private function is what gets the smell for the player. It starts by getting the players location and then searching all of the locations within one hop of the player. If there is a live monster present it adds a smell of 2. It then searches all of the children of the nodes within one hop of the player and adds a smell factor of 1 if there is a live monster present in any of those. That smell factor is then passed in the move player method to the player implementation for updating the player's status which occurs after every move.  The check smell method does not add smell for any monsters that are dead. The player is no longer in danger from a dead monster.
+
+Tag 3 - In the player implementation, if the smell is greater than or equal to 2, IE a monster within 1 space or 2 monsters within 2 spaces then the player smells something strong and awful, else if there is only 1 monster within 2 spaces then the smell is only faint but awful. Else the player smells nothing. 
+Tag 1 - explain how this tag supports your response
+
+File: 
+res/Run1.txt
+ Line number: 
+137
+
+Tag 2 - explain how this tag supports your response
+
+File: 
+src/model/DungeonImpl.java
+ Line number: 
+670
+
+Tag 3 - explain how this tag supports your response
+
+File: 
+src/model/PlayerImpl.java
+ Line number: 
+117
+
+Does the smell of the Otyughs increase as the player moves to 1 position from the player's current location? (2 points)
+
+ 
+Tag an example of how you did this in one of the example runs
+
+File: 
+res/Run2.txt
+ Line number: 
+54
+
+explanation
+
+As explained above as the player gets closer the smell factors gets strong which prompts the player to smell something awful and strong instead of faint and awful when they were 1 space away. 
+
+Tag 1 - Again in the code, every time the player moves, if they are 1 space away from a live monster or 2 spaces from 2 live monsters then they receive a smell factor of at least two
+
+Tag 2 - This increased smell factor will cause the smell factor to go from faint and awful to strong and awful in the player status update. 
+Tag 1 - explain how this tag supports your response
+
+File: 
+src/model/DungeonImpl.java
+ Line number: 
+685
+
+Tag 2 - explain how this tag supports your response
+
+File: 
+src/model/PlayerImpl.java
+ Line number: 
+117
+
+Tag 3 - explain how this tag supports your response
+
+File: 
+<none>
+ Line number: 
+
+Can the player distinguish between a single Otyugh that is 1 position away and multiple Otyughs that are 2 positions from the player's current location? (2 points)
+
+ 
+Tag an example of how you did this in one of the example runs
+
+File: 
+<none>
+ Line number: 
+
+explanation
+
+No, unless the player has already visited the space, they will not know where or how many Otyughs other than by the level of difficulty they selected when they began. IE if they only selected a difficulty of 1 then they know that there is only one. By design, the player can not distinguish between a single Otyugh within 1 hop or 2 within the 2 hops. They only get the smell which tells them that there is one or more near by based on the level of smell. 
+Tag 1 - explain how this tag supports your response
+
+File: 
+src/model/DungeonImpl.java
+ Line number: 
+670
+
+Tag 2 - explain how this tag supports your response
+
+File: 
+<none>
+ Line number: 
+
+Tag 3 - explain how this tag supports your response
+
+File: 
+<none>
+ Line number: 
+
+How did you represent arrows in your model? (2 points)
+
+Implemented an interface and one or more clases
+Implemented or added to an enum
+Implemented one or more classes but did not include an interface
+Withouth a defined type (explain)
+Other (expain)
+explanation
+
+A Crooked arrow class was created with package private methods for validating input for shooting but the actions of picking up, shooting and creating arrows for distribution trough out the cave are done in the dungeon interface and dungeon implementation class. 
+
+Tag 1 - Everything that needed to be done for the arrow could be done in a package private manner within the arrow class, so i didn't see a reason to add an interface for that class. The shooting method in the crooked arrow class is just a helper method to ensure valid input and then the rest of the execution is done in the dungeon implementation class. 
+
+Tag 2 - The shooting and arrow creation actions are handled by the dungeon interface and executed within the dungeon interface. The shooting is done by getting a distance and direction from the user. The navigation is then executed by tracing the path of the arrow along the edges in the final edge list within the dungeon. At each hop, each cave's neighbor list is checked. If it has only 2 neighbors then the arrow passes through without the distance decrementing and the direction is adjusted based on the exit direction. 
+Tag 1 - explain how this tag supports your response
+
+File: 
+src/model/CrookedArrow.java
+ Line number: 
+8
+
+Tag 2 - explain how this tag supports your response
+
+File: 
+src/model/DungeonImpl.java
+ Line number: 
+727
+
+Tag 3 - explain how this tag supports your response
+
+File: 
+-- select a file --
+ Line number: 
+
+Does the player have 3 arrows when they enter the dungeon? (1 point)
+
+ 
+Tag an example of this in one of the example runs
+
+File: 
+res/Run1.txt
+ Line number: 
+18
+
+explanation
+
+Tag 1 - the arrows are added to the players quiver when they player is created. 
+
+Tag 2 - you can see the arrows in the players quiver when they are dropped into the dungeon. 
+
+Tag 3 - shows the player status right after the player is constructed and you can see that they have 3 arrows in their quiver. 
+Tag 1 - explain how this tag supports your response
+
+File: 
+src/model/PlayerImpl.java
+ Line number: 
+30
+
+Tag 2 - explain how this tag supports your response
+
+File: 
+res/Run1.txt
+ Line number: 
+18
+
+Tag 3 - explain how this tag supports your response
+
+File: 
+test/test/PlayerImplTest.java
+ Line number: 
+46
+
+Are there additional arrows to be found in the dungeon? (1 point)
+
+ 
+Tag an example of this in one of the example runs
+
+File: 
+res/Run1.txt
+ Line number: 
+18
+
+explanation
+
+Tag 1 - Shows that other arrows can by found in the dungeon by searching all caves and incrementing if the arrow list size is not empty, meaning there is an arrow for the player to pick up
+
+Tag 2 - the private method for distributing arrows throughout the dungeon. Arrows are randomly placed based on the treasure percentage in both caves and tunnels. Caves and tunnels are randomly selected from list from all of the possible locations in the cave and if the space does not have an arrow it will add it. It will repeat this until the correct number of spaces that require arrows is met. 
+
+Tag 3 - shows the player picking up an arrow by calling the pickup item method in the dungeon class which then calls the pick up item in the player class. 
+Tag 1 - explain how this tag supports your response
+
+File: 
+test/test/DungeonImplTest.java
+ Line number: 
+278
+
+Tag 2 - explain how this tag supports your response
+
+File: 
+src/model/DungeonImpl.java
+ Line number: 
+656
+
+Tag 3 - explain how this tag supports your response
+
+File: 
+test/test/DungeonImplTest.java
+ Line number: 
+247
+
+Can the player pick up arrows that are found in the dungeon? (1 point)
+
+ 
+Tag an example of this in one of the example runs
+
+File: 
+res/Run1.txt
+ Line number: 
+30
+
+explanation
+
+Tag 1 - the player can pick up arrows in a cave(cave index 3 of our demo cave)
+
+Tag 2 - shows the player picking up an arrow by calling the pickup item method in the dungeon class which then calls the pick up item in the player class. It also shows that after the pick up arrow method is called and validated by the model that the players new status now shows that they have 4 arrows instead of the 3 that they started with by default.
+Tag 1 - explain how this tag supports your response
+
+File: 
+test/test/PlayerImplTest.java
+ Line number: 
+103
+
+Tag 2 - explain how this tag supports your response
+
+File: 
+test/test/DungeonImplTest.java
+ Line number: 
+247
+
+Tag 3 - explain how this tag supports your response
+
+File: 
+<none>
+ Line number: 
+
+Does your model have a way for the player to shoot an arrow? (2 points)
+
+ 
+Tag an example of this in one of the example runs
+
+File: 
+res/Run1.txt
+ Line number: 
+116
+
+explanation
+
+Tag 1 - the method for the player to shoot an arrow that is called from inside the dungeon implementation
+
+Tag 2 - the shoot arrow method that is called by the controller that checks for a valid distance and direction and then calls the shoot method from the player class as well as traverses the final edge list to determine the result of the shot based on its distance and direction. 
+Tag 1 - explain how this tag supports your response
+
+File: 
+src/model/PlayerImpl.java
+ Line number: 
+209
+
+Tag 2 - explain how this tag supports your response
+
+File: 
+src/model/DungeonImpl.java
+ Line number: 
+727
+
+Tag 3 - explain how this tag supports your response
+
+File: 
+-- select a file --
+ Line number: 
+
+How does your model handle the way a crooked arrow travels when it was shot? (2 points)
+
+Tag 1 - explain how this tag supports your response
+
+File: 
+-- select a file --
+ Line number: 
+
+Tag 2 - explain how this tag supports your response
+
+File: 
+-- select a file --
+ Line number: 
+
+Tag 3 - explain how this tag supports your response
+
+File: 
+-- select a file --
+ Line number: 
+
+Does your model support hitting an Otyugh with an arrow? (2 points)
+
+ 
+Tag an example of this in one of the example runs
+
+File: 
+res/Run1.txt
+ Line number: 
+119
+
+explanation
+
+Tag 1 - explain how this tag supports your response
+
+File: 
+-- select a file --
+ Line number: 
+
+Tag 2 - explain how this tag supports your response
+
+File: 
+-- select a file --
+ Line number: 
+
+Tag 3 - explain how this tag supports your response
+
+File: 
+-- select a file --
+ Line number: 
+
+Does your model support missing an Otyugh with an arrow? (1 point)
+
+ 
+Tag an example of this in one of the example runs
+
+File: 
+<none>
+ Line number: 
+
+explanation
+
+If the player misses they will either hear nothing or they will hear the arrow bounce off a cave wall. 
+
+Tag 1 - This is represented by either if there is not a viable exit in a cave IE if it enters from the west headed east and the only exits are north and south then the arrow will hit a wall and stop right there. 
+
+Tag 2 - If the player doesn't hit anything it doesn't make a sound and doesn't do anything. IE the lack of sound feed back to the player is by design and the player hears nothing. 
+Tag 1 - explain how this tag supports your response
+
+File: 
+src/model/DungeonImpl.java
+ Line number: 
+789
+
+Tag 2 - explain how this tag supports your response
+
+File: 
+src/model/DungeonImpl.java
+ Line number: 
+792
+
+Tag 3 - explain how this tag supports your response
+
+File: 
+<none>
+ Line number: 
+
+Does your model require an Otyugh to be hit with two arrows in order to kill it? (2 points)
+
+ 
+Tag an example of this in one of the example runs
+
+File: 
+res/Run1.txt
+ Line number: 
+159
+
+explanation
+
+Tag 1 - the health of an Otyugh can be set by the game creator to whatever they like if they want to reconfigure it and every time they are hit the using the take damage method their health is decremented by 1. In the dungeon implementation, each Otyugh's health is set to 2 by default. 
+
+Tag 2 - in the current dungeon implementation, the Otyugh's health is set to 2 by default when they are constructed and added to a cave. 
+Tag 1 - explain how this tag supports your response
+
+File: 
+src/model/Otyugh.java
+ Line number: 
+17
+
+Tag 2 - explain how this tag supports your response
+
+File: 
+src/model/DungeonImpl.java
+ Line number: 
+397
+
+Tag 3 - explain how this tag supports your response
+
+File: 
+-- select a file --
+ Line number: 
+
+Does the player die if they enter a cave with a healthy Otyugh? (2 points)
+
+ 
+Tag an example of this in one of the example runs
+
+File: 
+res/Run2.txt
+ Line number: 
+62
+
+explanation
+
+tag 1 - when the player enters a cave with an Otyugh the player's monster encounter method is called from within the dungeon implementation. 
+
+tag 2 - the monster encounter method determines if the player survives based on the monsters health and a random number generated between and 0 and 1 inclusive. 
+if the health is 2 then the player is eaten and the isAlive flag is set to false immediately ending the game, meaning the player is dead. 
+Tag 1 - explain how this tag supports your response
+
+File: 
+src/model/DungeonImpl.java
+ Line number: 
+608
+
+Tag 2 - explain how this tag supports your response
+
+File: 
+src/model/PlayerImpl.java
+ Line number: 
+187
+
+Tag 3 - explain how this tag supports your response
+
+File: 
+<none>
+ Line number: 
+
+Does the player have a 50% chance of escaping an Otyugh if it has been hit by a single crooked arrow? (3 points)
+
+ 
+Tag an example of this in one of the example runs
+
+File: 
+<none>
+ Line number: 
+
+explanation
+
+tag 1 - when the player enters a cave with an Otyugh the player's monster encounter method is called from within the dungeon implementation. 
+
+tag 2 - if the monster's health is half or 1, whether the player escapes is determined by the random number that is passed in either 0 or 1. If the random number is 1 then the player does not escape and is eaten just like if they ran into a full health otyugh else if the random is 0 then they escape
+
+tag 3 - the player escapes if the random number generated is 0 and they monster health is 1. 
+Tag 1 - explain how this tag supports your response
+
+File: 
+src/model/DungeonImpl.java
+ Line number: 
+608
+
+Tag 2 - explain how this tag supports your response
+
+File: 
+src/model/PlayerImpl.java
+ Line number: 
+187
+
+Tag 3 - explain how this tag supports your response
+
+File: 
+-- select a file --
+ Line number: 
+190
+
+How does your model support the player losing by being killed by a Otyugh or winning by killing the Otyugh and entering the end cave? (1 point)
+
+ 
+Tag an example of this in one of the example runs
+
+File: 
+res/Run2.txt
+ Line number: 
+62
+
+explanation
+
+If the player is killed by the Otyugh(run example), then they immediately die and this would be considered a losing condition. 
+
+Tag 1 - Else if they kill the Otyugh and get to the end cave then they will see the dead Otyugh and will be in a winning condition and the game ends because they have reached the end. 
+
+tag 2 - if the player is eaten then the is alive flag immediatly is set to false and the game is ended. because before each turn the game checks to see if the player is alive by calling the player's isAlive method in the dungeons isGameover method. 
+Tag 1 - explain how this tag supports your response
+
+File: 
+res/Run1.txt
+ Line number: 
+169
+
+Tag 2 - explain how this tag supports your response
+
+File: 
+src/model/PlayerImpl.java
+ Line number: 
+188
+
+Tag 3 - explain how this tag supports your response
+
+File: 
+src/model/DungeonImpl.java
+ Line number: 
+569
+
+Controller
+What does the main method in your driver class do? (4 points)
+
+it reads in the command line arguments and passes them to the model, and then passes the model to the controller
+Tag the first line of the main method in your driver class
+
+File: 
+src/driver/Driver.java
+ Line number: 
+21
+
+Do you use a Readable parameter in your controller to read text input? (1 point)
+
+ 
+Tag an example of this in one of the example runs
+
+File: 
+res/Run1.txt
+ Line number: 
+22
+
+explanation
+
+I'm not sure how this can be demonstrated in the run but the player does enter input in the current implementation using the system in which is then passed to the controller as appendable by the driver. 
+
+tag 1 - the controller takes in a readable input in the constructor 
+
+tag 2 - the driver sets the readable input, in this case system.in and the appendable as system.out.
+
+tag 3 - the driver passes the readable  and appendable into the controller
+Tag 1 - explain how this tag supports your response
+
+File: 
+src/controller/ConsoleController.java
+ Line number: 
+29
+
+Tag 2 - explain how this tag supports your response
+
+File: 
+src/driver/Driver.java
+ Line number: 
+54
+
+Tag 3 - explain how this tag supports your response
+
+File: 
+src/driver/Driver.java
+ Line number: 
+56
+
+Do you use an Appendable parameter in your controller to read text input? (1 point)
+
+ 
+Tag an example of this in one of the example runs
+
+File: 
+res/Run1.txt
+ Line number: 
+23
+
+explanation
+
+I'm not sure how this can be demonstrated in the run but the player does enter input in the current implementation using the system in which is then passed to the controller as appendable by the driver. 
+
+tag 1 - the controller takes in a readable input in the constructor 
+
+tag 2 - the driver sets the readable input, in this case system.in and the appendable as system.out.
+
+tag 3 - the driver passes the readable  and appendable into the controller
+Tag 1 - explain how this tag supports your response
+
+File: 
+src/controller/ConsoleController.java
+ Line number: 
+29
+
+Tag 2 - explain how this tag supports your response
+
+File: 
+src/driver/Driver.java
+ Line number: 
+55
+
+Tag 3 - explain how this tag supports your response
+
+File: 
+src/driver/Driver.java
+ Line number: 
+56
+
+How does your controller handle a command entered by the user? (5 points)
+
+Once the dungeon is built and validated and the model is passed off to the controller, the controller then prompts the user to either move, shoot, or pick up. 
+
+Tag 1 - The controller then waits for the player to enter a valid action. The User can enter this by either entering the first letter of the action or spelling out the entire action(case insensitive) including attempting to quit as well.
+
+Tag 2 - Once the action is validated the game will ask for a direction if the action is either moving or shooting.  Again the player can either spell out the direction or just the first letter. If the player is moving then the controller will call the model and attempt to move the player and will be prepared to catch any errors thrown by the model. If the player has elected to shoot it will then ask the player how far they would like to shoot. The controller will then wait until it is provided a valid integer and attempt calling the shoot method, again waiting to catch any errors from the model in case of invalid input from the user. 
+
+Tag 3 - If the player would like to pick up by either entering either p or spelling out pickup(again case insensitive), the player is then prompted if they would like to pick up arrows, treasure or both. Once the controller receives a valid input(either the first letter of the type of item or B or the fully spelled out version), the controller will try to pass that input to the model and will catch any errors.
+
+Once a valid action has been completed the controller goes through its game status checks, checking if the game has met one of its game terminating conditions. If not, the controller starts over prompting the user for new input to perform one of the three actions. 
+Tag 1 - explain how this tag supports your response
+
+File: 
+src/controller/ConsoleController.java
+ Line number: 
+316
+
+Tag 2 - explain how this tag supports your response
+
+File: 
+src/controller/ConsoleController.java
+ Line number: 
+362
+
+Tag 3 - explain how this tag supports your response
+
+File: 
+src/controller/ConsoleController.java
+ Line number: 
+451
+
+Does your controller delegate validation to the model? (1 point)
+
+ 
+Tag the line where your controller catches an exception thrown by the model, or otherwise handles the model reporting an invalid action
+
+File: 
+src/controller/ConsoleController.java
+ Line number: 
+385
+
+Optional: Explain your answer
+
+This line is catching an illegal argument error thrown by the move for the player attempting to move in an incorrect direction. This try catch will catch the exception thrown by the model, print the error message and then try to wait to get another direction to attempt. It will keep repeating the process until it gets a valid direction and move executes. 
+
+All moves, shooting or picking up actions are all validated by the model and the controller is there to catch any errors from the model and get input from the user to attempt to get valid actions. 
+Testing
+Do you have at least one test that verifies that there is at least one Otyugh, in the end cave in the dungeon? (1 point)
+
+ 
+Explanation (at least one tag should be an assert). If such a test is not possible with your design, explain why.
+
+Tag 1 - shows that with a difficulty of one there is only 1 monster within the dungeon. 
+
+Tag 2 - shows that moved along the shortest path directly from the start point to the end, the player is immediately eaten by the monster upon reaching the end cave indicated by the line stating the player has reached the final cave. 
+Tag 1 - explain how this tag supports your response
+
+File: 
+test/test/DungeonImplTest.java
+ Line number: 
+295
+
+Tag 2 - explain how this tag supports your response
+
+File: 
+test/test/ControllerTest.java
+ Line number: 
+73
+
+Tag 3 - explain how this tag supports your response
+
+File: 
+<none>
+ Line number: 
+
+Do you have at least one test that verifies that multiple Otyughs are correctly added to the dungeon? (1 point)
+
+ 
+Explanation (at least one tag should be an assert). If such a test is not possible with your design, explain why.
+
+Tag 1 - demonstrates that multiple monsters can be added to the dungeon by checking the entire list of caves for monsters and that there are 2 monsters which was passed in the constructor. 
+
+Tag 2 - demonstrates that the if more monsters are requested then possible caves that it throws an illegal argument exception. 
+Tag 1 - explain how this tag supports your response
+
+File: 
+test/test/DungeonImplTest.java
+ Line number: 
+312
+
+Tag 2 - explain how this tag supports your response
+
+File: 
+test/test/DungeonImplTest.java
+ Line number: 
+321
+
+Tag 3 - explain how this tag supports your response
+
+File: 
+-- select a file --
+ Line number: 
+
+Do you have at least one test that verifies that the player can smell a single Otyugh? (1 point)
+
+ 
+Explanation (at least one tag should be an assert). If such a test is not possible with your design, explain why.
+
+Tag 1- shows that the player can smell the Otyugh from at least 2 spaces away. 
+
+Tag 2 - shows that the player can also smell the Otyugh from one space away and that they level of smell has increased. 
+
+Tag 3 - shows that the player does not smell an Otyugh from more than 2 spaces away 
+Tag 1 - explain how this tag supports your response
+
+File: 
+test/test/DungeonImplTest.java
+ Line number: 
+339
+
+Tag 2 - explain how this tag supports your response
+
+File: 
+test/test/DungeonImplTest.java
+ Line number: 
+357
+
+Tag 3 - explain how this tag supports your response
+
+File: 
+test/test/DungeonImplTest.java
+ Line number: 
+339
+
+Do you have at least one test that verifies that the player can smell multiple Otyughs? (1 point)
+
+ 
+Explanation (at least one tag should be an assert). If such a test is not possible with your design, explain why.
+
+Tag 1 - explain how this tag supports your response
+
+File: 
+<none>
+ Line number: 
+
+Tag 2 - explain how this tag supports your response
+
+File: 
+<none>
+ Line number: 
+
+Tag 3 - explain how this tag supports your response
+
+File: 
+<none>
+ Line number: 
+
+Do you have at least one test that verifies that arrows are added to the dungeon? (1 point)
+
+ 
+Explanation (at least one tag should be an assert). If such a test is not possible with your design, explain why.
+
+Tag 1 - This test checks all of the caves and tunnels in the dungeon if they have arrows and will accumulate the number based on if their arrow list is not empty.
+Tag 1 - explain how this tag supports your response
+
+File: 
+test/test/DungeonImplTest.java
+ Line number: 
+278
+
+Tag 2 - explain how this tag supports your response
+
+File: 
+<none>
+ Line number: 
+
+Tag 3 - explain how this tag supports your response
+
+File: 
+<none>
+ Line number: 
+
+Do you have at least one test that verifies that the player can pick up arrows that are found in the dungeon? (1 point)
+
+ 
+Explanation (at least one tag should be an assert). If such a test is not possible with your design, explain why.
+
+Tag 1 - shows a player picking up an arrow. 
+
+Tag 2 - It not only shows the player picking up the arrow but that the quiver has been updated to show that they now have 4 arrows instead of the original 3. 
+
+Tag 3 - shows from the player implementation where the arrow is picked up within the player method which leads the quiver to be updated. 
+Tag 1 - explain how this tag supports your response
+
+File: 
+test/test/DungeonImplTest.java
+ Line number: 
+247
+
+Tag 2 - explain how this tag supports your response
+
+File: 
+test/test/DungeonImplTest.java
+ Line number: 
+245
+
+Tag 3 - explain how this tag supports your response
+
+File: 
+test/test/PlayerImplTest.java
+ Line number: 
+107
+
+Do you have at least one test that verifies that the player can shoot an arrow? (1 point)
+
+ 
+Explanation (at least one tag should be an assert). If such a test is not possible with your design, explain why.
+
+Tag 1 - demonstrates that the player can shoot an arrow and if it hits a monster will get the proper response for the first hit which is a loud howl. 
+
+Tag 2 - demonstrates that the player can shoot an arrow and if it hits a monster will get the proper response for the second hit which is a loud howl and crash indicating the monster is dead. 
+
+Tag 3 - demonstrates that after the player has fired an arrow the number of arrows is decremented. 
+Tag 1 - explain how this tag supports your response
+
+File: 
+test/test/DungeonImplTest.java
+ Line number: 
+216
+
+Tag 2 - explain how this tag supports your response
+
+File: 
+test/test/DungeonImplTest.java
+ Line number: 
+217
+
+Tag 3 - explain how this tag supports your response
+
+File: 
+test/test/PlayerImplTest.java
+ Line number: 
+89
+
+Do you have at least one test that verifies that the arrow travels correctly through caves and tunnels? (1 point)
+
+ 
+Explanation (at least one tag should be an assert). If such a test is not possible with your design, explain why.
+
+Tag 1 - this is the demo dungeon that the player is dropped into for the arrow shooting test. The player enters at cave 3. 
+
+Tag 2 - shows the player shooting an arrow 1 space north. Because firing through a tunnel does not count toward the distance the arrow should pass through caves 0, 1, 2, and 5 because they are all tunnels and terminate in cave 4. Cave 4 is also where the Otyugh is located and we can see that the arrow strikes the monster based on their howl. 
+
+Tag 3 - if the player misses and shoots an arrow into the wall it gives a different response  which is "Zing! The arrow bounced off a wall.". 
+
+Else if the player doesn't hit anything then they get no feed back because the arrow has just landed and doesn't make contact with anything there for it should make no noise. So in review there are 3 different types of feedback a player should get during a shot. 1) they hit a monster and get an audible response from them. 2)they hear the arrow bounce off a wall, or 3) they hear nothing and get no feedback because it didn't hit anything
+Tag 1 - explain how this tag supports your response
+
+File: 
+res/demo_dungeon.jpg
+ Line number: 
+1
+
+Tag 2 - explain how this tag supports your response
+
+File: 
+test/test/DungeonImplTest.java
+ Line number: 
+216
+
+Tag 3 - explain how this tag supports your response
+
+File: 
+test/test/DungeonImplTest.java
+ Line number: 
+247
+
+Do you have at least one test that verifies that the player can shoot and hit an Otyugh? (1 point)
+
+ 
+Explanation (at least one tag should be an assert). If such a test is not possible with your design, explain why.
+
+Tag 1 - after hitting the monster the first time they get the audible howl response from the monster being hit. 
+
+Tag 2 - after hitting the monster the second time they get the audible howl response from the monster being hit. 
+
+Tag 3 - After the monster is killed the player will no longer be able to smell the monster. 
+
+Also in run one they will discover the body of the monster once they reach the end cave or any cave that has a monster in it that has been killed. 
+Tag 1 - explain how this tag supports your response
+
+File: 
+test/test/DungeonImplTest.java
+ Line number: 
+216
+
+Tag 2 - explain how this tag supports your response
+
+File: 
+test/test/DungeonImplTest.java
+ Line number: 
+217
+
+Tag 3 - explain how this tag supports your response
+
+File: 
+test/test/DungeonImplTest.java
+ Line number: 
+392
+
+Do you have at least one test that verifies that the player can shoot in the correct direction but miss the Otyugh? (1 point)
+
+ 
+Explanation (at least one tag should be an assert). If such a test is not possible with your design, explain why.
+
+Tag 1 - the player begins in cave 3
+
+tag 2 - The player shoots the arrow 2 spaces north and misses, indicated by the message, "Zing! The arrow bounced off a wall." This is because the arrow starts out north and passes through caves 0, 1, 2, 5, and hits the wall behind the monster in cave 4. This is because caves 0, 1, 2, and 5 are tunnels and there for do not detract from the distance count and the arrow then still has to travel a distance of 1 after crossing cave 4. But there is no where for it to go so it misses and the monster is not effected. 
+Tag 1 - explain how this tag supports your response
+
+File: 
+res/demo_dungeon.jpg
+ Line number: 
+1
+
+Tag 2 - explain how this tag supports your response
+
+File: 
+test/test/DungeonImplTest.java
+ Line number: 
+232
+
+Tag 3 - explain how this tag supports your response
+
+File: 
+<none>
+ Line number: 
+
+Do you have at least one test that verifies that an Otyugh will kill the player? (1 point)
+
+ 
+Explanation (at least one tag should be an assert). If such a test is not possible with your design, explain why.
+
+Tag 1 - the player enters a cave with a monster and the monster encounter method is called. The method checks that if the player is in the same cave with a health Otyugh that the player dies and produces the message that is in the assert. 
+
+Tag 2 - The player gets the same death message that they would receive from a fully healthy otyugh if they run into one that only has half health but the random number generated is one. If the random number generated was 0 then the player would escape. 
+
+Tag 3 - shows that when the player is killed the isAlive Boolean is set to false before returning the message indicating the player has been eaten and dies.
+
+Another way to check this would be to also check the is player alive method after encountering the monster in the test. 
+Tag 1 - explain how this tag supports your response
+
+File: 
+test/test/PlayerImplTest.java
+ Line number: 
+74
+
+Tag 2 - explain how this tag supports your response
+
+File: 
+test/test/PlayerImplTest.java
+ Line number: 
+75
+
+Tag 3 - explain how this tag supports your response
+
+File: 
+src/model/PlayerImpl.java
+ Line number: 
+187
+
+Do you have at least one test that verifies that a player enter a cave with an Otyugh has a chance of escaping if the Otyugh has been hit by a single arrow? (1 point)
+
+ 
+Explanation (at least one tag should be an assert). If such a test is not possible with your design, explain why.
+
+Tag 1 - the player will receive this message if they enter a cave with a otyugh that has been hit by a single arrow and manages to escape. 
+
+Tag 2 - shows where in the monster encounter method that the player survives. You can see that the is Alive flag is not manipulated. 
+
+Another way to check this would be to also check the is player alive method after encountering the monster. 
+Tag 1 - explain how this tag supports your response
+
+File: 
+test/test/PlayerImplTest.java
+ Line number: 
+76
+
+Tag 2 - explain how this tag supports your response
+
+File: 
+src/model/PlayerImpl.java
+ Line number: 
+191
+
+Tag 3 - explain how this tag supports your response
+
+File: 
+<none>
+ Line number: 
+
+Do you have at least one test that verifies that an Otyugh dies after being hit by 2 arrows? (1 point)
+
+ 
+Explanation (at least one tag should be an assert). If such a test is not possible with your design, explain why.
+
+Tag 1 - After the player hits the Otyugh, the player hears the howl and crash of the monster falling over dead. The previous line in this test is checking that the player got the proper message of hearing a howl after the message has been hit once. 
+
+Tag 2 - In the code we can see that the player only gets that message after the monster has been hit twice and is dead. 
+Tag 1 - explain how this tag supports your response
+
+File: 
+test/test/DungeonImplTest.java
+ Line number: 
+217
+
+Tag 2 - explain how this tag supports your response
+
+File: 
+src/model/DungeonImpl.java
+ Line number: 
+821
+
+Tag 3 - explain how this tag supports your response
+
+File: 
+<none>
+ Line number: 
+
+Do you have at least one test that verifies that a player can enter a cave after an Otyugh has been killed? (1 point)
+
+ 
+Explanation (at least one tag should be an assert). If such a test is not possible with your design, explain why.
+
+I do not have a specific test for it but the player does enter the final cave and discover the dead monster when they reach the final cave. 
+Tag 1 - explain how this tag supports your response
+
+File: 
+res/Run1.txt
+ Line number: 
+173
+
+Tag 2 - explain how this tag supports your response
+
+File: 
+<none>
+ Line number: 
+
+Tag 3 - explain how this tag supports your response
+
+File: 
+<none>
+ Line number: 
+
+How did you go about testing the controller in isolation? (5 points)
+
+I mocked the controller substituting a string for the action of the model and having it log those strings to out put the actions that were performed. For example, the move method would return a string that said that move was called and would log that the player was moving and in what direction. 
+
+Tag 1 - shows the actions that were passed in via the readable and what was logged while performing all possible actions and then moving along the shortest path from the begining of the dungeon to the end of our demo dungeon. 
+
+Tag 2 - the log would append the input from the readable. For moving the log would append the move or shoot or pick up actions and add the associated information with it. For moving it would also append the direction that was given for it.
+
+Tag 3 - for shooting it would append what direction and distance were passed into it as well. 
+
+The pick up method exhibits the same type of behavior and append what type of item was requested to be picked up along with the pick up command. You can see this in lines 89 and 97 and 98 of the controller test file. we can see that the log shows the controller calling the pickup method for arrows which is the first action in the readable and then we see below in the return string on lines 97 and 98 that the proper response of asking for what type of things to pick up is returned and then the call to pick up the item utilizing the pick up item method.
+
+for shooting we see in the log on line 89 that the player calls to shoot 1 space north, and below we see the output asking the player to give a direction and distance in the return strings.  
+Tag 1 - explain how this tag supports your response
+
+File: 
+test/test/ControllerTest.java
+ Line number: 
+118
+
+Tag 2 - explain how this tag supports your response
+
+File: 
+test/test/MockModel.java
+ Line number: 
+92
+
+Tag 3 - explain how this tag supports your response
+
+File: 
+test/test/MockModel.java
+ Line number: 
+103
+
+Do you have at least one test that verifies that the controller handles a move command correctly (1 point)
+
+ 
+Explanation (at least one tag should be an assert). If such a test is not possible with your design, explain why.
+
+Tag 1 - shows the move command being passed in via the readbable that moves along the shortest path through our demo cave. 
+
+Tag 2 - shows the test for passing the expected behavior from the log where each associated action including the player being moved is logged. the move actions not only return the word move for the action being called in the readable and properly parsed by the controller but the direction that is associated with each move. 
+
+Tag 3 - shows the test that passes from the return strings where the controller prompts the player for direction and then calls the correct method move player from the model to validate and execute the move. 
+Tag 1 - explain how this tag supports your response
+
+File: 
+test/test/ControllerTest.java
+ Line number: 
+79
+
+Tag 2 - explain how this tag supports your response
+
+File: 
+test/test/ControllerTest.java
+ Line number: 
+95
+
+Tag 3 - explain how this tag supports your response
+
+File: 
+test/test/ControllerTest.java
+ Line number: 
+118
+
+Do you have at least one test that verifies that the controller handles a pickup command correctly? (1 point)
+
+ 
+Explanation (at least one tag should be an assert). If such a test is not possible with your design, explain why.
+
+Tag 1 - shows the log being appended of the call to the pickup method to pick up arrows which can be verified by looking at the readable string that was input where the first 2 inputs are p and a for pick up and arrows. based on my code arrows are the type of item represented by the integer 1. 
+
+Tag 2 - shows that the test works properly passes for picking up shooting, and moving through the dungeon. 
+
+Tag 3- the returned string shows that after the readable passes in the p for pickup the controller prompter for the type of item to pick up, treasure, arrows, or both. It then shows that the pickupitem  method was called. 
+
+Both tests are then passed in the controller test class
+Tag 1 - explain how this tag supports your response
+
+File: 
+test/test/ControllerTest.java
+ Line number: 
+88
+
+Tag 2 - explain how this tag supports your response
+
+File: 
+test/test/ControllerTest.java
+ Line number: 
+95
+
+Tag 3 - explain how this tag supports your response
+
+File: 
+test/test/ControllerTest.java
+ Line number: 
+97
+
+Do you have at least one test that verifies that the controller handles a shoot command correctly? (1 point)
+
+ 
+Explanation (at least one tag should be an assert). If such a test is not possible with your design, explain why.
+
+Tag 1 - the shoot method is called when the readable passes in s, n and 1 which should call the shoot method, the direction is north and the distance is 1. 
+
+Tag 2 - the log shows that the method receives and processes that the player would like to shoot an arrow 1 space north.
+
+Tag 3 - the test to show that the actions performed are the expected behavior. 
+
+We see in the output strings below that the mode prompts the user to give a direction and then a distance after verifying the action and direction. the shootarrow method is then called after all 3 inputs have met the basic requirement. They are then passed to the model in the shoot arrow method which we can see on like 102 from the returned strings. 
+Tag 1 - explain how this tag supports your response
+
+File: 
+test/test/ControllerTest.java
+ Line number: 
+79
+
+Tag 2 - explain how this tag supports your response
+
+File: 
+test/test/ControllerTest.java
+ Line number: 
+89
+
+Tag 3 - explain how this tag supports your response
+
+File: 
+test/test/ControllerTest.java
+ Line number: 
+95
+
+Do you have at least one test that verifies that the controller handles a quit command correctly? (1 point)
+
+ 
+Explanation (at least one tag should be an assert). If such a test is not possible with your design, explain why.
+
+while i do not have a test in the controller, I do have one in the model which would be called from the controller to end the game and it does exhibit the correct behavior. 
+Tag 1 - explain how this tag supports your response
+
+File: 
+src/model/DungeonImpl.java
+ Line number: 
+261
+
+Tag 2 - explain how this tag supports your response
+
+File: 
+<none>
+ Line number: 
+
+Tag 3 - explain how this tag supports your response
+
+File: 
+<none>
+ Line number: 
+
+Do you have at least one test that verifies that the controller handles a IOExeption correctly? (1 point)
+
+ 
+Explanation (at least one tag should be an assert). If such a test is not possible with your design, explain why.
+
+Tag 1 - explain how this tag supports your response
+
+File: 
+<none>
+ Line number: 
+
+Tag 2 - explain how this tag supports your response
+
+File: 
+<none>
+ Line number: 
+
+Tag 3 - explain how this tag supports your response
+
+File: 
+<none>
+ Line number: 
+
+Do you have at least one test that verifies that the controller handles an error from the model correctly? (1 point)
+
+ 
+Explanation (at least one tag should be an assert). If such a test is not possible with your design, explain why.
+
+Tag 1 - explain how this tag supports your response
+
+File: 
+<none>
+ Line number: 
+
+Tag 2 - explain how this tag supports your response
+
+File: 
+<none>
+ Line number: 
+
+Tag 3 - explain how this tag supports your response
+
+File: 
+<none>
+ Line number: 
+
+ 
+Student notes
+
+Bottlenose copyright © 2012-2017 Benjamin Lerner, Nat Tuck. Licensed under the GNU Affero GPL v3 or later. Source at GitHub.
